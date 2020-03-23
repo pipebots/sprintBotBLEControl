@@ -1,0 +1,201 @@
+//Robot code for NANO 33 BLE Sense to pair with Robot controller App
+
+#include <Arduino.h>
+#include <ArduinoBLE.h>
+#include <rgbLED.h>
+
+
+void readButtons();
+void driveMotor(int pwmPin, int dirPin, int speed);
+void driveMotor2(int pwmPin, int dirPin, int spd, int dir);
+
+char robotName[] = "BigBallBot"; //Device Name - will appear as BLE descripton when connecting
+
+BLEService inputService("19B10000-E8F2-537E-4F6C-D104768A1214"); // BLE Service for all inputs from app
+
+// BLE LED Switch Characteristic - custom 128-bit UUID, read and writable by central
+BLEByteCharacteristic buttonCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
+BLEByteCharacteristic joystickCharacteristic("19B10002-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
+
+const int ledPin = LED_BUILTIN; // pin to use for the LED
+unsigned int speed = 158;
+
+// Configure the motor driver. works with 8,9
+#define  motorLPwm  3
+#define  motorLDir  5
+#define  motorRPwm  6
+#define  motorRDir  9
+
+void setup() {
+  Serial.begin(9600);
+//  while (!Serial); //This stops the program running until the serial monitor is opened!
+
+  //setup pins for motor drivers
+  pinMode(motorLDir, OUTPUT);
+//  pinMode(motorLPwm, OUTPUT);
+  pinMode(motorRDir, OUTPUT);
+//  pinMode(motorRPwm, OUTPUT);
+
+  digitalWrite(motorLDir, LOW);
+  //digitalWrite(motorLPwm, LOW);
+  digitalWrite(motorRDir, LOW);
+//  digitalWrite(motorRPwm, LOW);
+
+  // begin initialization
+  if (!BLE.begin()) {
+    Serial.println("starting BLE failed!");
+    while (1);
+  }
+
+  BLE.setLocalName(robotName);
+  BLE.setAdvertisedService(inputService);
+
+  // add the characteristic to the service
+  inputService.addCharacteristic(buttonCharacteristic);
+  inputService.addCharacteristic(joystickCharacteristic);
+
+  // add service
+  BLE.addService(inputService);
+
+  // set the initial value for the characeristic:
+  buttonCharacteristic.writeValue(0);
+  joystickCharacteristic.writeValue(0);
+
+  // start advertising
+  BLE.advertise();
+
+  Serial.println("BLE LED Peripheral");
+}
+
+
+
+void loop() {
+  // listen for BLE peripherals to connect:
+  BLEDevice central = BLE.central();
+
+  // if a central is connected to peripheral:
+  if (central) {
+    Serial.print("Connected to central: ");
+    // print the central's MAC address:
+    Serial.println(central.address());
+
+    // while the central is still connected to peripheral:
+    while (central.connected()) {
+
+    readButtons();
+
+    }
+
+
+    // when the central disconnects, print it out:
+    Serial.print(F("Disconnected from central: "));
+    Serial.println(central.address());
+  }
+}
+
+
+void readButtons(){
+  // if the remote device wrote to the characteristic,
+      // use the value to control the LED:
+      if (buttonCharacteristic.written()) {
+        Serial.println(buttonCharacteristic.value());
+        switch (buttonCharacteristic.value()) {
+          case 0:
+            Serial.println("LED off");
+            digitalWrite(ledPin, LOW);          // will turn the LED off
+            offLED();
+            break;
+          case 1:
+            Serial.println("LED on");
+            digitalWrite(ledPin, HIGH);          // will turn the LED off
+            break;
+          case 2:
+            Serial.println("FWD");
+            digitalWrite(motorRPwm, HIGH);
+            digitalWrite(motorRDir, LOW);
+            digitalWrite(motorLPwm, HIGH);
+            digitalWrite(motorLDir, LOW);
+            greenLED();
+            break;
+          case 3:
+            Serial.println("Back");
+            digitalWrite(motorRPwm, HIGH);
+            digitalWrite(motorRDir, HIGH);
+            digitalWrite(motorLPwm, HIGH);
+            digitalWrite(motorLDir, HIGH);
+            blueLED();
+            break;
+          case 4:
+            Serial.println("Left");
+            driveMotor(motorRPwm, motorRDir, speed);
+            digitalWrite(motorRPwm, HIGH);
+            digitalWrite(motorRDir, LOW);
+            digitalWrite(motorLPwm, HIGH);
+            digitalWrite(motorLDir, HIGH);
+            cyanLED();
+            break;
+          case 5:
+            Serial.println("Right");
+            digitalWrite(motorRPwm, HIGH);
+            digitalWrite(motorRDir, HIGH);
+            digitalWrite(motorLPwm, HIGH);
+            digitalWrite(motorLDir, LOW);
+            magentaLED();
+            break;
+          case 6:
+            Serial.println("Stop");
+            digitalWrite(motorRPwm, LOW);
+            digitalWrite(motorRDir, LOW);
+            digitalWrite(motorLPwm, LOW);
+            digitalWrite(motorLDir, LOW);
+            redLED();
+            break;
+          case 7:
+            Serial.println("Fwd Left");
+            rgbLED(100,255,100);
+            break;
+          case 8:
+            Serial.println("Fwd Right");
+            rgbLED(255,100,100);
+            break;
+          case 9:
+            Serial.println("Back Left");
+            rgbLED(255,50,100);
+            break;
+          case 10:
+            Serial.println("Back Right");
+            rgbLED(50,100,100);
+            break;
+
+           default:
+             Serial.println("Error - no cases match");
+             whiteLED();
+             break;
+        }
+       }
+}
+
+void driveMotor(int pwmPin, int dirPin, int spd){ //input speed -255 to +255, 0 is stop
+  // Make sure the speed is within the limit.
+  if (spd > 255) {
+    spd = 255;
+  } else if (spd < -255) {
+    spd = -255;
+  }
+
+  if (spd >= 0){
+    analogWrite(pwmPin, spd);
+    digitalWrite(dirPin, LOW);
+    Serial.println(">0");
+  }
+  else{
+    analogWrite(pwmPin, -spd);
+    digitalWrite(dirPin, HIGH);
+    Serial.println("<0");
+  }
+}
+
+void driveMotor2(int pwmPin, int dirPin, int spd, int dir){
+  analogWrite(pwmPin, spd);
+  digitalWrite(dirPin, dir);
+}
