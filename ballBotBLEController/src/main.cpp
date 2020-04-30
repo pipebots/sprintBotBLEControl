@@ -116,7 +116,7 @@ void loop() {
         updateTemp();
       }
       */
-      //readButtons();
+      readButtons();
       readJoystick();
     }
 
@@ -134,7 +134,7 @@ void readButtons(){
       if (buttonCharacteristic.written()) {
         Serial.println(buttonCharacteristic.value());
         switch (buttonCharacteristic.value()) {
-          case 0:
+        /*  case 0:
             Serial.println("LED off");
             digitalWrite(ledPin, LOW);          // will turn the LED off
             offLED();
@@ -175,15 +175,16 @@ void readButtons(){
             digitalWrite(MR_DIR, LOW);
             digitalWrite(MR_PWM, HIGH);
             break;
+            */
           case 6:
             Serial.println("Stop");
-            redLED();
-            digitalWrite(ML_DIR, LOW);
-            digitalWrite(ML_PWM, LOW);
-            digitalWrite(MR_DIR, LOW);
-            digitalWrite(MR_PWM, LOW);
+              //redLED();
+          //  driveMotor(ML_PWM, ML_DIR, 0);
+        //    driveMotor(MR_PWM, MR_DIR, 0);
+              analogWrite(ML_PWM, 0);
+              analogWrite(MR_PWM, 0);
             break;
-          case 7:
+      /*    case 7:
             Serial.println("Fwd Left");
             rgbLED(100,255,100);
             digitalWrite(ML_DIR, HIGH);
@@ -221,9 +222,9 @@ void readButtons(){
             gesture = !gesture; //flip bool
             Serial.println("Gesture");
             break;
-           default:
+        */   default:
              Serial.println("Error - no cases match");
-             whiteLED();
+            // whiteLED();
              break;
         }
        }
@@ -243,13 +244,13 @@ void readJoystick(){
       Serial.print(xnib);
       Serial.print(" y: ");
       Serial.println(ynib);
-      xchange = map(xnib, 0, 7, -127, 127);
-      ychange = map(ynib, 0, 7, -127, 127);
+      xchange = map(xnib, 0, 15, -127, 127);
+      ychange = map(ynib, 0, 15, 127, -127);
       Serial.print("xchange: ");
       Serial.print(xchange);
       Serial.print(" ychange: ");
       Serial.println(ychange);
-      joyDiffDrive(xchange,ychange);
+      joyDiffDrive(xchange, ychange);
       }
 }
 
@@ -314,8 +315,8 @@ void joyDiffDrive(int nJoyX, int nJoyY){
   nMotMixR = (1.0-fPivScale)*nMotPremixR + fPivScale*(-nPivSpeed);
 
   // Convert to Motor PWM range
-  driveMotor(ML_PWM,ML_DIR,nMotMixL*2); //*2 to convert from -127..+127 to -254..+254
-  driveMotor(MR_PWM,MR_DIR,nMotMixR*2);
+  driveMotor(ML_PWM, ML_DIR, nMotMixL*2); //*2 to convert from -127..+127 to -254..+254
+  driveMotor(MR_PWM, MR_DIR, nMotMixR*2);
 }
 
 void driveMotor(int pwmPin, int dirPin, int spd){ //input speed -255 to +255, 0 is stop
@@ -329,11 +330,9 @@ void driveMotor(int pwmPin, int dirPin, int spd){ //input speed -255 to +255, 0 
   if (spd >= 0){
     digitalWrite(dirPin, LOW);
     analogWrite(pwmPin, spd);
-    Serial.println(">0");
   }
   else{
     digitalWrite(dirPin, HIGH);
     analogWrite(pwmPin, -spd);
-    Serial.println("<0");
   }
 }
