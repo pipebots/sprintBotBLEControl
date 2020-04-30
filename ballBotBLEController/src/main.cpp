@@ -134,10 +134,10 @@ void readButtons(){
       if (buttonCharacteristic.written()) {
         Serial.println(buttonCharacteristic.value());
         switch (buttonCharacteristic.value()) {
-        /*  case 0:
+          case 0:
             Serial.println("LED off");
             digitalWrite(ledPin, LOW);          // will turn the LED off
-            offLED();
+            //offLED();
             break;
           case 1:
             Serial.println("LED on");
@@ -145,84 +145,65 @@ void readButtons(){
             break;
           case 2:
             Serial.println("FWD");
-            greenLED();
-            digitalWrite(ML_DIR, HIGH);
-            digitalWrite(ML_PWM, HIGH);
-            digitalWrite(MR_DIR, HIGH);
-            digitalWrite(MR_PWM, HIGH);
+            //greenLED();
+            driveMotor(ML_PWM, ML_DIR, 255);
+            driveMotor(MR_PWM, MR_DIR, 255);
             break;
           case 3:
             Serial.println("Back");
-            blueLED();
-            digitalWrite(ML_DIR, LOW);
-            digitalWrite(ML_PWM, HIGH);
-            digitalWrite(MR_DIR, LOW);
-            digitalWrite(MR_PWM, HIGH);
+            //blueLED();
+            driveMotor(ML_PWM, ML_DIR, -255);
+            driveMotor(MR_PWM, MR_DIR, -255);
             break;
           case 4:
             Serial.println("Left");
-            cyanLED();
-            digitalWrite(ML_DIR, LOW);
-            digitalWrite(ML_PWM, HIGH);
-            digitalWrite(MR_DIR, HIGH);
-            digitalWrite(MR_PWM, HIGH);
+            //cyanLED();
+            driveMotor(ML_PWM, ML_DIR, -255);
+            driveMotor(MR_PWM, MR_DIR, 255);
             break;
           case 5:
             Serial.println("Right");
-            magentaLED();
-            digitalWrite(ML_DIR, HIGH);
-            digitalWrite(ML_PWM, HIGH);
-            digitalWrite(MR_DIR, LOW);
-            digitalWrite(MR_PWM, HIGH);
+            //magentaLED();
+            driveMotor(ML_PWM, ML_DIR, 255);
+            driveMotor(MR_PWM, MR_DIR, -255);
             break;
-            */
           case 6:
             Serial.println("Stop");
               //redLED();
-          //  driveMotor(ML_PWM, ML_DIR, 0);
-        //    driveMotor(MR_PWM, MR_DIR, 0);
-              analogWrite(ML_PWM, 0);
-              analogWrite(MR_PWM, 0);
+            driveMotor(ML_PWM, ML_DIR, 0);
+            driveMotor(MR_PWM, MR_DIR, 0);
             break;
-      /*    case 7:
+          case 7:
             Serial.println("Fwd Left");
-            rgbLED(100,255,100);
-            digitalWrite(ML_DIR, HIGH);
-            digitalWrite(ML_PWM, HIGH);
-            digitalWrite(MR_DIR, HIGH);
-            digitalWrite(MR_PWM, LOW);
+            //rgbLED(100,255,100);
+            driveMotor(ML_PWM, ML_DIR, 0);
+            driveMotor(MR_PWM, MR_DIR, 255);
             break;
           case 8:
             Serial.println("Fwd Right");
-            rgbLED(255,100,100);
-            digitalWrite(ML_DIR, HIGH);
-            digitalWrite(ML_PWM, LOW);
-            digitalWrite(MR_DIR, HIGH);
-            digitalWrite(MR_PWM, HIGH);
+            //rgbLED(255,100,100);
+            driveMotor(ML_PWM, ML_DIR, 255);
+            driveMotor(MR_PWM, MR_DIR, 0);
             break;
           case 9:
             Serial.println("Back Left");
-            rgbLED(255,50,100);
-            digitalWrite(ML_DIR, LOW);
-            digitalWrite(ML_PWM, LOW);
-            digitalWrite(MR_DIR, LOW);
-            digitalWrite(MR_PWM, HIGH);
+            //rgbLED(255,50,100);
+            driveMotor(ML_PWM, ML_DIR, 0);
+            driveMotor(MR_PWM, MR_DIR, -255);
             break;
           case 10:
             Serial.println("Back Right");
-            rgbLED(50,100,100);
-            digitalWrite(ML_DIR, LOW);
-            digitalWrite(ML_PWM, HIGH);
-            digitalWrite(MR_DIR, LOW);
-            digitalWrite(MR_PWM, LOW);
+            //rgbLED(50,100,100);
+            driveMotor(ML_PWM, ML_DIR, -255);
+            driveMotor(MR_PWM, MR_DIR, 0);
             break;
           case 11:
             Serial.println("Gesture Control");
-            yellowLED();
+            //yellowLED();
             gesture = !gesture; //flip bool
             Serial.println("Gesture");
             break;
-        */   default:
+         default:
              Serial.println("Error - no cases match");
             // whiteLED();
              break;
