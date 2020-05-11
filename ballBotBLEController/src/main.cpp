@@ -13,6 +13,8 @@ void readButtons();
 void readJoystick();
 void driveMotor(int pwmPin, int dirPin, int spd);
 void joyDiffDrive(int nJoyX, int nJoyY);
+void doEncoder1();
+void doEncoder2();
 
 // Motor driver inputs
 #define ML_DIR            8
@@ -20,6 +22,13 @@ void joyDiffDrive(int nJoyX, int nJoyY);
 #define MR_DIR            10
 #define MR_PWM            11
 
+//encoder pins
+#define ENC_1_A 2
+#define ENC_1_B 3
+#define ENC_2_A 4
+#define ENC_2_B 5
+
+volatile int encoder1Pos, encoder2Pos, wheelRevs = 0;
 
 char robotName[] = "BigBallBot"; //Device Name - will appear as BLE descripton when connecting
 
@@ -54,13 +63,22 @@ void setup() {
 
   // set LED pin to output mode
   pinMode(ledPin, OUTPUT);
-
   // Set motor driver pins to ouput mode
   pinMode(ML_DIR, OUTPUT);
   pinMode(ML_PWM, OUTPUT);
   pinMode(MR_DIR, OUTPUT);
   pinMode(MR_PWM, OUTPUT);
+  //setup encoder pins
+  pinMode(encoder0PinA, INPUT);
+  pinMode(encoder0PinB, INPUT);
+  digitalWrite(encoder0PinA, HIGH);  //turn on pullup resistor
+  digitalWrite(encoder0PinB, HIGH);  //turn on pullup resistor
 
+  // encoder 1 channel on interrupt 0 (Arduino's pin 2)
+  attachInterrupt(digitalPinToInterrupt(2), doEncoder1, RISING);
+  // encoder 2 channel pin on interrupt 1 (Arduino's pin 3)
+  attachInterrupt(digitalPinToInterrupt(4), doEncoder2, RISING);
+  //(Due to gear ratio we dont need to track every pulse so just using interrupt on one channel Rising.)
 
   // begin initialization
   if (!BLE.begin()) {
@@ -315,5 +333,40 @@ void driveMotor(int pwmPin, int dirPin, int spd){ //input speed -255 to +255, 0 
   else{
     digitalWrite(dirPin, HIGH);
     analogWrite(pwmPin, -spd);
+  }
+}
+
+
+void doEncoder1(){
+  if(digitalRead(ENC_1_A)==digitalRead(ENC_1_B)){
+    encoder1Pos++;
+    if (encoder1Pos >1250){
+      encoder1Pos = 0;
+      wheelRevs++;
+    }
+  }
+  else{
+    encoder1Pos--;
+    if (encoder1Pos <-1250){
+      encoder1Pos = 0;
+      wheelRevs--;
+    }
+  }
+}
+
+void doEncoder2(){
+  if(digitalRead(ENC_2_A)==digitalRead(ENC_2_B)){
+    encoder2Pos++;
+    if (encoder2Pos >1250){
+      encoder2Pos = 0;
+      wheelRevs++;
+    }
+  }
+  else{
+    encoder2Pos--;
+    if (encoder2Pos <-1250){
+      encoder2Pos = 0;
+      wheelRevs--;
+    }
   }
 }
