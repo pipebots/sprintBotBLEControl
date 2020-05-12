@@ -3,6 +3,8 @@
 * Change robotName[] below for each board
 * Temp code currently commented out as may be useful for different job later
 * This version is to use the Joystick app so allows for speed control
+*
+* (Encoder 2 is rght hand side)
 */
 
 #include <Arduino.h>
@@ -28,7 +30,7 @@ void doEncoder2();
 #define ENC_2_A 4
 #define ENC_2_B 5
 
-volatile int encoder1Pos, encoder2Pos, wheelRevs = 0;
+volatile int encoder1Pos, encoder2Pos, wheel1Revs, wheel2Revs = 0;
 
 char robotName[] = "BigBallBot"; //Device Name - will appear as BLE descripton when connecting
 
@@ -69,14 +71,18 @@ void setup() {
   pinMode(MR_DIR, OUTPUT);
   pinMode(MR_PWM, OUTPUT);
   //setup encoder pins
-  pinMode(encoder0PinA, INPUT);
-  pinMode(encoder0PinB, INPUT);
-  digitalWrite(encoder0PinA, HIGH);  //turn on pullup resistor
-  digitalWrite(encoder0PinB, HIGH);  //turn on pullup resistor
+  pinMode(ENC_1_A, INPUT);
+  pinMode(ENC_1_B, INPUT);
+  pinMode(ENC_2_A, INPUT);
+  pinMode(ENC_2_B, INPUT);
+  digitalWrite(ENC_1_A, HIGH);  //turn on pullup resistor
+  digitalWrite(ENC_1_B, HIGH);  //turn on pullup resistor
+  digitalWrite(ENC_2_A, HIGH);  //turn on pullup resistor
+  digitalWrite(ENC_2_B, HIGH);  //turn on pullup resistor
 
   // encoder 1 channel on interrupt 0 (Arduino's pin 2)
   attachInterrupt(digitalPinToInterrupt(2), doEncoder1, RISING);
-  // encoder 2 channel pin on interrupt 1 (Arduino's pin 3)
+  // encoder 2
   attachInterrupt(digitalPinToInterrupt(4), doEncoder2, RISING);
   //(Due to gear ratio we dont need to track every pulse so just using interrupt on one channel Rising.)
 
@@ -136,6 +142,16 @@ void loop() {
       */
       readButtons();
       readJoystick();
+      Serial.print(" Wheel Rev 1: ");
+      Serial.println(wheel1Revs);
+      Serial.print("Encoder count 1: ");
+      Serial.print(encoder1Pos);
+      Serial.print(" Wheel Rev 2: ");
+      Serial.println(wheel2Revs);
+      Serial.print("Encoder count 2: ");
+      Serial.print(encoder2Pos);
+    //  Serial.println(" Encoder 2: ");
+    //  Serial.println(wheel2Revs);
     }
 
 
@@ -336,37 +352,35 @@ void driveMotor(int pwmPin, int dirPin, int spd){ //input speed -255 to +255, 0 
   }
 }
 
-
 void doEncoder1(){
   if(digitalRead(ENC_1_A)==digitalRead(ENC_1_B)){
     encoder1Pos++;
     if (encoder1Pos >1250){
       encoder1Pos = 0;
-      wheelRevs++;
+      wheel1Revs++;
     }
   }
   else{
     encoder1Pos--;
     if (encoder1Pos <-1250){
       encoder1Pos = 0;
-      wheelRevs--;
+      wheel1Revs--;
     }
   }
 }
-
 void doEncoder2(){
   if(digitalRead(ENC_2_A)==digitalRead(ENC_2_B)){
     encoder2Pos++;
     if (encoder2Pos >1250){
       encoder2Pos = 0;
-      wheelRevs++;
+      wheel2Revs++;
     }
   }
   else{
     encoder2Pos--;
     if (encoder2Pos <-1250){
       encoder2Pos = 0;
-      wheelRevs--;
+      wheel2Revs--;
     }
   }
 }
