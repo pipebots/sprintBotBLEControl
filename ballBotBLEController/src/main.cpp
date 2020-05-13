@@ -19,10 +19,10 @@ void doEncoder1();
 void doEncoder2();
 
 // Motor driver inputs
-#define ML_DIR            8
-#define ML_PWM            9
-#define MR_DIR            10
-#define MR_PWM            11
+#define ML_DIR 8
+#define ML_PWM 9
+#define MR_DIR 10
+#define MR_PWM 11
 
 //encoder pins
 #define ENC_1_A 2
@@ -39,7 +39,8 @@ BLEService outputService("1809"); //BLE Temperature service
 
 // BLE LED Switch Characteristic - custom 128-bit UUID, read and writable by central
 BLEByteCharacteristic buttonCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
-BLEByteCharacteristic joystickCharacteristic("19B10002-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
+BLEByteCharacteristic joystickXCharacteristic("19B10002-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
+BLEByteCharacteristic joystickYCharacteristic("19B10234-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
 BLEFloatCharacteristic tempChar("2A1C", BLERead | BLEIndicate); //
 BLEDescriptor tempCharDescript("2901", "Temperature");
 
@@ -49,9 +50,6 @@ float temp = 0.0;
 float humidity = 0.0;
 bool gesture = 0;
 long previousMillis = 0;  // last time the temperature was checked, in ms
-int xybyte = 0;
-int ynib = 0;
-int xnib = 0;
 
 union {
     float tempfval;
@@ -99,7 +97,8 @@ void setup() {
 
   // add the characteristic to the service
   inputService.addCharacteristic(buttonCharacteristic);
-  inputService.addCharacteristic(joystickCharacteristic);
+  inputService.addCharacteristic(joystickXCharacteristic);
+  inputService.addCharacteristic(joystickYCharacteristic);
   outputService.addCharacteristic(tempChar);
   tempChar.addDescriptor(tempCharDescript);
 
@@ -109,7 +108,8 @@ void setup() {
 
   // set the initial value for the characeristic:
   buttonCharacteristic.writeValue(0);
-  joystickCharacteristic.writeValue(0);
+  joystickXCharacteristic.writeValue(127);
+  joystickYCharacteristic.writeValue(127);
   tempChar.writeValue(0);
 
   // start advertising
@@ -142,6 +142,7 @@ void loop() {
       */
       readButtons();
       readJoystick();
+      /*
       Serial.print(" Wheel Rev 1: ");
       Serial.println(wheel1Revs);
       Serial.print("Encoder count 1: ");
@@ -150,6 +151,7 @@ void loop() {
       Serial.println(wheel2Revs);
       Serial.print("Encoder count 2: ");
       Serial.print(encoder2Pos);
+      */
     //  Serial.println(" Encoder 2: ");
     //  Serial.println(wheel2Revs);
     }
@@ -246,27 +248,23 @@ void readButtons(){
 }
 
 void readJoystick(){
-    int xchange, ychange;
+    uint8_t xjoy, yjoy;
 
-    if (joystickCharacteristic.written()) {
-        //split byte back to two nibbles
-        //right X=15, left X=0, up Y=0, down y=15
-       //Serial.println(joystickCharacteristic.value());
-       xybyte = joystickCharacteristic.value() & 0xFF;
-       ynib = xybyte & 0xF;
-       xnib = xybyte >> 4;
+    if (joystickXCharacteristic.written() || joystickYCharacteristic.written()) {
+      xjoy = joystickXCharacteristic.value();
       Serial.print("x: ");
-      Serial.print(xnib);
+      Serial.print(xjoy);
+      yjoy = joystickYCharacteristic.value();
       Serial.print(" y: ");
-      Serial.println(ynib);
-      xchange = map(xnib, 0, 15, -127, 127);
-      ychange = map(ynib, 0, 15, 127, -127);
-      Serial.print("xchange: ");
-      Serial.print(xchange);
-      Serial.print(" ychange: ");
-      Serial.println(ychange);
-      joyDiffDrive(xchange, ychange);
-      }
+      Serial.print(yjoy);
+      int8_t xmap = map(xjoy, 0, 254, -128, 127); //convert to range joyDiffDrive is expecting
+      Serial.print(" xmap: ");
+      Serial.println(xmap);
+      int8_t ymap = map(yjoy, 0, 254, 127, -128);
+      Serial.print(" ymap: ");
+      Serial.println(ymap);
+      joyDiffDrive(xmap,ymap);
+    }
 }
 
 void joyDiffDrive(int nJoyX, int nJoyY){
