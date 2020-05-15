@@ -10,11 +10,13 @@
 #include <Arduino.h>
 #include <ArduinoBLE.h>
 #include <rgbLED.h>
+#include <PID_v1.h>
 
 void readButtons();
 void readJoystick();
 void driveMotor(int pwmPin, int dirPin, int spd);
 void joyDiffDrive(int nJoyX, int nJoyY);
+void pidCalc();
 void doEncoder1();
 void doEncoder2();
 
@@ -50,16 +52,26 @@ float temp = 0.0;
 float humidity = 0.0;
 bool gesture = 0;
 long previousMillis = 0;  // last time the temperature was checked, in ms
-
 union {
     float tempfval;
     byte tempbval[4];
 } floatAsBytes;
 
+//setup PID controllers
+double pidSet1, pidSet2, pidIn1, pidIn2, pidOut1, pidOut2 = 0;
+PID motorPID1(&pidIn1, &pidOut1, &pidSet1,2,5,1,DIRECT);
+PID motorPID2(&pidIn2, &pidOut2, &pidSet2,2,5,1,DIRECT);
 
 void setup() {
   Serial.begin(9600);
 //  while (!Serial); //This stops the program running until the serial monitor is opened!
+
+  //set PID ranges to -255 to 255
+  motorPID1.SetOutputLimits(-255,255);
+  motorPID2.SetOutputLimits(-255,255);
+  //turn on PIDs
+  motorPID1.SetMode(AUTOMATIC);
+  motorPID2.SetMode(AUTOMATIC);
 
   // set LED pin to output mode
   pinMode(ledPin, OUTPUT);
@@ -142,18 +154,19 @@ void loop() {
       */
       readButtons();
       readJoystick();
-      /*
-      Serial.print(" Wheel Rev 1: ");
-      Serial.println(wheel1Revs);
+      //TODO get speed from encoders and set as pidIn
+      pidCalc();
+/*
       Serial.print("Encoder count 1: ");
       Serial.print(encoder1Pos);
-      Serial.print(" Wheel Rev 2: ");
-      Serial.println(wheel2Revs);
+      Serial.print(" Wheel Rev 1: ");
+      Serial.println(wheel1Revs);
+
       Serial.print("Encoder count 2: ");
       Serial.print(encoder2Pos);
-      */
-    //  Serial.println(" Encoder 2: ");
-    //  Serial.println(wheel2Revs);
+      Serial.print(" Wheel Rev 2: ");
+      Serial.println(wheel2Revs);
+  */
     }
 
 
@@ -182,56 +195,56 @@ void readButtons(){
           case 2:
             Serial.println("FWD");
             //greenLED();
-            driveMotor(ML_PWM, ML_DIR, 255);
-            driveMotor(MR_PWM, MR_DIR, 255);
+            pidSet1 = 255;
+            pidSet2 = 255;
             break;
           case 3:
             Serial.println("Back");
             //blueLED();
-            driveMotor(ML_PWM, ML_DIR, -255);
-            driveMotor(MR_PWM, MR_DIR, -255);
+            pidSet1 = -255;
+            pidSet2 = -255;
             break;
           case 4:
             Serial.println("Left");
             //cyanLED();
-            driveMotor(ML_PWM, ML_DIR, -255);
-            driveMotor(MR_PWM, MR_DIR, 255);
+            pidSet1 = -255;
+            pidSet2 = 255;
             break;
           case 5:
             Serial.println("Right");
             //magentaLED();
-            driveMotor(ML_PWM, ML_DIR, 255);
-            driveMotor(MR_PWM, MR_DIR, -255);
+            pidSet1 = 255;
+            pidSet2 = -255;
             break;
           case 6:
             Serial.println("Stop");
               //redLED();
-            driveMotor(ML_PWM, ML_DIR, 0);
-            driveMotor(MR_PWM, MR_DIR, 0);
+              pidSet1 = 0;
+              pidSet2 = 0;
             break;
           case 7:
             Serial.println("Fwd Left");
             //rgbLED(100,255,100);
-            driveMotor(ML_PWM, ML_DIR, 0);
-            driveMotor(MR_PWM, MR_DIR, 255);
+            pidSet1 = 0;
+            pidSet2 = 255;
             break;
           case 8:
             Serial.println("Fwd Right");
             //rgbLED(255,100,100);
-            driveMotor(ML_PWM, ML_DIR, 255);
-            driveMotor(MR_PWM, MR_DIR, 0);
+            pidSet1 = 255;
+            pidSet2 = 0;
             break;
           case 9:
             Serial.println("Back Left");
             //rgbLED(255,50,100);
-            driveMotor(ML_PWM, ML_DIR, 0);
-            driveMotor(MR_PWM, MR_DIR, -255);
+            pidSet1 = 0;
+            pidSet2 = -255;
             break;
           case 10:
             Serial.println("Back Right");
             //rgbLED(50,100,100);
-            driveMotor(ML_PWM, ML_DIR, -255);
-            driveMotor(MR_PWM, MR_DIR, 0);
+            pidSet1 = -255;
+            pidSet2 = 0;
             break;
           case 11:
             Serial.println("Gesture Control");
@@ -348,6 +361,15 @@ void driveMotor(int pwmPin, int dirPin, int spd){ //input speed -255 to +255, 0 
     digitalWrite(dirPin, HIGH);
     analogWrite(pwmPin, -spd);
   }
+}
+
+void pidCalc(){
+          //pidSet1 = setpoint set in read joystick or read buttons
+          //pidIn1 = speed for encoder counts
+          motorPID1.Compute(); //uses pidSet1 and pidIn1 to give pidOut1 in -255 to 255
+          motorPID2.compute();
+          driveMotor(ML_PWM, ML_DIR, pidOut1);
+          driveMotor(MR_PWM, MR_DIR, pidOut2);
 }
 
 void doEncoder1(){
