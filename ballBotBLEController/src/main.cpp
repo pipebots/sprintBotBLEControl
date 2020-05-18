@@ -16,9 +16,10 @@ void readButtons();
 void readJoystick();
 void driveMotor(int pwmPin, int dirPin, int spd);
 void joyDiffDrive(int nJoyX, int nJoyY);
-void pidCalc();
+void calcPID();
 void doEncoder1();
 void doEncoder2();
+void calcSpeed();
 
 // Motor driver inputs
 #define ML_DIR 8
@@ -32,7 +33,7 @@ void doEncoder2();
 #define ENC_2_A 4
 #define ENC_2_B 5
 
-volatile int encoder1Pos, encoder2Pos, wheel1Revs, wheel2Revs = 0;
+volatile int encoder1Ticks, encoder2Ticks, wheel1Pos, wheel2Pos, wheel1Revs, wheel2Revs = 0;
 
 char robotName[] = "BigBallBot"; //Device Name - will appear as BLE descripton when connecting
 
@@ -51,16 +52,17 @@ byte tempArray[] = {};
 float temp = 0.0;
 float humidity = 0.0;
 bool gesture = 0;
-long previousMillis = 0;  // last time the temperature was checked, in ms
+long previousMillis,  prevMillis1 = 0;  // last time the temperature was checked, in ms
+int encoder1Prev, encoder2Prev = 0;
 union {
     float tempfval;
     byte tempbval[4];
 } floatAsBytes;
 
 //setup PID controllers
-double pidSet1, pidSet2, pidIn1, pidIn2, pidOut1, pidOut2 = 0;
-PID motorPID1(&pidIn1, &pidOut1, &pidSet1,2,5,1,DIRECT);
-PID motorPID2(&pidIn2, &pidOut2, &pidSet2,2,5,1,DIRECT);
+double PID_SET_1, PID_SET_2, PID_IN_1, PID_IN_2, PID_OUT_1, PID_OUT_2 = 0;
+PID motorPID1(&PID_IN_1, &PID_OUT_1, &PID_SET_1,2,5,1,DIRECT);
+PID motorPID2(&PID_IN_2, &PID_OUT_2, &PID_SET_2,2,5,1,DIRECT);
 
 void setup() {
   Serial.begin(9600);
@@ -145,25 +147,23 @@ void loop() {
     // while the central is still connected to peripheral:
     while (central.connected()) {
 
-    /*  long currentMillis = millis();
-      // if 500ms have passed, check the temperaturemeasurement:
-      if (currentMillis - previousMillis >= 500) {
+    long currentMillis = millis();
+      // if 10ms have passed, check the speed
+      if (currentMillis - previousMillis >= 10) {
         previousMillis = currentMillis;
-        updateTemp();
+        calcSpeed();
       }
-      */
       readButtons();
       readJoystick();
-      //TODO get speed from encoders and set as pidIn
-      pidCalc();
+      calcPID();
 /*
       Serial.print("Encoder count 1: ");
-      Serial.print(encoder1Pos);
+      Serial.print(wheel1Pos);
       Serial.print(" Wheel Rev 1: ");
       Serial.println(wheel1Revs);
 
       Serial.print("Encoder count 2: ");
-      Serial.print(encoder2Pos);
+      Serial.print(wheel2Pos);
       Serial.print(" Wheel Rev 2: ");
       Serial.println(wheel2Revs);
   */
@@ -195,56 +195,56 @@ void readButtons(){
           case 2:
             Serial.println("FWD");
             //greenLED();
-            pidSet1 = 255;
-            pidSet2 = 255;
+            PID_SET_1 = 255;
+            PID_SET_2 = 255;
             break;
           case 3:
             Serial.println("Back");
             //blueLED();
-            pidSet1 = -255;
-            pidSet2 = -255;
+            PID_SET_1 = -255;
+            PID_SET_2 = -255;
             break;
           case 4:
             Serial.println("Left");
             //cyanLED();
-            pidSet1 = -255;
-            pidSet2 = 255;
+            PID_SET_1 = -255;
+            PID_SET_2 = 255;
             break;
           case 5:
             Serial.println("Right");
             //magentaLED();
-            pidSet1 = 255;
-            pidSet2 = -255;
+            PID_SET_1 = 255;
+            PID_SET_2 = -255;
             break;
           case 6:
             Serial.println("Stop");
               //redLED();
-              pidSet1 = 0;
-              pidSet2 = 0;
+              PID_SET_1 = 0;
+              PID_SET_2 = 0;
             break;
           case 7:
             Serial.println("Fwd Left");
             //rgbLED(100,255,100);
-            pidSet1 = 0;
-            pidSet2 = 255;
+            PID_SET_1 = 0;
+            PID_SET_2 = 255;
             break;
           case 8:
             Serial.println("Fwd Right");
             //rgbLED(255,100,100);
-            pidSet1 = 255;
-            pidSet2 = 0;
+            PID_SET_1 = 255;
+            PID_SET_2 = 0;
             break;
           case 9:
             Serial.println("Back Left");
             //rgbLED(255,50,100);
-            pidSet1 = 0;
-            pidSet2 = -255;
+            PID_SET_1 = 0;
+            PID_SET_2 = -255;
             break;
           case 10:
             Serial.println("Back Right");
             //rgbLED(50,100,100);
-            pidSet1 = -255;
-            pidSet2 = 0;
+            PID_SET_1 = -255;
+            PID_SET_2 = 0;
             break;
           case 11:
             Serial.println("Gesture Control");
@@ -265,18 +265,21 @@ void readJoystick(){
 
     if (joystickXCharacteristic.written() || joystickYCharacteristic.written()) {
       xjoy = joystickXCharacteristic.value();
+      yjoy = joystickYCharacteristic.value();
+      int8_t xmap = map(xjoy, 0, 254, -128, 127); //convert to range joyDiffDrive is expecting
+      int8_t ymap = map(yjoy, 0, 254, 127, -128);
+      joyDiffDrive(xmap,ymap);
+
+/*    // debug
       Serial.print("x: ");
       Serial.print(xjoy);
-      yjoy = joystickYCharacteristic.value();
       Serial.print(" y: ");
       Serial.print(yjoy);
-      int8_t xmap = map(xjoy, 0, 254, -128, 127); //convert to range joyDiffDrive is expecting
       Serial.print(" xmap: ");
       Serial.println(xmap);
-      int8_t ymap = map(yjoy, 0, 254, 127, -128);
       Serial.print(" ymap: ");
       Serial.println(ymap);
-      joyDiffDrive(xmap,ymap);
+*/
     }
 }
 
@@ -341,8 +344,8 @@ void joyDiffDrive(int nJoyX, int nJoyY){
   nMotMixR = (1.0-fPivScale)*nMotPremixR + fPivScale*(-nPivSpeed);
 
   // Convert to Motor PWM range
-  driveMotor(ML_PWM, ML_DIR, nMotMixL*2); //*2 to convert from -127..+127 to -254..+254
-  driveMotor(MR_PWM, MR_DIR, nMotMixR*2);
+  PID_SET_1 =  nMotMixL*2; //*2 to convert from -127..+127 to -254..+254
+  PID_SET_2 =  nMotMixR*2; //change PID setpoint
 }
 
 void driveMotor(int pwmPin, int dirPin, int spd){ //input speed -255 to +255, 0 is stop
@@ -363,44 +366,68 @@ void driveMotor(int pwmPin, int dirPin, int spd){ //input speed -255 to +255, 0 
   }
 }
 
-void pidCalc(){
-          //pidSet1 = setpoint set in read joystick or read buttons
-          //pidIn1 = speed for encoder counts
-          motorPID1.Compute(); //uses pidSet1 and pidIn1 to give pidOut1 in -255 to 255
-          motorPID2.compute();
-          driveMotor(ML_PWM, ML_DIR, pidOut1);
-          driveMotor(MR_PWM, MR_DIR, pidOut2);
+void calcPID(){
+          //PID_SET_1 = setpoint set in read joystick or read buttons
+          //PID_IN_1 = speed for encoder counts
+          motorPID1.Compute(); //uses PID_SET_1 and PID_IN_1 to give PID_OUT_1 in -255 to 255
+          motorPID2.Compute();
+          driveMotor(ML_PWM, ML_DIR, PID_OUT_1);
+          driveMotor(MR_PWM, MR_DIR, PID_OUT_2);
 }
 
 void doEncoder1(){
   if(digitalRead(ENC_1_A)==digitalRead(ENC_1_B)){
-    encoder1Pos++;
-    if (encoder1Pos >1250){
-      encoder1Pos = 0;
+    wheel1Pos++;
+    encoder1Ticks++;
+    if (wheel1Pos >1250){
+      wheel1Pos = 0;
       wheel1Revs++;
     }
   }
   else{
-    encoder1Pos--;
-    if (encoder1Pos <-1250){
-      encoder1Pos = 0;
+    wheel1Pos--;
+    encoder1Ticks--;
+    if (wheel1Pos <-1250){
+      wheel1Pos = 0;
       wheel1Revs--;
     }
   }
 }
 void doEncoder2(){
   if(digitalRead(ENC_2_A)==digitalRead(ENC_2_B)){
-    encoder2Pos++;
-    if (encoder2Pos >1250){
-      encoder2Pos = 0;
-      wheel2Revs++;
-    }
-  }
-  else{
-    encoder2Pos--;
-    if (encoder2Pos <-1250){
-      encoder2Pos = 0;
+    wheel2Pos--; //opposite to Enc1 due to way motor is mounted
+    encoder2Ticks--;
+    if (wheel2Pos <-1250){
+      wheel2Pos = 0;
       wheel2Revs--;
     }
   }
+  else{
+    wheel2Pos++;
+    encoder2Ticks++;
+    if (wheel2Pos >1250){
+      wheel2Pos = 0;
+      wheel2Revs++;
+    }
+  }
+}
+void calcSpeed(){
+  //Get elapsed time
+  long currentMillis = millis();
+  long elapsedTime = currentMillis - prevMillis1;
+  prevMillis1 = currentMillis;
+
+  //Get encoder counts
+  int encoder1Change = encoder1Ticks - encoder1Prev;
+  int encoder2Change = encoder2Ticks - encoder2Prev;
+  encoder1Prev = encoder1Ticks;
+  encoder2Prev = encoder2Ticks;
+
+  //Using top speed to be 1000 counts per second i.e range of -1 to 1
+  double speed1 = (double)encoder1Change/(double)elapsedTime;
+  double speed2 = (double)encoder2Change/(double)elapsedTime;
+  int pidIn1 = speed1 * 255; //convert to range -255 - 255
+  int pidIn2 = speed2 * 255;
+  PID_IN_1 = constrain(pidIn1,-255,255);
+  PID_IN_2 = constrain(pidIn2,-255,255);
 }
