@@ -61,8 +61,8 @@ union {
 
 //setup PID controllers
 double PID_SET_1, PID_SET_2, PID_IN_1, PID_IN_2, PID_OUT_1, PID_OUT_2 = 0;
-PID motorPID1(&PID_IN_1, &PID_OUT_1, &PID_SET_1,2,5,1,DIRECT);
-PID motorPID2(&PID_IN_2, &PID_OUT_2, &PID_SET_2,2,5,1,DIRECT);
+PID motorPID1(&PID_IN_1, &PID_OUT_1, &PID_SET_1, 10, 0, 0, DIRECT);
+PID motorPID2(&PID_IN_2, &PID_OUT_2, &PID_SET_2, 10, 0, 0, DIRECT);
 
 void setup() {
   Serial.begin(9600);
@@ -71,6 +71,8 @@ void setup() {
   //set PID ranges to -255 to 255
   motorPID1.SetOutputLimits(-255,255);
   motorPID2.SetOutputLimits(-255,255);
+  motorPID1.SetSampleTime(20); //defualt is 200ms
+  motorPID2.SetSampleTime(20);
   //turn on PIDs
   motorPID1.SetMode(AUTOMATIC);
   motorPID2.SetMode(AUTOMATIC);
@@ -149,13 +151,14 @@ void loop() {
 
     long currentMillis = millis();
       // if 10ms have passed, check the speed
-      if (currentMillis - previousMillis >= 10) {
+      if (currentMillis - previousMillis >= 20) {
         previousMillis = currentMillis;
         calcSpeed();
       }
       readButtons();
       readJoystick();
       calcPID();
+
 /*
       Serial.print("Encoder count 1: ");
       Serial.print(wheel1Pos);
@@ -251,6 +254,16 @@ void readButtons(){
             //yellowLED();
             gesture = !gesture; //flip bool
             Serial.println("Gesture");
+            break;
+          case 12:
+            Serial.println("E-STOP");
+            SetMode(MANUAL);
+            //Directly turn off motors
+            driveMotor(ML_PWM, ML_DIR, 0);
+            driveMotor(MR_PWM, MR_DIR, 0);
+            SetMode(AUTOMATIC);
+            PID_SET_1 = 0;
+            PID_SET_2 = 0;
             break;
          default:
              Serial.println("Error - no cases match");
@@ -373,6 +386,12 @@ void calcPID(){
           motorPID2.Compute();
           driveMotor(ML_PWM, ML_DIR, PID_OUT_1);
           driveMotor(MR_PWM, MR_DIR, PID_OUT_2);
+          Serial.print(PID_IN_1);
+          Serial.print(" In 1 ");
+          Serial.print(PID_SET_1);
+          Serial.print(" Set 1 ");
+          Serial.print(PID_OUT_1);
+          Serial.println(" Out 1");
 }
 
 void doEncoder1(){
