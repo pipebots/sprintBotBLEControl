@@ -257,13 +257,16 @@ void readButtons(){
             break;
           case 12:
             Serial.println("E-STOP");
-            SetMode(MANUAL);
+            PID_SET_1 = 0;
+            PID_SET_2 = 0;
+            motorPID1.SetMode(MANUAL);
+            motorPID2.SetMode(MANUAL);
             //Directly turn off motors
             driveMotor(ML_PWM, ML_DIR, 0);
             driveMotor(MR_PWM, MR_DIR, 0);
-            SetMode(AUTOMATIC);
-            PID_SET_1 = 0;
-            PID_SET_2 = 0;
+            motorPID1.SetMode(AUTOMATIC);
+            motorPID2.SetMode(AUTOMATIC);
+
             break;
          default:
              Serial.println("Error - no cases match");
@@ -387,11 +390,11 @@ void calcPID(){
           driveMotor(ML_PWM, ML_DIR, PID_OUT_1);
           driveMotor(MR_PWM, MR_DIR, PID_OUT_2);
           Serial.print(PID_IN_1);
-          Serial.print(" In 1 ");
+        //  Serial.print(" In 1 ");
           Serial.print(PID_SET_1);
-          Serial.print(" Set 1 ");
+          //Serial.print(" Set 1 ");
           Serial.print(PID_OUT_1);
-          Serial.println(" Out 1");
+          //Serial.println(" Out 1");
 }
 
 void doEncoder1(){
