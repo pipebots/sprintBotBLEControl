@@ -11,6 +11,8 @@
 #include <ArduinoBLE.h>
 #include <rgbLED.h>
 #include <PID_v1.h>
+#include <ArduinoJson.h>
+
 
 void readButtons();
 void readJoystick();
@@ -20,6 +22,8 @@ void calcPID();
 void doEncoder1();
 void doEncoder2();
 void calcSpeed();
+void sendJSON();
+void listenJSON();
 
 // Motor driver inputs
 #define ML_DIR 8
@@ -61,8 +65,10 @@ union {
 
 //setup PID controllers
 double PID_SET_1, PID_SET_2, PID_IN_1, PID_IN_2, PID_OUT_1, PID_OUT_2 = 0;
-PID motorPID1(&PID_IN_1, &PID_OUT_1, &PID_SET_1, 3, 0, 0, DIRECT);
-PID motorPID2(&PID_IN_2, &PID_OUT_2, &PID_SET_2, 3, 0, 0, DIRECT);
+float kp = 1;
+float ki,kd = 0;
+PID motorPID1(&PID_IN_1, &PID_OUT_1, &PID_SET_1, kp, ki, kd, DIRECT);
+PID motorPID2(&PID_IN_2, &PID_OUT_2, &PID_SET_2, kp, ki, kd, DIRECT);
 
 void setup() {
   Serial.begin(9600);
@@ -158,6 +164,7 @@ void loop() {
       readButtons();
       readJoystick();
       calcPID();
+      listenJSON();
 
 /*
       Serial.print("Encoder count 1: ");
@@ -389,12 +396,12 @@ void calcPID(){
           motorPID2.Compute();
           driveMotor(ML_PWM, ML_DIR, PID_OUT_1);
           driveMotor(MR_PWM, MR_DIR, PID_OUT_2);
-          Serial.print(PID_IN_1);
+      /*  Serial.print(PID_IN_1);
           Serial.print(" In 1 ");
           Serial.print(PID_SET_1);
           Serial.print(" Set 1 ");
           Serial.print(PID_OUT_1);
-          Serial.println(" Out 1");
+          Serial.println(" Out 1"); */
 }
 
 void doEncoder1(){
@@ -452,4 +459,33 @@ void calcSpeed(){
   int pidIn2 = speed2 * 255;
   PID_IN_1 = constrain(pidIn1,-255,255);
   PID_IN_2 = constrain(pidIn2,-255,255);
+}
+
+void sendJSON(){
+//Using JSON Doc format
+const size_t capacity = JSON_OBJECT_SIZE(3);
+StaticJsonDocument<capacity> doc;
+
+doc["p"] = kp;
+doc["i"] = ki;
+doc["d"] = kd;
+
+serializeJson(doc, Serial);
+Serial.println("");
+
+}
+
+void listenJSON(){
+  // Used to change PID parameters via serial
+  // Send in this formtal: {"p":3,"i":0,"d":0}
+  if(Serial.available()){
+    StaticJsonDocument<100> readJson;
+    deserializeJson(readJson,Serial);
+    kp = readJson["p"];
+    ki = readJson["i"];
+    kd = readJson["d"];
+
+    motorPID1.SetTunings(kp, ki, kd);
+    sendJSON();
+  }
 }
