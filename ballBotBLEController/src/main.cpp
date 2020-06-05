@@ -61,8 +61,8 @@ union {
 
 //setup PID controllers
 double PID_SET_1, PID_SET_2, PID_IN_1, PID_IN_2, PID_OUT_1, PID_OUT_2 = 0;
-PID motorPID1(&PID_IN_1, &PID_OUT_1, &PID_SET_1, 10, 0, 0, DIRECT);
-PID motorPID2(&PID_IN_2, &PID_OUT_2, &PID_SET_2, 10, 0, 0, DIRECT);
+PID motorPID1(&PID_IN_1, &PID_OUT_1, &PID_SET_1, 3, 0, 0, DIRECT);
+PID motorPID2(&PID_IN_2, &PID_OUT_2, &PID_SET_2, 3, 0, 0, DIRECT);
 
 void setup() {
   Serial.begin(9600);
@@ -390,11 +390,11 @@ void calcPID(){
           driveMotor(ML_PWM, ML_DIR, PID_OUT_1);
           driveMotor(MR_PWM, MR_DIR, PID_OUT_2);
           Serial.print(PID_IN_1);
-        //  Serial.print(" In 1 ");
+          Serial.print(" In 1 ");
           Serial.print(PID_SET_1);
-          //Serial.print(" Set 1 ");
+          Serial.print(" Set 1 ");
           Serial.print(PID_OUT_1);
-          //Serial.println(" Out 1");
+          Serial.println(" Out 1");
 }
 
 void doEncoder1(){
