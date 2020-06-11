@@ -3,23 +3,41 @@
 * Change robotName[] below for each board
 * Temp code currently commented out as may be useful for different job later
 * This version is to use the Joystick app so allows for speed control
+*
+* (Encoder 2 is rght hand side)
 */
 
 #include <Arduino.h>
 #include <ArduinoBLE.h>
 #include <rgbLED.h>
+#include <PID_v1.h>
+#include <ArduinoJson.h>
+
 
 void readButtons();
 void readJoystick();
 void driveMotor(int pwmPin, int dirPin, int spd);
 void joyDiffDrive(int nJoyX, int nJoyY);
+void calcPID();
+void doEncoder1();
+void doEncoder2();
+void calcSpeed();
+void sendJSON();
+void listenJSON();
 
 // Motor driver inputs
-#define ML_DIR            8
-#define ML_PWM            9
-#define MR_DIR            10
-#define MR_PWM            11
+#define ML_DIR 8
+#define ML_PWM 9
+#define MR_DIR 10
+#define MR_PWM 11
 
+//encoder pins
+#define ENC_1_A 2
+#define ENC_1_B 3
+#define ENC_2_A 4
+#define ENC_2_B 5
+
+volatile int encoder1Ticks, encoder2Ticks, wheel1Pos, wheel2Pos, wheel1Revs, wheel2Revs = 0;
 
 char robotName[] = "BigBallBot"; //Device Name - will appear as BLE descripton when connecting
 
@@ -28,7 +46,8 @@ BLEService outputService("1809"); //BLE Temperature service
 
 // BLE LED Switch Characteristic - custom 128-bit UUID, read and writable by central
 BLEByteCharacteristic buttonCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
-BLEByteCharacteristic joystickCharacteristic("19B10002-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
+BLEByteCharacteristic joystickXCharacteristic("19B10002-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
+BLEByteCharacteristic joystickYCharacteristic("19B10234-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
 BLEFloatCharacteristic tempChar("2A1C", BLERead | BLEIndicate); //
 BLEDescriptor tempCharDescript("2901", "Temperature");
 
@@ -37,30 +56,69 @@ byte tempArray[] = {};
 float temp = 0.0;
 float humidity = 0.0;
 bool gesture = 0;
-long previousMillis = 0;  // last time the temperature was checked, in ms
-int xybyte = 0;
-int ynib = 0;
-int xnib = 0;
-
+long previousMillis,  prevMillis1 = 0;  // last time the temperature was checked, in ms
+int encoder1Prev, encoder2Prev = 0;
 union {
     float tempfval;
     byte tempbval[4];
 } floatAsBytes;
 
+//setup PID controllers
+double PID_SET_1, PID_SET_2, PID_IN_1, PID_IN_2, PID_OUT_1, PID_OUT_2 = 0;
+/*More agressive tuning
+float kp = 0.3994062511991154;
+float ki = 9.477300047940169;
+float kd = 0.00841618143827802;*/
+
+/*Slower accel*/
+float kp = 0.12751539947693455;
+float ki = 3.025745585973288;
+float kd = 0.0026869703089283047;
+
+
+/* small overshoot
+float kp = 0.5735857456094395;
+float ki = 13.610313303915005;
+float kd = 0.012086445044277552;*/
+
+PID motorPID1(&PID_IN_1, &PID_OUT_1, &PID_SET_1, kp, ki, kd, DIRECT);
+PID motorPID2(&PID_IN_2, &PID_OUT_2, &PID_SET_2, kp, ki, kd, DIRECT);
 
 void setup() {
   Serial.begin(9600);
 //  while (!Serial); //This stops the program running until the serial monitor is opened!
 
+  //set PID ranges to -255 to 255
+  motorPID1.SetOutputLimits(-255,255);
+  motorPID2.SetOutputLimits(-255,255);
+  motorPID1.SetSampleTime(20); //defualt is 200ms
+  motorPID2.SetSampleTime(20);
+  //turn on PIDs
+  motorPID1.SetMode(AUTOMATIC);
+  motorPID2.SetMode(AUTOMATIC);
+
   // set LED pin to output mode
   pinMode(ledPin, OUTPUT);
-
   // Set motor driver pins to ouput mode
   pinMode(ML_DIR, OUTPUT);
   pinMode(ML_PWM, OUTPUT);
   pinMode(MR_DIR, OUTPUT);
   pinMode(MR_PWM, OUTPUT);
+  //setup encoder pins
+  pinMode(ENC_1_A, INPUT);
+  pinMode(ENC_1_B, INPUT);
+  pinMode(ENC_2_A, INPUT);
+  pinMode(ENC_2_B, INPUT);
+  digitalWrite(ENC_1_A, HIGH);  //turn on pullup resistor
+  digitalWrite(ENC_1_B, HIGH);  //turn on pullup resistor
+  digitalWrite(ENC_2_A, HIGH);  //turn on pullup resistor
+  digitalWrite(ENC_2_B, HIGH);  //turn on pullup resistor
 
+  // encoder 1 channel on interrupt 0 (Arduino's pin 2)
+  attachInterrupt(digitalPinToInterrupt(2), doEncoder1, RISING);
+  // encoder 2
+  attachInterrupt(digitalPinToInterrupt(4), doEncoder2, RISING);
+  //(Due to gear ratio we dont need to track every pulse so just using interrupt on one channel Rising.)
 
   // begin initialization
   if (!BLE.begin()) {
@@ -75,7 +133,8 @@ void setup() {
 
   // add the characteristic to the service
   inputService.addCharacteristic(buttonCharacteristic);
-  inputService.addCharacteristic(joystickCharacteristic);
+  inputService.addCharacteristic(joystickXCharacteristic);
+  inputService.addCharacteristic(joystickYCharacteristic);
   outputService.addCharacteristic(tempChar);
   tempChar.addDescriptor(tempCharDescript);
 
@@ -85,7 +144,8 @@ void setup() {
 
   // set the initial value for the characeristic:
   buttonCharacteristic.writeValue(0);
-  joystickCharacteristic.writeValue(0);
+  joystickXCharacteristic.writeValue(127);
+  joystickYCharacteristic.writeValue(127);
   tempChar.writeValue(0);
 
   // start advertising
@@ -109,21 +169,43 @@ void loop() {
     // while the central is still connected to peripheral:
     while (central.connected()) {
 
-    /*  long currentMillis = millis();
-      // if 500ms have passed, check the temperaturemeasurement:
-      if (currentMillis - previousMillis >= 500) {
+    long currentMillis = millis();
+      // if 10ms have passed, check the speed
+      if (currentMillis - previousMillis >= 20) {
         previousMillis = currentMillis;
-        updateTemp();
+        calcSpeed();
       }
-      */
       readButtons();
       readJoystick();
+      calcPID();
+      listenJSON();
+      Serial.print(currentMillis);
+      Serial.print(", ");
+      Serial.print(PID_SET_1);
+      Serial.print(", ");
+      Serial.print(PID_IN_1);
+      Serial.print(" Out: ");
+      Serial.println(PID_OUT_1);
+
+/*
+      Serial.print("Encoder count 1: ");
+      Serial.print(wheel1Pos);
+      Serial.print(" Wheel Rev 1: ");
+      Serial.println(wheel1Revs);
+
+      Serial.print("Encoder count 2: ");
+      Serial.print(wheel2Pos);
+      Serial.print(" Wheel Rev 2: ");
+      Serial.println(wheel2Revs);
+  */
     }
 
 
     // when the central disconnects, print it out:
     Serial.print(F("Disconnected from central: "));
     Serial.println(central.address());
+    driveMotor(ML_PWM, ML_DIR, 0); //stop robot if bluetooth disconnects
+    driveMotor(MR_PWM, MR_DIR, 0);
   }
 }
 
@@ -132,76 +214,81 @@ void readButtons(){
   // if the remote device wrote to the characteristic,
       // use the value to control the LED:
       if (buttonCharacteristic.written()) {
-        Serial.println(buttonCharacteristic.value());
+        //Serial.println(buttonCharacteristic.value());
         switch (buttonCharacteristic.value()) {
           case 0:
-            Serial.println("LED off");
+            //Serial.println("LED off");
             digitalWrite(ledPin, LOW);          // will turn the LED off
             //offLED();
             break;
           case 1:
-            Serial.println("LED on");
+            //Serial.println("LED on");
             digitalWrite(ledPin, HIGH);          // will turn the LED off
             break;
           case 2:
-            Serial.println("FWD");
+          //  Serial.println("FWD");
             //greenLED();
-            driveMotor(ML_PWM, ML_DIR, 255);
-            driveMotor(MR_PWM, MR_DIR, 255);
+            PID_SET_1 = 255;
+            PID_SET_2 = 255;
             break;
           case 3:
-            Serial.println("Back");
+            //Serial.println("Back");
             //blueLED();
-            driveMotor(ML_PWM, ML_DIR, -255);
-            driveMotor(MR_PWM, MR_DIR, -255);
+            PID_SET_1 = -255;
+            PID_SET_2 = -255;
             break;
           case 4:
-            Serial.println("Left");
+            //Serial.println("Left");
             //cyanLED();
-            driveMotor(ML_PWM, ML_DIR, -255);
-            driveMotor(MR_PWM, MR_DIR, 255);
+            PID_SET_1 = -255;
+            PID_SET_2 = 255;
             break;
           case 5:
-            Serial.println("Right");
+            //Serial.println("Right");
             //magentaLED();
-            driveMotor(ML_PWM, ML_DIR, 255);
-            driveMotor(MR_PWM, MR_DIR, -255);
+            PID_SET_1 = 255;
+            PID_SET_2 = -255;
             break;
           case 6:
-            Serial.println("Stop");
+            //Serial.println("Stop");
               //redLED();
-            driveMotor(ML_PWM, ML_DIR, 0);
-            driveMotor(MR_PWM, MR_DIR, 0);
+              PID_SET_1 = 0;
+              PID_SET_2 = 0;
             break;
           case 7:
-            Serial.println("Fwd Left");
+            //Serial.println("Fwd Left");
             //rgbLED(100,255,100);
-            driveMotor(ML_PWM, ML_DIR, 0);
-            driveMotor(MR_PWM, MR_DIR, 255);
+            PID_SET_1 = 0;
+            PID_SET_2 = 255;
             break;
           case 8:
-            Serial.println("Fwd Right");
+            //Serial.println("Fwd Right");
             //rgbLED(255,100,100);
-            driveMotor(ML_PWM, ML_DIR, 255);
-            driveMotor(MR_PWM, MR_DIR, 0);
+            PID_SET_1 = 255;
+            PID_SET_2 = 0;
             break;
           case 9:
-            Serial.println("Back Left");
+            //Serial.println("Back Left");
             //rgbLED(255,50,100);
-            driveMotor(ML_PWM, ML_DIR, 0);
-            driveMotor(MR_PWM, MR_DIR, -255);
+            PID_SET_1 = 0;
+            PID_SET_2 = -255;
             break;
           case 10:
-            Serial.println("Back Right");
+            //Serial.println("Back Right");
             //rgbLED(50,100,100);
-            driveMotor(ML_PWM, ML_DIR, -255);
-            driveMotor(MR_PWM, MR_DIR, 0);
+            PID_SET_1 = -255;
+            PID_SET_2 = 0;
             break;
           case 11:
-            Serial.println("Gesture Control");
+            //Serial.println("Gesture Control");
             //yellowLED();
             gesture = !gesture; //flip bool
-            Serial.println("Gesture");
+            //Serial.println("Gesture");
+            break;
+          case 12:
+            //Serial.println("E-STOP");
+            BLE.disconnect(); //this also turns off motors
+            //WARNING - Robot needs hard resetting to recover from e-stop
             break;
          default:
              Serial.println("Error - no cases match");
@@ -212,27 +299,26 @@ void readButtons(){
 }
 
 void readJoystick(){
-    int xchange, ychange;
+    uint8_t xjoy, yjoy;
 
-    if (joystickCharacteristic.written()) {
-        //split byte back to two nibbles
-        //right X=15, left X=0, up Y=0, down y=15
-       //Serial.println(joystickCharacteristic.value());
-       xybyte = joystickCharacteristic.value() & 0xFF;
-       ynib = xybyte & 0xF;
-       xnib = xybyte >> 4;
+    if (joystickXCharacteristic.written() || joystickYCharacteristic.written()) {
+      xjoy = joystickXCharacteristic.value();
+      yjoy = joystickYCharacteristic.value();
+      int8_t xmap = map(xjoy, 0, 254, -128, 127); //convert to range joyDiffDrive is expecting
+      int8_t ymap = map(yjoy, 0, 254, 127, -128);
+      joyDiffDrive(xmap,ymap);
+
+/*    // debug
       Serial.print("x: ");
-      Serial.print(xnib);
+      Serial.print(xjoy);
       Serial.print(" y: ");
-      Serial.println(ynib);
-      xchange = map(xnib, 0, 15, -127, 127);
-      ychange = map(ynib, 0, 15, 127, -127);
-      Serial.print("xchange: ");
-      Serial.print(xchange);
-      Serial.print(" ychange: ");
-      Serial.println(ychange);
-      joyDiffDrive(xchange, ychange);
-      }
+      Serial.print(yjoy);
+      Serial.print(" xmap: ");
+      Serial.println(xmap);
+      Serial.print(" ymap: ");
+      Serial.println(ymap);
+*/
+    }
 }
 
 void joyDiffDrive(int nJoyX, int nJoyY){
@@ -296,8 +382,8 @@ void joyDiffDrive(int nJoyX, int nJoyY){
   nMotMixR = (1.0-fPivScale)*nMotPremixR + fPivScale*(-nPivSpeed);
 
   // Convert to Motor PWM range
-  driveMotor(ML_PWM, ML_DIR, nMotMixL*2); //*2 to convert from -127..+127 to -254..+254
-  driveMotor(MR_PWM, MR_DIR, nMotMixR*2);
+  PID_SET_1 =  nMotMixL*2; //*2 to convert from -127..+127 to -254..+254
+  PID_SET_2 =  nMotMixR*2; //change PID setpoint
 }
 
 void driveMotor(int pwmPin, int dirPin, int spd){ //input speed -255 to +255, 0 is stop
@@ -308,6 +394,9 @@ void driveMotor(int pwmPin, int dirPin, int spd){ //input speed -255 to +255, 0 
     spd = -255;
   }
 
+  if (spd > -35 && spd < 35){//add deadzone to turn off motors if PID is close to 0.
+    spd = 0;
+  }
   if (spd >= 0){
     digitalWrite(dirPin, LOW);
     analogWrite(pwmPin, spd);
@@ -315,5 +404,106 @@ void driveMotor(int pwmPin, int dirPin, int spd){ //input speed -255 to +255, 0 
   else{
     digitalWrite(dirPin, HIGH);
     analogWrite(pwmPin, -spd);
+  }
+}
+
+void calcPID(){
+          //PID_SET_1 = setpoint set in read joystick or read buttons
+          //PID_IN_1 = speed for encoder counts
+          motorPID1.Compute(); //uses PID_SET_1 and PID_IN_1 to give PID_OUT_1 in -255 to 255
+          motorPID2.Compute();
+          driveMotor(ML_PWM, ML_DIR, PID_OUT_1);
+          driveMotor(MR_PWM, MR_DIR, PID_OUT_2);
+      /*  Serial.print(PID_IN_1);
+          Serial.print(" In 1 ");
+          Serial.print(PID_SET_1);
+          Serial.print(" Set 1 ");
+          Serial.print(PID_OUT_1);
+          Serial.println(" Out 1"); */
+}
+
+void doEncoder1(){
+  if(digitalRead(ENC_1_A)==digitalRead(ENC_1_B)){
+    wheel1Pos++;
+    encoder1Ticks++;
+    if (wheel1Pos >1250){
+      wheel1Pos = 0;
+      wheel1Revs++;
+    }
+  }
+  else{
+    wheel1Pos--;
+    encoder1Ticks--;
+    if (wheel1Pos <-1250){
+      wheel1Pos = 0;
+      wheel1Revs--;
+    }
+  }
+}
+void doEncoder2(){
+  if(digitalRead(ENC_2_A)==digitalRead(ENC_2_B)){
+    wheel2Pos--; //opposite to Enc1 due to way motor is mounted
+    encoder2Ticks--;
+    if (wheel2Pos <-1250){
+      wheel2Pos = 0;
+      wheel2Revs--;
+    }
+  }
+  else{
+    wheel2Pos++;
+    encoder2Ticks++;
+    if (wheel2Pos >1250){
+      wheel2Pos = 0;
+      wheel2Revs++;
+    }
+  }
+}
+void calcSpeed(){
+  //Get elapsed time
+  long currentMillis = millis();
+  long elapsedTime = currentMillis - prevMillis1;
+  prevMillis1 = currentMillis;
+
+  //Get encoder counts
+  int encoder1Change = encoder1Ticks - encoder1Prev;
+  int encoder2Change = encoder2Ticks - encoder2Prev;
+  encoder1Prev = encoder1Ticks;
+  encoder2Prev = encoder2Ticks;
+
+  //Using top speed to be 1000 counts per second i.e range of -1 to 1
+  double speed1 = (double)encoder1Change/(double)elapsedTime;
+  double speed2 = (double)encoder2Change/(double)elapsedTime;
+  int pidIn1 = speed1 * 255; //convert to range -255 - 255
+  int pidIn2 = speed2 * 255;
+  PID_IN_1 = constrain(pidIn1,-255,255);
+  PID_IN_2 = constrain(pidIn2,-255,255);
+}
+
+void sendJSON(){
+//Using JSON Doc format
+const size_t capacity = JSON_OBJECT_SIZE(3);
+StaticJsonDocument<capacity> doc;
+
+doc["p"] = kp;
+doc["i"] = ki;
+doc["d"] = kd;
+
+serializeJson(doc, Serial);
+Serial.println("");
+
+}
+
+void listenJSON(){
+  // Used to change PID parameters via serial
+  // Send in this formtal: {"p":3,"i":0,"d":0}
+  if(Serial.available()){
+    StaticJsonDocument<100> readJson;
+    deserializeJson(readJson,Serial);
+    kp = readJson["p"];
+    ki = readJson["i"];
+    kd = readJson["d"];
+
+    motorPID1.SetTunings(kp, ki, kd);
+    sendJSON();
   }
 }
