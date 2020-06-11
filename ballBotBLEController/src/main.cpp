@@ -65,8 +65,22 @@ union {
 
 //setup PID controllers
 double PID_SET_1, PID_SET_2, PID_IN_1, PID_IN_2, PID_OUT_1, PID_OUT_2 = 0;
-float kp = 1;
-float ki,kd = 0;
+/*More agressive tuning
+float kp = 0.3994062511991154;
+float ki = 9.477300047940169;
+float kd = 0.00841618143827802;*/
+
+/*Slower accel*/
+float kp = 0.12751539947693455;
+float ki = 3.025745585973288;
+float kd = 0.0026869703089283047;
+
+
+/* small overshoot
+float kp = 0.5735857456094395;
+float ki = 13.610313303915005;
+float kd = 0.012086445044277552;*/
+
 PID motorPID1(&PID_IN_1, &PID_OUT_1, &PID_SET_1, kp, ki, kd, DIRECT);
 PID motorPID2(&PID_IN_2, &PID_OUT_2, &PID_SET_2, kp, ki, kd, DIRECT);
 
@@ -165,6 +179,13 @@ void loop() {
       readJoystick();
       calcPID();
       listenJSON();
+      Serial.print(currentMillis);
+      Serial.print(", ");
+      Serial.print(PID_SET_1);
+      Serial.print(", ");
+      Serial.print(PID_IN_1);
+      Serial.print(" Out: ");
+      Serial.println(PID_OUT_1);
 
 /*
       Serial.print("Encoder count 1: ");
@@ -183,6 +204,8 @@ void loop() {
     // when the central disconnects, print it out:
     Serial.print(F("Disconnected from central: "));
     Serial.println(central.address());
+    driveMotor(ML_PWM, ML_DIR, 0); //stop robot if bluetooth disconnects
+    driveMotor(MR_PWM, MR_DIR, 0);
   }
 }
 
@@ -191,89 +214,81 @@ void readButtons(){
   // if the remote device wrote to the characteristic,
       // use the value to control the LED:
       if (buttonCharacteristic.written()) {
-        Serial.println(buttonCharacteristic.value());
+        //Serial.println(buttonCharacteristic.value());
         switch (buttonCharacteristic.value()) {
           case 0:
-            Serial.println("LED off");
+            //Serial.println("LED off");
             digitalWrite(ledPin, LOW);          // will turn the LED off
             //offLED();
             break;
           case 1:
-            Serial.println("LED on");
+            //Serial.println("LED on");
             digitalWrite(ledPin, HIGH);          // will turn the LED off
             break;
           case 2:
-            Serial.println("FWD");
+          //  Serial.println("FWD");
             //greenLED();
             PID_SET_1 = 255;
             PID_SET_2 = 255;
             break;
           case 3:
-            Serial.println("Back");
+            //Serial.println("Back");
             //blueLED();
             PID_SET_1 = -255;
             PID_SET_2 = -255;
             break;
           case 4:
-            Serial.println("Left");
+            //Serial.println("Left");
             //cyanLED();
             PID_SET_1 = -255;
             PID_SET_2 = 255;
             break;
           case 5:
-            Serial.println("Right");
+            //Serial.println("Right");
             //magentaLED();
             PID_SET_1 = 255;
             PID_SET_2 = -255;
             break;
           case 6:
-            Serial.println("Stop");
+            //Serial.println("Stop");
               //redLED();
               PID_SET_1 = 0;
               PID_SET_2 = 0;
             break;
           case 7:
-            Serial.println("Fwd Left");
+            //Serial.println("Fwd Left");
             //rgbLED(100,255,100);
             PID_SET_1 = 0;
             PID_SET_2 = 255;
             break;
           case 8:
-            Serial.println("Fwd Right");
+            //Serial.println("Fwd Right");
             //rgbLED(255,100,100);
             PID_SET_1 = 255;
             PID_SET_2 = 0;
             break;
           case 9:
-            Serial.println("Back Left");
+            //Serial.println("Back Left");
             //rgbLED(255,50,100);
             PID_SET_1 = 0;
             PID_SET_2 = -255;
             break;
           case 10:
-            Serial.println("Back Right");
+            //Serial.println("Back Right");
             //rgbLED(50,100,100);
             PID_SET_1 = -255;
             PID_SET_2 = 0;
             break;
           case 11:
-            Serial.println("Gesture Control");
+            //Serial.println("Gesture Control");
             //yellowLED();
             gesture = !gesture; //flip bool
-            Serial.println("Gesture");
+            //Serial.println("Gesture");
             break;
           case 12:
-            Serial.println("E-STOP");
-            PID_SET_1 = 0;
-            PID_SET_2 = 0;
-            motorPID1.SetMode(MANUAL);
-            motorPID2.SetMode(MANUAL);
-            //Directly turn off motors
-            driveMotor(ML_PWM, ML_DIR, 0);
-            driveMotor(MR_PWM, MR_DIR, 0);
-            motorPID1.SetMode(AUTOMATIC);
-            motorPID2.SetMode(AUTOMATIC);
-
+            //Serial.println("E-STOP");
+            BLE.disconnect(); //this also turns off motors
+            //WARNING - Robot needs hard resetting to recover from e-stop
             break;
          default:
              Serial.println("Error - no cases match");
@@ -379,6 +394,9 @@ void driveMotor(int pwmPin, int dirPin, int spd){ //input speed -255 to +255, 0 
     spd = -255;
   }
 
+  if (spd > -35 && spd < 35){//add deadzone to turn off motors if PID is close to 0.
+    spd = 0;
+  }
   if (spd >= 0){
     digitalWrite(dirPin, LOW);
     analogWrite(pwmPin, spd);
