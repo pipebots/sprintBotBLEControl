@@ -24,6 +24,8 @@ void doEncoder2();
 void calcSpeed();
 void sendJSON();
 void listenJSON();
+void rampMotor1();
+void rampMotor2();
 
 // Motor driver inputs
 #define ML_DIR 8
@@ -56,24 +58,30 @@ byte tempArray[] = {};
 float temp = 0.0;
 float humidity = 0.0;
 bool gesture = 0;
-long previousMillis,  prevMillis1 = 0;  // last time the temperature was checked, in ms
+long previousMillis,  prevMillis1, prevMillis2 = 0;
 int encoder1Prev, encoder2Prev = 0;
-union {
+/*union {
     float tempfval;
     byte tempbval[4];
 } floatAsBytes;
+*/
+//params for ramping motor speed
+bool ramp_flag_1, ramp_flag_2 = false;
+int pid_ramp_1, pid_ramp_2 = 0;
+int ramp_inc = 10;
+int ramp_delay = 25;
 
 //setup PID controllers
 double PID_SET_1, PID_SET_2, PID_IN_1, PID_IN_2, PID_OUT_1, PID_OUT_2 = 0;
-/*More agressive tuning
+/*More agressive tuning */
 float kp = 0.3994062511991154;
 float ki = 9.477300047940169;
-float kd = 0.00841618143827802;*/
+float kd = 0.00841618143827802;
 
-/*Slower accel*/
+/*Slower accel
 float kp = 0.12751539947693455;
 float ki = 3.025745585973288;
-float kd = 0.0026869703089283047;
+float kd = 0.0026869703089283047; */
 
 
 /* small overshoot
@@ -152,6 +160,9 @@ void setup() {
   BLE.advertise();
 
   Serial.println("BLE LED Peripheral");
+
+  Serial.println(ramp_inc);
+  Serial.println(ramp_delay);
 }
 
 
@@ -175,18 +186,25 @@ void loop() {
         previousMillis = currentMillis;
         calcSpeed();
       }
+      currentMillis = millis();
+      if (currentMillis - prevMillis2 >= ramp_delay){
+        rampMotor1();
+        rampMotor2();
+        prevMillis2 = currentMillis;
+      }
       readButtons();
       readJoystick();
       calcPID();
+      //sendJSON();
       listenJSON();
-      Serial.print(currentMillis);
+    /*  Serial.print(currentMillis);
       Serial.print(", ");
       Serial.print(PID_SET_1);
       Serial.print(", ");
       Serial.print(PID_IN_1);
       Serial.print(" Out: ");
       Serial.println(PID_OUT_1);
-
+*/
 /*
       Serial.print("Encoder count 1: ");
       Serial.print(wheel1Pos);
@@ -206,6 +224,8 @@ void loop() {
     Serial.println(central.address());
     driveMotor(ML_PWM, ML_DIR, 0); //stop robot if bluetooth disconnects
     driveMotor(MR_PWM, MR_DIR, 0);
+    ramp_flag_1 = false;
+    ramp_flag_2 = false;
   }
 }
 
@@ -228,56 +248,77 @@ void readButtons(){
           case 2:
           //  Serial.println("FWD");
             //greenLED();
-            PID_SET_1 = 255;
-            PID_SET_2 = 255;
+            //PID_SET_1 = 255;
+            //PID_SET_2 = 255;
+            pid_ramp_1 = 255;
+            pid_ramp_2 = 255;
+            ramp_flag_1 = true;
+            ramp_flag_2 = true;
+
             break;
           case 3:
             //Serial.println("Back");
             //blueLED();
-            PID_SET_1 = -255;
-            PID_SET_2 = -255;
+            pid_ramp_1 = -255;
+            pid_ramp_2 = -255;
+            ramp_flag_1 = true;
+            ramp_flag_2 = true;
             break;
           case 4:
             //Serial.println("Left");
             //cyanLED();
-            PID_SET_1 = -255;
-            PID_SET_2 = 255;
+            pid_ramp_1 = -255;
+            pid_ramp_2 = 255;
+            ramp_flag_1 = true;
+            ramp_flag_2 = true;
             break;
           case 5:
             //Serial.println("Right");
             //magentaLED();
-            PID_SET_1 = 255;
-            PID_SET_2 = -255;
+            pid_ramp_1 = 255;
+            pid_ramp_2 = -255;
+            ramp_flag_1 = true;
+            ramp_flag_2 = true;
             break;
           case 6:
             //Serial.println("Stop");
               //redLED();
-              PID_SET_1 = 0;
-              PID_SET_2 = 0;
+              pid_ramp_1 = 0;
+              pid_ramp_2 = 0;
+              ramp_flag_1 = true;
+              ramp_flag_2 = true;
             break;
           case 7:
             //Serial.println("Fwd Left");
             //rgbLED(100,255,100);
-            PID_SET_1 = 0;
-            PID_SET_2 = 255;
+            pid_ramp_1 = 0;
+            pid_ramp_2 = 255;
+            ramp_flag_1 = true;
+            ramp_flag_2 = true;
             break;
           case 8:
             //Serial.println("Fwd Right");
             //rgbLED(255,100,100);
-            PID_SET_1 = 255;
-            PID_SET_2 = 0;
+            pid_ramp_1 = 255;
+            pid_ramp_2 = 0;
+            ramp_flag_1 = true;
+            ramp_flag_2 = true;
             break;
           case 9:
             //Serial.println("Back Left");
             //rgbLED(255,50,100);
-            PID_SET_1 = 0;
-            PID_SET_2 = -255;
+            pid_ramp_1 = 0;
+            pid_ramp_2 = -255;
+            ramp_flag_1 = true;
+            ramp_flag_2 = true;
             break;
           case 10:
             //Serial.println("Back Right");
             //rgbLED(50,100,100);
-            PID_SET_1 = -255;
-            PID_SET_2 = 0;
+            pid_ramp_1 = -255;
+            pid_ramp_2 = 0;
+            ramp_flag_1 = true;
+            ramp_flag_2 = true;
             break;
           case 11:
             //Serial.println("Gesture Control");
@@ -287,6 +328,8 @@ void readButtons(){
             break;
           case 12:
             //Serial.println("E-STOP");
+            ramp_flag_1 = false;
+            ramp_flag_2 = false;
             BLE.disconnect(); //this also turns off motors
             //WARNING - Robot needs hard resetting to recover from e-stop
             break;
@@ -481,12 +524,15 @@ void calcSpeed(){
 
 void sendJSON(){
 //Using JSON Doc format
-const size_t capacity = JSON_OBJECT_SIZE(3);
+const size_t capacity = JSON_OBJECT_SIZE(2);
 StaticJsonDocument<capacity> doc;
 
-doc["p"] = kp;
+/*doc["p"] = kp;
 doc["i"] = ki;
 doc["d"] = kd;
+*/
+doc["inc"] = ramp_inc;
+doc["delay"] = ramp_delay;
 
 serializeJson(doc, Serial);
 Serial.println("");
@@ -499,11 +545,47 @@ void listenJSON(){
   if(Serial.available()){
     StaticJsonDocument<100> readJson;
     deserializeJson(readJson,Serial);
-    kp = readJson["p"];
+  /*  kp = readJson["p"];
     ki = readJson["i"];
     kd = readJson["d"];
 
     motorPID1.SetTunings(kp, ki, kd);
-    sendJSON();
+    */
+   ramp_inc = readJson["inc"];
+   ramp_delay = readJson["delay"];
+    //sendJSON();
+  }
+}
+
+void rampMotor1(){ //use timer in loop to call
+  if(ramp_flag_1 == true){
+    if(pid_ramp_1 >= PID_SET_1){ //if desired setpoint is higher than current one
+      PID_SET_1 = PID_SET_1 + ramp_inc; //increment value, change ratio of the and delay before calling function to change ramp
+      if(PID_SET_1 >= pid_ramp_1){ //ramped up to desired setpoint so stop
+        ramp_flag_1 = false;
+      }
+    }
+    else if (pid_ramp_1 < PID_SET_1){
+      PID_SET_1 = PID_SET_1 - 10;
+      if(PID_SET_1 <= pid_ramp_1){ //ramped down to desired setpoint so stop
+        ramp_flag_1 = false;
+      }
+    }
+  }
+}
+void rampMotor2(){ //use timer in loop to call
+  if(ramp_flag_2 == true){
+    if(pid_ramp_2 >= PID_SET_2){ //if desired setpoint is higher than current one
+      PID_SET_2 = PID_SET_2 + ramp_inc; //increment value, change ratio of the and delay before calling function to change ramp
+      if(PID_SET_2 >= pid_ramp_2){ //ramped up to desired setpoint so stop
+        ramp_flag_2 = false;
+      }
+    }
+    else if (pid_ramp_2 < PID_SET_2){
+      PID_SET_2 = PID_SET_2 - ramp_inc;
+      if(PID_SET_2 <= pid_ramp_2){ //ramped down to desired setpoint so stop
+        ramp_flag_2 = false;
+      }
+    }
   }
 }
