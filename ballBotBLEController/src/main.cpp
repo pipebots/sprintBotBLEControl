@@ -26,6 +26,7 @@ void sendJSON();
 void listenJSON();
 void rampMotor1();
 void rampMotor2();
+void limitSpeed();
 
 // Motor driver inputs
 #define ML_DIR 8
@@ -67,6 +68,7 @@ bool ramp_flag_1, ramp_flag_2 = false;
 int pid_ramp_1, pid_ramp_2 = 0;
 int ramp_inc = 10;
 int ramp_delay = 25;
+float speedLimit = 0.6;
 
 //setup PID controllers
 double PID_SET_1, PID_SET_2, PID_IN_1, PID_IN_2, PID_OUT_1, PID_OUT_2 = 0;
@@ -196,7 +198,7 @@ void loop() {
       calcPID();
       //sendJSON();
       listenJSON();
-      Serial.println(speedCharacteristic.value());
+      limitSpeed();
     /*  Serial.print(currentMillis);
       Serial.print(", ");
       Serial.print(PID_SET_1);
@@ -250,8 +252,8 @@ void readButtons(){
             //greenLED();
             //PID_SET_1 = 255;
             //PID_SET_2 = 255;
-            pid_ramp_1 = 255;
-            pid_ramp_2 = 255;
+            pid_ramp_1 = 255*speedLimit;
+            pid_ramp_2 = 255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
 
@@ -259,24 +261,24 @@ void readButtons(){
           case 3:
             //Serial.println("Back");
             //blueLED();
-            pid_ramp_1 = -255;
-            pid_ramp_2 = -255;
+            pid_ramp_1 = -255*speedLimit;
+            pid_ramp_2 = -255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
           case 4:
             //Serial.println("Left");
             //cyanLED();
-            pid_ramp_1 = -255;
-            pid_ramp_2 = 255;
+            pid_ramp_1 = -255*speedLimit;
+            pid_ramp_2 = 255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
           case 5:
             //Serial.println("Right");
             //magentaLED();
-            pid_ramp_1 = 255;
-            pid_ramp_2 = -255;
+            pid_ramp_1 = 255*speedLimit;
+            pid_ramp_2 = -255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
@@ -292,14 +294,14 @@ void readButtons(){
             //Serial.println("Fwd Left");
             //rgbLED(100,255,100);
             pid_ramp_1 = 0;
-            pid_ramp_2 = 255;
+            pid_ramp_2 = 255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
           case 8:
             //Serial.println("Fwd Right");
             //rgbLED(255,100,100);
-            pid_ramp_1 = 255;
+            pid_ramp_1 = 255*speedLimit;
             pid_ramp_2 = 0;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
@@ -308,14 +310,14 @@ void readButtons(){
             //Serial.println("Back Left");
             //rgbLED(255,50,100);
             pid_ramp_1 = 0;
-            pid_ramp_2 = -255;
+            pid_ramp_2 = -255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
           case 10:
             //Serial.println("Back Right");
             //rgbLED(50,100,100);
-            pid_ramp_1 = -255;
+            pid_ramp_1 = -255*speedLimit;
             pid_ramp_2 = 0;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
@@ -349,7 +351,7 @@ void readJoystick(){
       yjoy = joystickYCharacteristic.value();
       int8_t xmap = map(xjoy, 0, 254, -128, 127); //convert to range joyDiffDrive is expecting
       int8_t ymap = map(yjoy, 0, 254, 127, -128);
-      joyDiffDrive(xmap,ymap);
+      joyDiffDrive(xmap*speedLimit,ymap*speedLimit);
 
 /*    // debug
       Serial.print("x: ");
@@ -587,5 +589,10 @@ void rampMotor2(){ //use timer in loop to call
         ramp_flag_2 = false;
       }
     }
+  }
+}
+void limitSpeed(){
+  if (speedCharacteristic.written()) {
+    speedLimit = speedCharacteristic.value();
   }
 }
