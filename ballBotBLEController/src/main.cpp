@@ -50,6 +50,7 @@ BLEService outputService("1809"); //BLE Temperature service
 BLEByteCharacteristic buttonCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
 BLEByteCharacteristic joystickXCharacteristic("19B10002-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
 BLEByteCharacteristic joystickYCharacteristic("19B10234-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
+BLEFloatCharacteristic speedCharacteristic("19B10234-E8F2-537E-4F6C-D104768A1333", BLERead | BLEWrite);
 BLEFloatCharacteristic tempChar("2A1C", BLERead | BLEIndicate); //
 BLEDescriptor tempCharDescript("2901", "Temperature");
 
@@ -60,11 +61,7 @@ float humidity = 0.0;
 bool gesture = 0;
 long previousMillis,  prevMillis1, prevMillis2 = 0;
 int encoder1Prev, encoder2Prev = 0;
-/*union {
-    float tempfval;
-    byte tempbval[4];
-} floatAsBytes;
-*/
+
 //params for ramping motor speed
 bool ramp_flag_1, ramp_flag_2 = false;
 int pid_ramp_1, pid_ramp_2 = 0;
@@ -143,6 +140,7 @@ void setup() {
   inputService.addCharacteristic(buttonCharacteristic);
   inputService.addCharacteristic(joystickXCharacteristic);
   inputService.addCharacteristic(joystickYCharacteristic);
+  inputService.addCharacteristic(speedCharacteristic);
   outputService.addCharacteristic(tempChar);
   tempChar.addDescriptor(tempCharDescript);
 
@@ -154,6 +152,7 @@ void setup() {
   buttonCharacteristic.writeValue(0);
   joystickXCharacteristic.writeValue(127);
   joystickYCharacteristic.writeValue(127);
+  speedCharacteristic.writeValue(0.6); //make match app slider default value
   tempChar.writeValue(0);
 
   // start advertising
@@ -197,6 +196,7 @@ void loop() {
       calcPID();
       //sendJSON();
       listenJSON();
+      Serial.println(speedCharacteristic.value());
     /*  Serial.print(currentMillis);
       Serial.print(", ");
       Serial.print(PID_SET_1);
