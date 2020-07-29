@@ -66,8 +66,8 @@ int encoder1Prev, encoder2Prev = 0;
 //params for ramping motor speed
 bool ramp_flag_1, ramp_flag_2 = false;
 int pid_ramp_1, pid_ramp_2 = 0;
-int ramp_inc = 10;
-int ramp_delay = 25;
+int ramp_inc = 5;
+int ramp_delay = 10;
 float speedLimit = 0.6;
 
 //setup PID controllers
@@ -199,14 +199,14 @@ void loop() {
       //sendJSON();
       listenJSON();
       limitSpeed();
-    /*  Serial.print(currentMillis);
-      Serial.print(", ");
+      Serial.print(currentMillis);
+      Serial.print(", Set 1:");
       Serial.print(PID_SET_1);
-      Serial.print(", ");
+      Serial.print(", In 1:");
       Serial.print(PID_IN_1);
-      Serial.print(" Out: ");
+      Serial.print(" Out 1: ");
       Serial.println(PID_OUT_1);
-*/
+
 /*
       Serial.print("Encoder count 1: ");
       Serial.print(wheel1Pos);
@@ -561,14 +561,17 @@ void listenJSON(){
 
 void rampMotor1(){ //use timer in loop to call
   if(ramp_flag_1 == true){
-    if(pid_ramp_1 >= PID_SET_1){ //if desired setpoint is higher than current one
+    if(pid_ramp_1 == PID_SET_1){
+      ramp_flag_1 = false;
+    }
+    else if(pid_ramp_1 > PID_SET_1){ //if desired setpoint is higher than current one
       PID_SET_1 = PID_SET_1 + ramp_inc; //increment value, change ratio of the and delay before calling function to change ramp
       if(PID_SET_1 >= pid_ramp_1){ //ramped up to desired setpoint so stop
         ramp_flag_1 = false;
       }
     }
     else if (pid_ramp_1 < PID_SET_1){
-      PID_SET_1 = PID_SET_1 - 10;
+      PID_SET_1 = PID_SET_1 - ramp_inc;
       if(PID_SET_1 <= pid_ramp_1){ //ramped down to desired setpoint so stop
         ramp_flag_1 = false;
       }
@@ -577,7 +580,10 @@ void rampMotor1(){ //use timer in loop to call
 }
 void rampMotor2(){ //use timer in loop to call
   if(ramp_flag_2 == true){
-    if(pid_ramp_2 >= PID_SET_2){ //if desired setpoint is higher than current one
+    if(pid_ramp_2 == PID_SET_2){
+      ramp_flag_2 = false;
+    }
+    else if(pid_ramp_2 > PID_SET_2){ //if desired setpoint is higher than current one
       PID_SET_2 = PID_SET_2 + ramp_inc; //increment value, change ratio of the and delay before calling function to change ramp
       if(PID_SET_2 >= pid_ramp_2){ //ramped up to desired setpoint so stop
         ramp_flag_2 = false;
