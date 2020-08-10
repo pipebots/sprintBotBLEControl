@@ -67,7 +67,7 @@ int encoder1Prev, encoder2Prev = 0;
 bool ramp_flag_1, ramp_flag_2 = false;
 int pid_ramp_1, pid_ramp_2 = 0;
 int ramp_inc = 5;
-int ramp_delay = 10;
+int ramp_delay = 20;
 float speedLimit = 0.6;
 
 //setup PID controllers
@@ -269,16 +269,16 @@ void readButtons(){
           case 4:
             //Serial.println("Left");
             //cyanLED();
-            pid_ramp_1 = -255*speedLimit;
-            pid_ramp_2 = 255*speedLimit;
+            pid_ramp_1 = 255*speedLimit;
+            pid_ramp_2 = -255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
           case 5:
             //Serial.println("Right");
             //magentaLED();
-            pid_ramp_1 = 255*speedLimit;
-            pid_ramp_2 = -255*speedLimit;
+            pid_ramp_1 = -255*speedLimit;
+            pid_ramp_2 = 255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
@@ -293,32 +293,32 @@ void readButtons(){
           case 7:
             //Serial.println("Fwd Left");
             //rgbLED(100,255,100);
-            pid_ramp_1 = 0;
-            pid_ramp_2 = 255*speedLimit;
+            pid_ramp_1 = 255*speedLimit;
+            pid_ramp_2 = 0;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
           case 8:
             //Serial.println("Fwd Right");
             //rgbLED(255,100,100);
-            pid_ramp_1 = 255*speedLimit;
-            pid_ramp_2 = 0;
+            pid_ramp_1 = 0;
+            pid_ramp_2 = 255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
           case 9:
             //Serial.println("Back Left");
             //rgbLED(255,50,100);
-            pid_ramp_1 = 0;
-            pid_ramp_2 = -255*speedLimit;
+            pid_ramp_1 = -255*speedLimit;
+            pid_ramp_2 = 0;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
           case 10:
             //Serial.println("Back Right");
             //rgbLED(50,100,100);
-            pid_ramp_1 = -255*speedLimit;
-            pid_ramp_2 = 0;
+            pid_ramp_1 = 0;
+            pid_ramp_2 = -255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
