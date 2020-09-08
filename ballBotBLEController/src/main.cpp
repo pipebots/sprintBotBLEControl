@@ -9,7 +9,6 @@
 
 #include <Arduino.h>
 #include <ArduinoBLE.h>
-#include <rgbLED.h>
 #include <PID_v1.h>
 #include <ArduinoJson.h>
 
@@ -106,7 +105,6 @@ void setup() {
 
   // set LED pin to output mode
   pinMode(ledPin, OUTPUT);
-  setupRGBLED();
   // Set motor driver pins to ouput mode
   pinMode(ML_DIR, OUTPUT);
   pinMode(ML_PWM, OUTPUT);
@@ -178,6 +176,7 @@ void loop() {
     Serial.print("Connected to central: ");
     // print the central's MAC address:
     Serial.println(central.address());
+    digitalWrite(ledPin, HIGH);
 
     // while the central is still connected to peripheral:
     while (central.connected()) {
@@ -200,13 +199,6 @@ void loop() {
       //sendJSON();
       listenJSON();
       limitSpeed();
-      Serial.print(currentMillis);
-      Serial.print(", Set 1:");
-      Serial.print(PID_SET_1);
-      Serial.print(", In 1:");
-      Serial.print(PID_IN_1);
-      Serial.print(" Out 1: ");
-      Serial.println(PID_OUT_1);
 
 /*
       Serial.print("Encoder count 1: ");
@@ -229,6 +221,7 @@ void loop() {
     driveMotor(MR_PWM, MR_DIR, 0);
     ramp_flag_1 = false;
     ramp_flag_2 = false;
+    digitalWrite(ledPin, LOW);
   }
 }
 
@@ -241,18 +234,13 @@ void readButtons(){
         switch (buttonCharacteristic.value()) {
           case 0:
             //Serial.println("LED off");
-            digitalWrite(ledPin, LOW);          // will turn the LED off
-            //offLED();
             break;
           case 1:
             //Serial.println("LED on");
-            digitalWrite(ledPin, HIGH);          // will turn the LED off
             break;
           case 2:
           //  Serial.println("FWD");
             //greenLED();
-            //PID_SET_1 = 255;
-            //PID_SET_2 = 255;
             pid_ramp_1 = 255*speedLimit;
             pid_ramp_2 = 255*speedLimit;
             ramp_flag_1 = true;
