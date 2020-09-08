@@ -11,7 +11,7 @@
 #include <ArduinoBLE.h>
 #include <PID_v1.h>
 #include <ArduinoJson.h>
-
+#include <Adafruit_NeoPixel.h>
 
 void readButtons();
 void readJoystick();
@@ -26,6 +26,9 @@ void listenJSON();
 void rampMotor1();
 void rampMotor2();
 void limitSpeed();
+void loadingChaseDoubleRing(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip, Adafruit_NeoPixel strip2);
+void ringColour(char colour, Adafruit_NeoPixel strip1, Adafruit_NeoPixel strip2);
+void doNeoRings();
 
 // Motor driver inputs
 #define ML_DIR 8
@@ -39,7 +42,24 @@ void limitSpeed();
 #define ENC_2_A 4
 #define ENC_2_B 5
 
+// NeoPixels Pins
+#define NEO_PIN_1   6
+#define NEO_PIN_2   7
+// Num of NeoPixels per ring
+#define LED_COUNT  24
+// NeoPixel brightness, 0 (min) to 255 (max)
+#define BRIGHTNESS 20
+// Declare our NeoPixel strip object:
+Adafruit_NeoPixel strip1(LED_COUNT, NEO_PIN_1, NEO_GRBW + NEO_KHZ800);
+Adafruit_NeoPixel strip2(LED_COUNT, NEO_PIN_2, NEO_GRBW + NEO_KHZ800);
+
 volatile int encoder1Ticks, encoder2Ticks, wheel1Pos, wheel2Pos, wheel1Revs, wheel2Revs = 0;
+
+/* Pololu 3499 has 20 counts per rev when counting both edges of both channels
+*  So just counting one edge of one channel, I have 5 counts per rev, and gear ratio of 31.25 = 156.25 counts per rev of gearbox output shaft.
+*  Spur gear to ring gear ratio is: Spur gear PCD=15mm, PCD internal ring =120mm 120/15=8
+*  156.25*8= 1250 counts per rev of wheel */
+int countPerRev = 1250;
 
 char robotName[] = "BigBallBot"; //Device Name - will appear as BLE descripton when connecting
 
@@ -89,6 +109,9 @@ float kd = 0.012086445044277552;*/
 
 PID motorPID1(&PID_IN_1, &PID_OUT_1, &PID_SET_1, kp, ki, kd, DIRECT);
 PID motorPID2(&PID_IN_2, &PID_OUT_2, &PID_SET_2, kp, ki, kd, DIRECT);
+
+uint32_t leftNeoColor = strip1.Color(0,0,255,0);
+uint32_t rightNeoColor = strip2.Color(0,0,255,0);
 
 void setup() {
   Serial.begin(9600);
@@ -163,6 +186,18 @@ void setup() {
 
   Serial.println(ramp_inc);
   Serial.println(ramp_delay);
+
+  //NEopixel startup
+strip1.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+strip1.show();            // Turn OFF all pixels ASAP
+strip1.setBrightness(BRIGHTNESS);
+strip2.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+strip2.show();            // Turn OFF all pixels ASAP
+strip2.setBrightness(BRIGHTNESS);
+loadingChaseDoubleRing(10, strip1.Color(0, 0, 100, 0), 24, strip1, strip2);
+//loadingChase(10, strip2.Color(0, 0, 100, 0), 24, strip2);
+strip1.fill(leftNeoColor);
+strip2.fill(rightNeoColor);
 }
 
 
@@ -176,7 +211,10 @@ void loop() {
     Serial.print("Connected to central: ");
     // print the central's MAC address:
     Serial.println(central.address());
+
+    //turn on LEDs
     digitalWrite(ledPin, HIGH);
+    ringColour('g', strip1, strip2);
 
     // while the central is still connected to peripheral:
     while (central.connected()) {
@@ -199,29 +237,18 @@ void loop() {
       //sendJSON();
       listenJSON();
       limitSpeed();
-
-/*
-      Serial.print("Encoder count 1: ");
-      Serial.print(wheel1Pos);
-      Serial.print(" Wheel Rev 1: ");
-      Serial.println(wheel1Revs);
-
-      Serial.print("Encoder count 2: ");
-      Serial.print(wheel2Pos);
-      Serial.print(" Wheel Rev 2: ");
-      Serial.println(wheel2Revs);
-  */
+      //doNeoRings();
     }
 
-
-    // when the central disconnects, print it out:
+    // when the central disconnects:
     Serial.print(F("Disconnected from central: "));
     Serial.println(central.address());
     driveMotor(ML_PWM, ML_DIR, 0); //stop robot if bluetooth disconnects
     driveMotor(MR_PWM, MR_DIR, 0);
+    pid_ramp_1 = 0;
+    pid_ramp_2 = 0;
     ramp_flag_1 = false;
     ramp_flag_2 = false;
-    digitalWrite(ledPin, LOW);
   }
 }
 
@@ -460,7 +487,7 @@ void doEncoder1(){
   if(digitalRead(ENC_1_A)==digitalRead(ENC_1_B)){
     wheel1Pos++;
     encoder1Ticks++;
-    if (wheel1Pos >1250){
+    if (wheel1Pos >countPerRev){
       wheel1Pos = 0;
       wheel1Revs++;
     }
@@ -468,7 +495,7 @@ void doEncoder1(){
   else{
     wheel1Pos--;
     encoder1Ticks--;
-    if (wheel1Pos <-1250){
+    if (wheel1Pos <-countPerRev){
       wheel1Pos = 0;
       wheel1Revs--;
     }
@@ -478,7 +505,7 @@ void doEncoder2(){
   if(digitalRead(ENC_2_A)==digitalRead(ENC_2_B)){
     wheel2Pos--; //opposite to Enc1 due to way motor is mounted
     encoder2Ticks--;
-    if (wheel2Pos <-1250){
+    if (wheel2Pos <-countPerRev){
       wheel2Pos = 0;
       wheel2Revs--;
     }
@@ -486,7 +513,7 @@ void doEncoder2(){
   else{
     wheel2Pos++;
     encoder2Ticks++;
-    if (wheel2Pos >1250){
+    if (wheel2Pos >countPerRev){
       wheel2Pos = 0;
       wheel2Revs++;
     }
@@ -590,4 +617,101 @@ void limitSpeed(){
   if (speedCharacteristic.written()) {
     speedLimit = speedCharacteristic.value();
   }
+}
+void loadingChaseDoubleRing(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip, Adafruit_NeoPixel strip2) {
+  int      length        = 1;
+  int      head          = length - 1;
+  int      tail          = 0;
+  int      loopNum       = 0;
+  uint32_t lastTime      = millis();
+
+  for(;;) { // Repeat forever (or until a 'break' or 'return')
+    for(int i=0; i<strip.numPixels(); i++) {  // For each pixel in strip...
+      if(((i >= tail) && (i <= head)) ||      //  If between head & tail...
+         ((tail > head) && ((i >= tail) || (i <= head)))) {
+        strip.setPixelColor(i, color); // Set colour
+        strip2.setPixelColor(i, color); // Set colour
+      } else {                                             // else off
+        strip.setPixelColor(i, strip.gamma32(strip.Color(0,0,0,0)));
+        strip2.setPixelColor(i, strip.gamma32(strip.Color(0,0,0,0)));
+      }
+    }
+
+    strip.show(); // Update strip with new contents
+    strip2.show();
+    // There's no delay here, it just runs full-tilt until the timer and
+    // counter combination below runs out.
+
+    if((millis() - lastTime) > speed) { // Time to update head/tail?
+      if(++head >= strip.numPixels()) {      // Advance head, wrap around
+        if(++loopNum >= loops) return;
+        head = 0;
+        Serial.println(loopNum);
+      }
+      if(++tail >= strip.numPixels()) {      // Advance tail, wrap around
+        tail = 0;
+        head = ++head;
+      }
+      lastTime = millis();                   // Save time of last movement
+    }
+  }
+}
+void ringColour(char colour, Adafruit_NeoPixel strip1, Adafruit_NeoPixel strip2){
+  switch(colour){
+    case 'r': //Red
+        strip1.fill(strip1.Color(strip1.gamma8(255), 0, 0, 0));
+        strip2.fill(strip2.Color(strip2.gamma8(255), 0, 0, 0));
+        strip1.show();
+        strip2.show();
+      break;
+    case 'g': //Green
+        strip1.fill(strip1.Color(0, strip1.gamma8(255), 0, 0));
+        strip2.fill(strip2.Color(0, strip2.gamma8(255), 0, 0));
+        strip1.show();
+        strip2.show();
+      break;
+    case 'b': //blue
+        strip1.fill(strip1.Color(0, 0, strip1.gamma8(255), 0));
+        strip2.fill(strip2.Color(0, 0, strip2.gamma8(255), 0));
+        strip1.show();
+        strip2.show();
+      break;
+    case 'w': //White
+        strip1.fill(strip1.Color(0, 0, 0, strip1.gamma8(255)));
+        strip2.fill(strip2.Color(0, 0, 0, strip2.gamma8(255)));
+        strip1.show();
+        strip2.show();
+      break;
+    case 'o': //Off
+        strip1.fill(strip1.Color(0, 0, 0, 0));
+        strip2.fill(strip2.Color(0, 0, 0, 0));
+        strip1.show();
+        strip2.show();
+      break;
+    default:
+        //Error no matching case
+        strip1.fill(strip1.Color(20, 20, 20, 0));
+        strip2.fill(strip2.Color(20, 20, 20, 0));
+        strip1.show();
+        strip2.show();
+      break;
+  }
+}
+void doNeoRings(){
+  int ledL = abs(wheel1Revs * 24); //which LED to turn on
+  int ledR = abs(wheel2Revs * 24);
+  int lCol[4] = {0,0,0,0};
+  int rCol[4] = {0,0,0,0};
+
+  //fill base colour
+  strip1.fill(strip1.Color(lCol[1],   lCol[2],   lCol[3], lCol[4]));
+  strip2.fill(strip1.Color(rCol[1],   rCol[2],   rCol[3], rCol[4]));
+
+  //Light LED depending on encoder position
+  strip1.setPixelColor(ledL,strip1.Color(0, 0, 0, 255) );
+  strip2.setPixelColor(ledR,strip2.Color(0, 0, 0, 255) );
+
+  //display
+  strip1.show();
+  strip2.show();
 }
