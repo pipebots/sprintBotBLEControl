@@ -1,4 +1,4 @@
-// RGB LED Functions
+// RGB LED Functions for inbuild LED on the Arduino Nano 33 Sense
 #include <Arduino.h>
 
 //pins for build in led on nano 33 sense
@@ -6,6 +6,11 @@
 #define G_LED_PIN         23
 #define B_LED_PIN         24
 
+void setupRGBLED(){
+  pinMode(R_LED_PIN, OUTPUT);
+  pinMode(G_LED_PIN, OUTPUT);
+  pinMode(B_LED_PIN, OUTPUT);
+}
 void greenLED(){
     analogWrite(R_LED_PIN,UINT8_MAX);
     analogWrite(G_LED_PIN,0);

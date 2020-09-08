@@ -106,6 +106,7 @@ void setup() {
 
   // set LED pin to output mode
   pinMode(ledPin, OUTPUT);
+  setupRGBLED();
   // Set motor driver pins to ouput mode
   pinMode(ML_DIR, OUTPUT);
   pinMode(ML_PWM, OUTPUT);
