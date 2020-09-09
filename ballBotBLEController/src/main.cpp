@@ -43,8 +43,8 @@ void doNeoRings();
 #define ENC_2_B 5
 
 // NeoPixels Pins
-#define NEO_PIN_1   7
-#define NEO_PIN_2   6
+#define NEO_PIN_1   6
+#define NEO_PIN_2   7
 // Num of NeoPixels per ring
 #define LED_COUNT  24
 // NeoPixel brightness, 0 (min) to 255 (max)
@@ -237,7 +237,7 @@ void loop() {
       //sendJSON();
       listenJSON();
       limitSpeed();
-//      doNeoRings();
+      doNeoRings();
     }
 
     // when the central disconnects:
@@ -698,16 +698,11 @@ void ringColour(char colour, Adafruit_NeoPixel strip1, Adafruit_NeoPixel strip2)
   }
 }
 void doNeoRings(){
-  /*
-  This moves a pixel around the ring as the wheel turns.
-  each individually works but two together causes the motors to go haywire.
-  The Neopixel library affects interupt so this is presumably the issue.
-  */
-  int ledL = encoder2Ticks/52; //which LED to turn on
-  ledL = ledL - (wheel2Revs * 24);
+  int ledL = encoder1Ticks/52; //which LED to turn on
+  ledL = ledL - (wheel1Revs * 24);
   if (ledL <0){ ledL = 24 + ledL;}
-/*
-  int ledR = encoder2Ticks/52; //which LED to turn on
+
+/*  int ledR = encoder2Ticks/52; //which LED to turn on
   ledR = ledR - (wheel2Revs * 24);
   if (ledR <0){ ledR = 24 + ledR;}
 */
@@ -715,17 +710,15 @@ void doNeoRings(){
   int rCol[4] = {0,0,0,0};
 
   //fill base colour
-//  ringColour('o', strip1, strip2);
-
   strip1.fill(strip1.Color(0, 0, 0, 0));
-  //strip2.fill(strip2.Color(0, 0, 0, 0));
+//  strip2.fill(strip2.Color(0, 0, 0, 0));
 
   //Light LED depending on encoder position
-  strip1.setPixelColor((23-ledL),strip1.Color(0, 0, 0, strip1.gamma8(255)));
-  //strip2.setPixelColor(ledR,strip2.Color(0, 0, 0, strip2.gamma8(255)));
+  strip1.setPixelColor(ledL,strip1.Color(0, 0, 0, strip1.gamma8(255)) );
+//  strip2.setPixelColor(ledR,strip2.Color(0, 0, 0, 255) );
 
   //display
   strip1.show();
-  //strip2.show();
+//  strip2.show();
 
 }
