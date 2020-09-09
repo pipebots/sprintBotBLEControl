@@ -237,7 +237,7 @@ void loop() {
       //sendJSON();
       listenJSON();
       limitSpeed();
-      //doNeoRings();
+      doNeoRings();
     }
 
     // when the central disconnects:
@@ -698,20 +698,27 @@ void ringColour(char colour, Adafruit_NeoPixel strip1, Adafruit_NeoPixel strip2)
   }
 }
 void doNeoRings(){
-  int ledL = abs(wheel1Revs * 24); //which LED to turn on
-  int ledR = abs(wheel2Revs * 24);
+  int ledL = encoder1Ticks/52; //which LED to turn on
+  ledL = ledL - (wheel1Revs * 24);
+  if (ledL <0){ ledL = 24 + ledL;}
+
+/*  int ledR = encoder2Ticks/52; //which LED to turn on
+  ledR = ledR - (wheel2Revs * 24);
+  if (ledR <0){ ledR = 24 + ledR;}
+*/
   int lCol[4] = {0,0,0,0};
   int rCol[4] = {0,0,0,0};
 
   //fill base colour
-  strip1.fill(strip1.Color(lCol[1],   lCol[2],   lCol[3], lCol[4]));
-  strip2.fill(strip1.Color(rCol[1],   rCol[2],   rCol[3], rCol[4]));
+  strip1.fill(strip1.Color(0, 0, 0, 0));
+//  strip2.fill(strip2.Color(0, 0, 0, 0));
 
   //Light LED depending on encoder position
-  strip1.setPixelColor(ledL,strip1.Color(0, 0, 0, 255) );
-  strip2.setPixelColor(ledR,strip2.Color(0, 0, 0, 255) );
+  strip1.setPixelColor(ledL,strip1.Color(0, 0, 0, strip1.gamma8(255)) );
+//  strip2.setPixelColor(ledR,strip2.Color(0, 0, 0, 255) );
 
   //display
   strip1.show();
-  strip2.show();
+//  strip2.show();
+
 }
