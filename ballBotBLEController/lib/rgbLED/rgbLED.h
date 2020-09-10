@@ -1,3 +1,4 @@
+void setupRGBLED();
 void greenLED();
 void blueLED();
 void redLED();
