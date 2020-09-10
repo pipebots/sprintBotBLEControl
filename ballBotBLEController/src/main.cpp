@@ -1,4 +1,12 @@
-/*Robot code for NANO 33 BLE Sense to pair with Robot controller App
+/*                                     __
+* __________.__             ___.     |__|  __
+* \______   \__|_____   ____\_ |__   _||__/  |_  ______
+*  |     ___/  \____ \_/ __ \| __ \ /  _ \   __\/  ___/
+*  |    |   |  |  |_> >  ___/| \_\ (  O_O )  |  \___ \
+*  |____|   |__|   __/ \___  >___  /\____/|__| /____  >
+*              |__|        \/    \/                 \/
+*              
+* Robot code for NANO 33 BLE Sense to pair with Robot controller App
 * Nick Fry 2019
 * Change robotName[] below for each board
 * Temp code currently commented out as may be useful for different job later
