@@ -191,13 +191,13 @@ void setup() {
 strip1.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
 strip1.show();            // Turn OFF all pixels ASAP
 strip1.setBrightness(BRIGHTNESS);
-strip2.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
-strip2.show();            // Turn OFF all pixels ASAP
-strip2.setBrightness(BRIGHTNESS);
+//strip2.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+//strip2.show();            // Turn OFF all pixels ASAP
+//strip2.setBrightness(BRIGHTNESS);
 loadingChaseDoubleRing(10, strip1.Color(0, 0, 100, 0), 24, strip1, strip2);
 //loadingChase(10, strip2.Color(0, 0, 100, 0), 24, strip2);
 strip1.fill(ringCol);
-strip2.fill(ringCol);
+//strip2.fill(ringCol);
 }
 
 
