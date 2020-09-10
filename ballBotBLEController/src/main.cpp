@@ -26,6 +26,7 @@ void listenJSON();
 void rampMotor1();
 void rampMotor2();
 void limitSpeed();
+void loadingChase(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip);
 void loadingChaseDoubleRing(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip, Adafruit_NeoPixel strip2);
 void ringColour(char colour, Adafruit_NeoPixel strip1, Adafruit_NeoPixel strip2);
 void doNeoRings();
@@ -44,7 +45,7 @@ void doNeoRings();
 
 // NeoPixels Pins
 #define NEO_PIN_1   7
-#define NEO_PIN_2   6
+#define NEO_PIN_2   6 //not connected - both rings are attached to Pin 7
 // Num of NeoPixels per ring
 #define LED_COUNT  24
 // NeoPixel brightness, 0 (min) to 255 (max)
@@ -191,11 +192,13 @@ void setup() {
 strip1.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
 strip1.show();            // Turn OFF all pixels ASAP
 strip1.setBrightness(BRIGHTNESS);
-//strip2.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
-//strip2.show();            // Turn OFF all pixels ASAP
-//strip2.setBrightness(BRIGHTNESS);
+strip2.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+strip2.show();            // Turn OFF all pixels ASAP
+strip2.setBrightness(BRIGHTNESS);
+//removing strip2 from there and changing the function to loadingChase causes the robot to go crazy?!
+//Also adding more function to use strip2 later in the code has the same effect.
 loadingChaseDoubleRing(10, strip1.Color(0, 0, 100, 0), 24, strip1, strip2);
-//loadingChase(10, strip2.Color(0, 0, 100, 0), 24, strip2);
+//loadingChase(10, strip1.Color(0, 0, 100, 0), 24, strip1);
 strip1.fill(ringCol);
 //strip2.fill(ringCol);
 }
@@ -629,6 +632,41 @@ void rampMotor2(){ //use timer in loop to call
 void limitSpeed(){
   if (speedCharacteristic.written()) {
     speedLimit = speedCharacteristic.value();
+  }
+}
+void loadingChase(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip) {
+  int      length        = 1;
+  int      head          = length - 1;
+  int      tail          = 0;
+  int      loopNum       = 0;
+  uint32_t lastTime      = millis();
+
+  for(;;) { // Repeat forever (or until a 'break' or 'return')
+    for(int i=0; i<strip.numPixels(); i++) {  // For each pixel in strip...
+      if(((i >= tail) && (i <= head)) ||      //  If between head & tail...
+         ((tail > head) && ((i >= tail) || (i <= head)))) {
+        strip.setPixelColor(i, color); // Set colour
+      } else {                                             // else off
+        strip.setPixelColor(i, strip.gamma32(strip.Color(0,0,0,0)));
+      }
+    }
+
+    strip.show(); // Update strip with new contents
+    // There's no delay here, it just runs full-tilt until the timer and
+    // counter combination below runs out.
+
+    if((millis() - lastTime) > speed) { // Time to update head/tail?
+      if(++head >= strip.numPixels()) {      // Advance head, wrap around
+        if(++loopNum >= loops) return;
+        head = 0;
+        Serial.println(loopNum);
+      }
+      if(++tail >= strip.numPixels()) {      // Advance tail, wrap around
+        tail = 0;
+        head = ++head;
+      }
+      lastTime = millis();                   // Save time of last movement
+    }
   }
 }
 void loadingChaseDoubleRing(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip, Adafruit_NeoPixel strip2) {
