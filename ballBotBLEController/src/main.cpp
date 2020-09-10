@@ -43,8 +43,8 @@ void doNeoRings();
 #define ENC_2_B 5
 
 // NeoPixels Pins
-#define NEO_PIN_1   6
-#define NEO_PIN_2   7
+#define NEO_PIN_1   7
+#define NEO_PIN_2   6
 // Num of NeoPixels per ring
 #define LED_COUNT  24
 // NeoPixel brightness, 0 (min) to 255 (max)
@@ -261,9 +261,17 @@ void readButtons(){
         switch (buttonCharacteristic.value()) {
           case 0:
             //Serial.println("LED off");
+            strip1.fill(strip1.Color(0, 0, 0, 0));
+            //strip2.fill(strip2.Color(0, 0, 0, 0));
+            strip1.show();
+            //strip2.show();
             break;
           case 1:
             //Serial.println("LED on");
+            strip1.fill(strip1.Color(0, 0, 0, strip1.gamma8(255)));
+            //strip2.fill(strip2.Color(0, 0, 0, strip2.gamma8(255)));
+            strip1.show();
+          //  strip2.show();
             break;
           case 2:
           //  Serial.println("FWD");
