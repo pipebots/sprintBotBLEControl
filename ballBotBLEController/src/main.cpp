@@ -53,7 +53,8 @@ void doNeoRings();
 Adafruit_NeoPixel strip1(LED_COUNT, NEO_PIN_1, NEO_GRBW + NEO_KHZ800);
 Adafruit_NeoPixel strip2(LED_COUNT, NEO_PIN_2, NEO_GRBW + NEO_KHZ800);
 
-byte ringCol[4] = {0,0,0,0};
+uint32_t ringCol = strip1.Color(0, 0, 255, 0);
+uint32_t dotCol = strip1.Color(0, 0, 255, 0);
 
 volatile int encoder1Ticks, encoder2Ticks, wheel1Pos, wheel2Pos, wheel1Revs, wheel2Revs = 0;
 
@@ -111,9 +112,6 @@ float kd = 0.012086445044277552;*/
 
 PID motorPID1(&PID_IN_1, &PID_OUT_1, &PID_SET_1, kp, ki, kd, DIRECT);
 PID motorPID2(&PID_IN_2, &PID_OUT_2, &PID_SET_2, kp, ki, kd, DIRECT);
-
-uint32_t leftNeoColor = strip1.Color(0,0,255,0);
-uint32_t rightNeoColor = strip2.Color(0,0,255,0);
 
 void setup() {
   Serial.begin(9600);
@@ -198,8 +196,8 @@ strip2.show();            // Turn OFF all pixels ASAP
 strip2.setBrightness(BRIGHTNESS);
 loadingChaseDoubleRing(10, strip1.Color(0, 0, 100, 0), 24, strip1, strip2);
 //loadingChase(10, strip2.Color(0, 0, 100, 0), 24, strip2);
-strip1.fill(leftNeoColor);
-strip2.fill(rightNeoColor);
+strip1.fill(ringCol);
+strip2.fill(ringCol);
 }
 
 
@@ -216,7 +214,7 @@ void loop() {
 
     //turn on LEDs
     digitalWrite(ledPin, HIGH);
-    ringColour('g', strip1, strip2);
+    ringCol = strip1.gamma32(strip1.Color(0, 255, 0, 0));
 
     // while the central is still connected to peripheral:
     while (central.connected()) {
@@ -263,24 +261,25 @@ void readButtons(){
         switch (buttonCharacteristic.value()) {
           case 0:
             //Serial.println("LED off");
-            ringCol = {0,0,0,0};
+            ringCol = strip1.gamma32(strip1.Color(0, 0, 0, 0));
             break;
           case 1:
             //Serial.println("LED on");
-            ringCol = {0,0,0,255};
+            ringCol = strip1.gamma32(strip1.Color(0, 0, 0, 255));
             break;
           case 2:
           //  Serial.println("FWD");
             //greenLED();
+            dotCol = strip1.gamma32(strip1.Color(0, 255, 0, 0));
             pid_ramp_1 = 255*speedLimit;
             pid_ramp_2 = 255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
-
             break;
           case 3:
             //Serial.println("Back");
             //blueLED();
+            dotCol = strip1.gamma32(strip1.Color(0, 0, 255, 0));
             pid_ramp_1 = -255*speedLimit;
             pid_ramp_2 = -255*speedLimit;
             ramp_flag_1 = true;
@@ -289,6 +288,7 @@ void readButtons(){
           case 4:
             //Serial.println("Left");
             //cyanLED();
+            dotCol = strip1.gamma32(strip1.Color(0, 255, 255, 0));
             pid_ramp_1 = 255*speedLimit;
             pid_ramp_2 = -255*speedLimit;
             ramp_flag_1 = true;
@@ -297,6 +297,7 @@ void readButtons(){
           case 5:
             //Serial.println("Right");
             //magentaLED();
+            dotCol = strip1.gamma32(strip1.Color(255, 0, 255, 0));
             pid_ramp_1 = -255*speedLimit;
             pid_ramp_2 = 255*speedLimit;
             ramp_flag_1 = true;
@@ -305,6 +306,7 @@ void readButtons(){
           case 6:
             //Serial.println("Stop");
               //redLED();
+              dotCol = strip1.gamma32(strip1.Color(255, 0, 0, 0));
               pid_ramp_1 = 0;
               pid_ramp_2 = 0;
               ramp_flag_1 = true;
@@ -313,6 +315,7 @@ void readButtons(){
           case 7:
             //Serial.println("Fwd Left");
             //rgbLED(100,255,100);
+            dotCol = strip1.gamma32(strip1.Color(100, 255, 100, 0));
             pid_ramp_1 = 255*speedLimit;
             pid_ramp_2 = 0;
             ramp_flag_1 = true;
@@ -321,6 +324,7 @@ void readButtons(){
           case 8:
             //Serial.println("Fwd Right");
             //rgbLED(255,100,100);
+            dotCol = strip1.gamma32(strip1.Color(255, 100, 100, 0));
             pid_ramp_1 = 0;
             pid_ramp_2 = 255*speedLimit;
             ramp_flag_1 = true;
@@ -329,6 +333,7 @@ void readButtons(){
           case 9:
             //Serial.println("Back Left");
             //rgbLED(255,50,100);
+            dotCol = strip1.gamma32(strip1.Color(255, 50, 100, 0));
             pid_ramp_1 = -255*speedLimit;
             pid_ramp_2 = 0;
             ramp_flag_1 = true;
@@ -337,6 +342,7 @@ void readButtons(){
           case 10:
             //Serial.println("Back Right");
             //rgbLED(50,100,100);
+            dotCol = strip1.gamma32(strip1.Color(100, 255, 255, 0));
             pid_ramp_1 = 0;
             pid_ramp_2 = -255*speedLimit;
             ramp_flag_1 = true;
@@ -345,11 +351,14 @@ void readButtons(){
           case 11:
             //Serial.println("Gesture Control");
             //yellowLED();
+            dotCol = strip1.gamma32(strip1.Color(255, 255, 0, 0));
             gesture = !gesture; //flip bool
             //Serial.println("Gesture");
             break;
           case 12:
             //Serial.println("E-STOP");
+            dotCol = strip1.gamma32(strip1.Color(255, 0, 0, 0));
+            ringCol = strip1.gamma32(strip1.Color(0, 0, 0, 0));
             ramp_flag_1 = false;
             ramp_flag_2 = false;
             BLE.disconnect(); //this also turns off motors
@@ -712,11 +721,11 @@ void doNeoRings(){
 */
 
   //fill base colour
-  strip1.fill(strip1.Color(ringCol[0], ringCol[1], ringCol[2], ringCol[3]));
+  strip1.fill(ringCol);
 //  strip2.fill(strip2.Color(0, 0, 0, 0));
 
   //Light LED depending on encoder position
-  strip1.setPixelColor(ledL,strip1.Color(0, strip1.gamma8(255), 0, 0));
+  strip1.setPixelColor(ledL,dotCol);
 //  strip2.setPixelColor(ledR,strip2.Color(0, 0, 0, 255) );
 
   //display
