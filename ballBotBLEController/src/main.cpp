@@ -53,6 +53,8 @@ void doNeoRings();
 Adafruit_NeoPixel strip1(LED_COUNT, NEO_PIN_1, NEO_GRBW + NEO_KHZ800);
 Adafruit_NeoPixel strip2(LED_COUNT, NEO_PIN_2, NEO_GRBW + NEO_KHZ800);
 
+byte ringCol[4] = {0,0,0,0};
+
 volatile int encoder1Ticks, encoder2Ticks, wheel1Pos, wheel2Pos, wheel1Revs, wheel2Revs = 0;
 
 /* Pololu 3499 has 20 counts per rev when counting both edges of both channels
@@ -261,17 +263,11 @@ void readButtons(){
         switch (buttonCharacteristic.value()) {
           case 0:
             //Serial.println("LED off");
-            strip1.fill(strip1.Color(0, 0, 0, 0));
-            //strip2.fill(strip2.Color(0, 0, 0, 0));
-            strip1.show();
-            //strip2.show();
+            ringCol = {0,0,0,0};
             break;
           case 1:
             //Serial.println("LED on");
-            strip1.fill(strip1.Color(0, 0, 0, strip1.gamma8(255)));
-            //strip2.fill(strip2.Color(0, 0, 0, strip2.gamma8(255)));
-            strip1.show();
-          //  strip2.show();
+            ringCol = {0,0,0,255};
             break;
           case 2:
           //  Serial.println("FWD");
@@ -714,15 +710,13 @@ void doNeoRings(){
   ledR = ledR - (wheel2Revs * 24);
   if (ledR <0){ ledR = 24 + ledR;}
 */
-  int lCol[4] = {0,0,0,0};
-  int rCol[4] = {0,0,0,0};
 
   //fill base colour
-  strip1.fill(strip1.Color(0, 0, 0, 0));
+  strip1.fill(strip1.Color(ringCol[0], ringCol[1], ringCol[2], ringCol[3]));
 //  strip2.fill(strip2.Color(0, 0, 0, 0));
 
   //Light LED depending on encoder position
-  strip1.setPixelColor(ledL,strip1.Color(0, 0, 0, strip1.gamma8(255)) );
+  strip1.setPixelColor(ledL,strip1.Color(0, strip1.gamma8(255), 0, 0));
 //  strip2.setPixelColor(ledR,strip2.Color(0, 0, 0, 255) );
 
   //display
