@@ -22,6 +22,8 @@ Robot code for NANO 33 BLE Sense to pair with Robot controller App
 #include <Adafruit_NeoPixel.h>
 #include <Arduino_LSM9DS1.h> //IMU
 #include <MadgwickAHRS.h> //for filtering & fusing IMU data
+#include <Arduino_LPS22HB.h> //pressure sensor
+#include <Arduino_HTS221.h> //temp and humidity sensors
 
 void readButtons();
 void readJoystick();
@@ -206,11 +208,21 @@ void setup() {
   Serial.println(ramp_inc);
   Serial.println(ramp_delay);
 
-  //setup IMU --------------------------------------------------
-     if (!IMU.begin()) {
-       Serial.println("Failed to initialize IMU!");
-     }
-     filter.begin(1000/time1); //sample rate in Hz
+//setup IMU --------------------------------------------------
+   if (!IMU.begin()) {
+     Serial.println("Failed to initialize IMU!");
+   }
+   filter.begin(1000/time1); //sample rate in Hz
+
+//setup pressure sensor
+   if (!BARO.begin()) {
+     Serial.println("Failed to initialize pressure sensor!");
+   }
+
+//setup temp and humidity sensor
+  if (!HTS.begin()) {
+    Serial.println("Failed to initialize humidity temperature sensor!");
+  }
 
 //NEopixel startup
 strip1.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
@@ -259,7 +271,7 @@ void loop() {
         prevMillis2 = currentMillis;
       }
       currentMillis = millis();
-      if (currentMillis - prevMillis3 >= 1000){ //send JSON every X ms here
+      if (currentMillis - prevMillis3 >= 1000){ //send JSON every X ms here (100ms causes problems, 500ms is fine)
         readIMU();
         sendJSON();
         prevMillis3 = currentMillis;
@@ -588,7 +600,7 @@ void calcSpeed(){
 
 void sendJSON(){
   //Using JSON Doc format
-  const size_t capacity = JSON_ARRAY_SIZE(3) + JSON_OBJECT_SIZE(5);
+  const size_t capacity = JSON_ARRAY_SIZE(3) + JSON_OBJECT_SIZE(8);
   StaticJsonDocument<capacity> doc;
 
   JsonArray imu = doc.createNestedArray("imu");
@@ -600,6 +612,9 @@ void sendJSON(){
   doc["wheel1Revs"] = wheel1Revs;
   doc["wheel2Pos"] = wheel2Pos;
   doc["wheel2Revs"] = wheel2Revs;
+  doc["pressure_kPa"] = BARO.readPressure(); //read pressure sensor
+  doc["temp_oC"] = HTS.readTemperature(); //read temp sensor in degrees celcius
+  doc["humidity_percent"] = HTS.readHumidity(); //humidity in %
 
   serializeJson(doc, Serial);
   Serial.println("");
