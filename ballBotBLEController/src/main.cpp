@@ -259,7 +259,7 @@ void loop() {
         prevMillis2 = currentMillis;
       }
       currentMillis = millis();
-      if (currentMillis - prevMillis3 >= 1000){ //send JSON every second
+      if (currentMillis - prevMillis3 >= 1000){ //send JSON every X ms here
         readIMU();
         sendJSON();
         prevMillis3 = currentMillis;
@@ -268,7 +268,6 @@ void loop() {
       readButtons();
       readJoystick();
       calcPID();
-      //sendJSON();
       listenJSON();
       limitSpeed();
       doNeoRings();
