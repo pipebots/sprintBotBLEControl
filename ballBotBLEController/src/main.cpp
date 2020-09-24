@@ -105,6 +105,8 @@ float humidity = 0.0;
 bool gesture = 0;
 long previousMillis,  prevMillis1, prevMillis2, prevMillis3 = 0;
 int encoder1Prev, encoder2Prev = 0;
+int auto_case = 6; //defualt is stop case
+bool auto_mode = false;
 
 //params for ramping motor speed
 bool ramp_flag_1, ramp_flag_2 = false;
@@ -277,10 +279,10 @@ void loop() {
         prevMillis3 = currentMillis;
       }
 
+      listenJSON();
       readButtons();
       readJoystick();
       calcPID();
-      listenJSON();
       limitSpeed();
       doNeoRings();
     }
@@ -300,10 +302,14 @@ void loop() {
 void readButtons(){
   //most of these buttons no longer exist in app
   // if the remote device wrote to the characteristic,
-      // use the value to control the LED:
-      if (buttonCharacteristic.written()) {
-        //Serial.println(buttonCharacteristic.value());
-        switch (buttonCharacteristic.value()) {
+
+      if (auto_mode == true){ //if auto turned on in app use values from listenJSON
+        y = auto_case;
+      }
+      if (buttonCharacteristic.written()) { //app buttons take priority
+        y = buttonCharacteristic.value();
+      }
+        switch (y) {
           case 0:
             //Serial.println("LED off");
             ringCol = strip1.gamma32(strip1.Color(0, 0, 0, 0));
@@ -394,11 +400,11 @@ void readButtons(){
             ramp_flag_2 = true;
             break;
           case 11:
-            //Serial.println("Gesture Control");
+            //Serial.println("Auto Control");
             //yellowLED();
             dotCol = strip1.gamma32(strip1.Color(255, 255, 0, 0));
-            gesture = !gesture; //flip bool
-            //Serial.println("Gesture");
+            //gesture = !gesture; //flip bool
+            auto_mode = !auto_mode //flip bool
             break;
           case 12:
             //Serial.println("E-STOP");
@@ -414,7 +420,6 @@ void readButtons(){
             // whiteLED();
              break;
         }
-       }
 }
 
 void readJoystick(){
@@ -621,20 +626,13 @@ void sendJSON(){
 }
 
 void listenJSON(){
-  // Used to change PID parameters via serial
-  // Send in this formtal: {"p":3,"i":0,"d":0}
   if(Serial.available()){
     StaticJsonDocument<100> readJson;
     deserializeJson(readJson,Serial);
-  /*  kp = readJson["p"];
-    ki = readJson["i"];
-    kd = readJson["d"];
 
-    motorPID1.SetTunings(kp, ki, kd);
-    */
-   ramp_inc = readJson["inc"];
-   ramp_delay = readJson["delay"];
-    //sendJSON();
+    auto_case = readJson["mv_case"];
+    speedLimit = readJson["spd_limit"];
+
   }
 }
 
