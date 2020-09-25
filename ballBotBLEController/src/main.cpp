@@ -105,7 +105,7 @@ float humidity = 0.0;
 bool gesture = 0;
 long previousMillis,  prevMillis1, prevMillis2, prevMillis3 = 0;
 int encoder1Prev, encoder2Prev = 0;
-int auto_case = 6; //defualt is stop case
+int auto_case, y = 6; //defualt is stop case
 bool auto_mode = false;
 
 //params for ramping motor speed
@@ -302,9 +302,11 @@ void loop() {
 void readButtons(){
   //most of these buttons no longer exist in app
   // if the remote device wrote to the characteristic,
-
+      Serial.print("Auto mode: ");
+      Serial.println(auto_mode);
       if (auto_mode == true){ //if auto turned on in app use values from listenJSON
         y = auto_case;
+        Serial.println("AUTO true");
       }
       if (buttonCharacteristic.written()) { //app buttons take priority
         y = buttonCharacteristic.value();
@@ -404,7 +406,7 @@ void readButtons(){
             //yellowLED();
             dotCol = strip1.gamma32(strip1.Color(255, 255, 0, 0));
             //gesture = !gesture; //flip bool
-            auto_mode = !auto_mode //flip bool
+            auto_mode = true; //flip bool
             break;
           case 12:
             //Serial.println("E-STOP");
@@ -415,10 +417,16 @@ void readButtons(){
             BLE.disconnect(); //this also turns off motors
             //WARNING - Robot needs hard resetting to recover from e-stop
             break;
-         default:
-             Serial.println("Error - no cases match");
-            // whiteLED();
-             break;
+          case 13:
+              //Serial.println("MAnual Control");
+              dotCol = strip1.gamma32(strip1.Color(100, 100, 200, 0));
+              auto_mode = false; //flip bool
+              break;
+          default:
+              Serial.print(y);
+              Serial.println(" Error - no cases match");
+              // whiteLED();
+              break;
         }
 }
 
@@ -605,7 +613,7 @@ void calcSpeed(){
 
 void sendJSON(){
   //Using JSON Doc format
-  const size_t capacity = JSON_ARRAY_SIZE(3) + JSON_OBJECT_SIZE(8);
+  const size_t capacity = JSON_ARRAY_SIZE(3) + JSON_OBJECT_SIZE(11);
   StaticJsonDocument<capacity> doc;
 
   JsonArray imu = doc.createNestedArray("imu");
@@ -620,6 +628,9 @@ void sendJSON(){
   doc["pressure_kPa"] = BARO.readPressure(); //read pressure sensor
   doc["temp_oC"] = HTS.readTemperature(); //read temp sensor in degrees celcius
   doc["humidity_percent"] = HTS.readHumidity(); //humidity in %
+  doc["mv_case"] = auto_case;
+  doc["spd_limit"] = speedLimit;
+  doc["auto_mode"] = auto_mode;
 
   serializeJson(doc, Serial);
   Serial.println("");
@@ -627,12 +638,24 @@ void sendJSON(){
 
 void listenJSON(){
   if(Serial.available()){
-    StaticJsonDocument<100> readJson;
-    deserializeJson(readJson,Serial);
+    const size_t capacity = JSON_OBJECT_SIZE(3)+40;
+    StaticJsonDocument<capacity> readJson;
+    // Deserialize the JSON document
+    DeserializationError error = deserializeJson(readJson, Serial);
+
+    // Test if parsing succeeds.
+    if (error) {
+      Serial.print(F("deserializeJson() failed: "));
+      Serial.println(error.c_str());
+      return;
+    }
+    //    deserializeJson(readJson,Serial);
 
     auto_case = readJson["mv_case"];
     speedLimit = readJson["spd_limit"];
-
+    auto_mode = readJson["auto_mode"];
+    //serializeJson(readJson, Serial);
+    //Serial.println("");
   }
 }
 
