@@ -4,8 +4,7 @@
 	- My first attempt at documenting the mechanical, electrical and software aspects of Sprintbot, from a Theme 3 perspective.
 
 
-# Files
-
+# Nomclamature
 StackEdit stores your files in your browser, which means all your files are automatically saved locally and are accessible **offline!**
 
 ## Create files and folders
@@ -143,5 +142,5 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyODc3MzY4ODVdfQ==
+eyJoaXN0b3J5IjpbLTIwODM1OTIxNjBdfQ==
 -->
