@@ -34,7 +34,9 @@ To achieve it we first decided upon the components that must be bought externall
 For the most part this was avoided, but it was decided to 3D print the gears rather than use the machined ones that were ordered as this gave a much greater flexibility in design and considerablly reduced the weight. 
 This allowed the large ring gears to have a larger hole in the centre, giving more space for other components and the outersurface was keyed to allow the tyre to grip when overmoulded. The bevel drive gears now have much larger teeth giving greater robustness and shaft hole is easily varied and D shaped as required. 
 
-3D printing was used to manufacture the whole mechanical structure of the robot as it has the shortest leadtime of the methods avaliable to us, and allows great geometric freedom. Fused Filament Fabrication was used with an enhanced PLA material (Polymaker Polymax) as this is c
+3D printing was used to manufacture the whole mechanical structure of the robot as it has the shortest leadtime of the methods avaliable to us, and allows great geometric freedom. Fused Filament Fabrication was used with an enhanced PLA material (Polymaker Polymax) as this is capable of producing parts that are functional and tough enough for testing use when producing parts of this size. 
+
+The robot was designed such that the
 
 # Software
 ## Robot Firmware
@@ -71,6 +73,6 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbODEzNTA3Njg4LC0yMTI5MTI1NzA0LDExOT
+eyJoaXN0b3J5IjpbNTYxNDgxMzY2LC0yMTI5MTI1NzA0LDExOT
 k2MzA1MzUsMTM2MDYwNjRdfQ==
 -->
