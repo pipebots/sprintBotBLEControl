@@ -1,5 +1,6 @@
 # Sprint 2 Robot Documentation
-This is a mix between a report on Sprint 2 and a document detailing how 
+The purpose of this document is to record key information about the design of the robot, any lessons from the sprint and to help other themes use the platform for further testing once the sprint is complete. 
+
 - Version 0.0.1
 	- My [NF] first attempt at documenting the mechanical, electrical and software aspects of Sprintbot, from a Theme 3 perspective. 
 
@@ -51,6 +52,6 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzUzODQ2MTUyLC0yMTI5MTI1NzA0LDExOT
-k2MzA1MzUsMTM2MDYwNjRdfQ==
+eyJoaXN0b3J5IjpbLTEzODQ4MzI1MzEsLTIxMjkxMjU3MDQsMT
+E5OTYzMDUzNSwxMzYwNjA2NF19
 -->
