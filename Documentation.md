@@ -26,7 +26,8 @@ This board has Bluetooth Low Energy (BLE) and a number of useful sensors onboard
 -   microphone
 -   gesture, proximity, light color and light intensity sensor 
 
-This board interfaces with the motor drivers, reads the encoder values
+In addition this board interfaces with the motor drivers, reads the encoder values and controls the LED rings. 
+
 ## Android App
 
 # Electronics
@@ -69,6 +70,6 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwNDMzMTE2MSwtMTI1MDQwOTQxMSwtMj
-EyOTEyNTcwNCwxMTk5NjMwNTM1LDEzNjA2MDY0XX0=
+eyJoaXN0b3J5IjpbLTEwNjc3MzcyODYsLTEyNTA0MDk0MTEsLT
+IxMjkxMjU3MDQsMTE5OTYzMDUzNSwxMzYwNjA2NF19
 -->
