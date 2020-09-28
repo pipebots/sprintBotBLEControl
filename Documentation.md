@@ -1,7 +1,7 @@
 # Sprint 2 Robot Documentation
 
 - Version 0.0.1
-	- My first attempt at documenting the mechanical, electrical and software aspects of Sprintbot, from a Theme 3 perspective.
+	- My [NF] first attempt at documenting the mechanical, electrical and software aspects of Sprintbot, from a Theme 3 perspective. 
 
 ## Sprint 2
 Sprint 2 was a 4 week long (26th Feb - 24th March 2020) hardware focused sprint, starting with a 2 day meeting and ending with a single day integration push, both at ICAIR. 
@@ -17,6 +17,8 @@ The robot developed in Sprint 2 of the Pipebots project may be refered to as _Sp
 - Add Solidworks file
 - Add Folder of final STLs
 - Add images here inc initial one
+During the initial meeting a conceptual design was agreed upon 
+![Initial Concept](https://drive.google.com/drive/folders/1twYxoXcRTZItLzTB_jrvbxy3_hq5Eg7F)
 
 # Software
 ## Robot Firmware
@@ -53,5 +55,5 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTc3NjIxMzgyLDEzNjA2MDY0XX0=
+eyJoaXN0b3J5IjpbMTQxNzU0MjY1NywxMzYwNjA2NF19
 -->
