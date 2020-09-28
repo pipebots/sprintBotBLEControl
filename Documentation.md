@@ -5,7 +5,7 @@
 
 ## Sprint 2
 - Add Sprint 2 briefing document here
-Sprint 2 was a 3 week long hardware focused sprint starting XX and 
+Sprint 2 was a 4 week long hardware focused sprint starting with a 2 day meeting at ICAIR and ending with a single day and 
 
 ## Nomenclature
 The robot developed in Sprint 2 of the Pipebots project may be refered to as _SprintBot_ or colloquially _BigBallBot_ 
@@ -52,5 +52,5 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDMwOTQ2MzM0LDEzNjA2MDY0XX0=
+eyJoaXN0b3J5IjpbLTE0Nzg0Nzk4MTUsMTM2MDYwNjRdfQ==
 -->
