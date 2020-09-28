@@ -36,7 +36,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 
 3D printing was used to manufacture the whole mechanical structure of the robot as it has the shortest leadtime of the methods avaliable to us, and allows great geometric freedom. Fused Filament Fabrication was used with an enhanced PLA material (Polymaker Polymax) as this is capable of producing parts that are functional and tough enough for testing use when producing parts of this size. 
 
-The robot was designed such that the
+The robot was designed such that 
 
 # Software
 ## Robot Firmware
@@ -73,6 +73,6 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTYxNDgxMzY2LC0yMTI5MTI1NzA0LDExOT
-k2MzA1MzUsMTM2MDYwNjRdfQ==
+eyJoaXN0b3J5IjpbLTIwMzA4MTMyMSwtMjEyOTEyNTcwNCwxMT
+k5NjMwNTM1LDEzNjA2MDY0XX0=
 -->
