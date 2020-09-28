@@ -17,8 +17,9 @@ The robot developed in Sprint 2 of the Pipebots project may be refered to as _Sp
 - Add Solidworks file
 - Add Folder of final STLs
 - Add images here inc initial one
-During the initial meeting a conceptual design was agreed upon 
-![Initial Concept](https://drive.google.com/drive/folders/1twYxoXcRTZItLzTB_jrvbxy3_hq5Eg7F)
+During the initial meeting a conceptual design was agreed upon. The robot was to be ball shaped to allow it to fit into pipes and go around corners while maximising the internal space avaliable for payloads. 
+![Initial Concept](https://drive.google.com/file/d/1viBwHpfX76i4-NcgxzkoE-wOJWZfd5r4/view)
+
 
 # Software
 ## Robot Firmware
@@ -55,5 +56,5 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTQxNzU0MjY1NywxMzYwNjA2NF19
+eyJoaXN0b3J5IjpbLTEzMTIzNTMxNDcsMTM2MDYwNjRdfQ==
 -->
