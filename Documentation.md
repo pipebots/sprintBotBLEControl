@@ -3,12 +3,18 @@
 - Version 0.0.1
 	- My first attempt at documenting the mechanical, electrical and software aspects of Sprintbot, from a Theme 3 perspective.
 
+## Sprint 2
 
 ## Nomenclature
 The robot developed in Sprint 2 of the Pipebots project may be refered to as _SprintBot_ or colloquially _BigBallBot_ 
 >Note: Some members call it _Sprintbot-2_ which maybe confusing as this was the first robot developed in a sprint, but was undertaken in the second sprint event of the project. 
 
 # Hardware
+### To Do
+- Add Solidworks file
+- Add Folder of final STLs
+- Add images here
+
 # Software
 ## Robot Firmware
 ## Android App
@@ -44,5 +50,5 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTA3NjI0MDA1N119
+eyJoaXN0b3J5IjpbMjA2MjM5NjQxMl19
 -->
