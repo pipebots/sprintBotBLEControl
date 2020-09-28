@@ -5,7 +5,8 @@
 
 
 # Nomenclature
-The robot developed in Sprint 2 of the Pipebots project may be refered
+The robot developed in Sprint 2 of the Pipebots project may be refered to as _SprintBot_ or _BallBot'_ 
+So memebers
 
 ## Create files and folders
 
@@ -142,5 +143,5 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1OTAyOTkxMjhdfQ==
+eyJoaXN0b3J5IjpbODA4MTY1NTI0XX0=
 -->
