@@ -31,7 +31,7 @@ During the initial meeting a conceptual design was agreed upon. The robot was to
 
 Designing, manufacturing, procuring and assembling the components required for a mobile robot designed to go into a real outdoor environment is a very difficult task in the time constrains of a sprint. 
 To achieve it we first decided upon the components that must be bought externally (motors, motor drivers gears etc.) before finialising our mechanical design while these were on order. Procuring specialist components in a short timeframe is a challenge that shoud not be overlooked in future sprints and it must be accepted that the costs will rise due delivery costs and the potential for design changes to make parts obsolete. 
-For the most part this was avoided, but it was decided to 3D print the gears rather than use the machined ones that wer
+For the most part this was avoided, but it was decided to 3D print the gears rather than use the machined ones that were ordered as this gave a much greater flexibility in design and considerablly reduced the weight. The 
 
 # Software
 ## Robot Firmware
@@ -68,6 +68,6 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5MDIwMTc5MTgsLTIxMjkxMjU3MDQsMT
+eyJoaXN0b3J5IjpbLTEwNDQ0MjEyNzEsLTIxMjkxMjU3MDQsMT
 E5OTYzMDUzNSwxMzYwNjA2NF19
 -->
