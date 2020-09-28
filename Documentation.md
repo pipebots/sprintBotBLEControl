@@ -29,7 +29,8 @@ During the initial meeting a conceptual design was agreed upon. The robot was to
 ![enter image description here](https://leeds365.sharepoint.com/sites/TEAM-EPSRCPipebots/Shared%20Documents/Sprint%202/Photos%20and%20Videos/IMG_20200826_094830%20b.jpg =400x400)
 *Final Robot*
 
-Designing, manufacturing and assembling
+Designing, manufacturing, procuring and assembling the components required for a mobile robot designed to go into a real outdoor environment is a very difficult task in the time constrains of a sprint. 
+To achieve it we 
 # Software
 ## Robot Firmware
 ## Android App
@@ -65,6 +66,6 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU3ODk4NzkxNSwtMjEyOTEyNTcwNCwxMT
-k5NjMwNTM1LDEzNjA2MDY0XX0=
+eyJoaXN0b3J5IjpbMzEzMDI0NTg2LC0yMTI5MTI1NzA0LDExOT
+k2MzA1MzUsMTM2MDYwNjRdfQ==
 -->
