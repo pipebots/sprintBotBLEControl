@@ -17,6 +17,8 @@ The robot developed in Sprint 2 of the Pipebots project may be refered to as _Sp
 - Add Solidworks file
 - Add Folder of final STLs
 - Add images of first version 
+- Add technical details such as size
+- explain drive system
 
 During the initial meeting a conceptual design was agreed upon. The robot was to be ball shaped to allow it to fit into pipes and go around corners while maximising the internal space avaliable for payloads. 
 
@@ -36,7 +38,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 
 3D printing was used to manufacture the whole mechanical structure of the robot as it has the shortest leadtime of the methods avaliable to us, and allows great geometric freedom. Fused Filament Fabrication was used with an enhanced PLA material (Polymaker Polymax) as this is capable of producing parts that are functional and tough enough for testing use when producing parts of this size. 
 
-The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and The robot only uses 4 major parts per side, allowing simple assembly. 
+The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 # Software
 ## Robot Firmware
@@ -73,6 +75,6 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjM0NDI0ODE2LC0yMTI5MTI1NzA0LDExOT
-k2MzA1MzUsMTM2MDYwNjRdfQ==
+eyJoaXN0b3J5IjpbLTE5ODI0NTg4NzUsLTIxMjkxMjU3MDQsMT
+E5OTYzMDUzNSwxMzYwNjA2NF19
 -->
