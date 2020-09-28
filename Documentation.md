@@ -26,6 +26,8 @@ During the initial meeting a conceptual design was agreed upon. The robot was to
 ![Final Render](https://leeds365.sharepoint.com/sites/TEAM-EPSRCPipebots/Shared%20Documents/Sprint%202/Photos%20and%20Videos/FancyRender.jpg =400x400)
 *Final Render*
 
+![enter image description here](https://leeds365.sharepoint.com/sites/TEAM-EPSRCPipebots/Shared%20Documents/Sprint%202/Photos%20and%20Videos/IMG_20200826_094830%20b.jpg =400x400)
+*Final Robot*
 
 
 # Software
@@ -63,6 +65,6 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjE1MDU3MTI1LDExOTk2MzA1MzUsMTM2MD
-YwNjRdfQ==
+eyJoaXN0b3J5IjpbLTIxMjkxMjU3MDQsMTE5OTYzMDUzNSwxMz
+YwNjA2NF19
 -->
