@@ -83,6 +83,9 @@ long previousMillis,  prevMillis1, prevMillis2, prevMillis3 = 0;
 int encoder1Prev, encoder2Prev = 0;
 int auto_case, y = 6; //defualt is stop case
 bool auto_mode = false;
+long timeoutMillis = 0;
+int timeoutTime = 0;
+bool timeoutFlag = false;
 
 //params for ramping motor speed
 bool ramp_flag_1, ramp_flag_2 = false;
@@ -189,6 +192,11 @@ void loop() {
       if (currentMillis - prevMillis3 >= 1000){ //send JSON every X ms here (100ms causes problems, 500ms is fine)
         sendJSON();
         prevMillis3 = currentMillis;
+      }
+      currentMillis = millis();
+      if (timeoutFlag == true && (currentMillis - timeoutMillis >= timeoutTime)){
+        auto_case = 6; //if timout reached then stop
+        timeoutFlag = false;
       }
 
       listenJSON();
@@ -431,7 +439,7 @@ void sendJSON(){
 
 void listenJSON(){
   if(Serial.available()){
-    const size_t capacity = JSON_OBJECT_SIZE(2)+40;
+    const size_t capacity = JSON_OBJECT_SIZE(3)+40;
     StaticJsonDocument<capacity> readJson;
     // Deserialize the JSON document
     DeserializationError error = deserializeJson(readJson, Serial);
@@ -450,6 +458,12 @@ void listenJSON(){
       speedLimit = readJson["spd_limit"];
       //Serial.println("updated values");
       }
+      if(readJson.containsKey("timeout")){
+      timeoutTime = readJson["timeout"];
+      timeoutMillis = millis();
+      timeoutFlag = true;
+      }
+
     }
 
     //    deserializeJson(readJson,Serial);
