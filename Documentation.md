@@ -13,6 +13,7 @@ The robot developed in Sprint 2 of the Pipebots project may be refered to as _Sp
 >Note: Some members call it _Sprintbot-2_ which maybe confusing as this was the first robot developed in a sprint, but was undertaken in the second sprint event of the project. 
 
 # Hardware
+>This part is not currently intended to be 
 ### To Do
 - Add Solidworks file
 - Add Folder of final STLs
@@ -41,12 +42,13 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 # Software
+
 ## Robot Firmware
 ## Android App
 # Electronics
 ## T3 Essentials
 ## Other Theme Payloads
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyNTI1NjU2NTAsLTIxMjkxMjU3MDQsMT
-E5OTYzMDUzNSwxMzYwNjA2NF19
+eyJoaXN0b3J5IjpbMTQ4MjY0MTcwNSwtMjEyOTEyNTcwNCwxMT
+k5NjMwNTM1LDEzNjA2MDY0XX0=
 -->
