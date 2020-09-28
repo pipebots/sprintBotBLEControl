@@ -5,7 +5,8 @@
 
 ## Sprint 2
 - Add Sprint 2 briefing document here
-Sprint 2 was a 4 week long hardware focused sprint starting with a 2 day meeting at ICAIR and ending with a single day and 
+Sprint 2 was a 4 week long (26th Feb - 24th March) hardware focused sprint starting with a 2 day meeting and ending with a single day integration push, both at ICAIR. 
+Due to the Covid-19 pandemic the end of the s
 
 ## Nomenclature
 The robot developed in Sprint 2 of the Pipebots project may be refered to as _SprintBot_ or colloquially _BigBallBot_ 
@@ -52,5 +53,5 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0Nzg0Nzk4MTUsMTM2MDYwNjRdfQ==
+eyJoaXN0b3J5IjpbNjg0OTM2ODgxLDEzNjA2MDY0XX0=
 -->
