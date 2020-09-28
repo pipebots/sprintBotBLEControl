@@ -4,8 +4,8 @@
 	- My first attempt at documenting the mechanical, electrical and software aspects of Sprintbot, from a Theme 3 perspective.
 
 
-# Nomclamature
-StackEdit stores your files in your browser, which means all your files are automatically saved locally and are accessible **offline!**
+# Nomenclature
+The robot developed in Sprint 2 of the Pipebots project may be refered
 
 ## Create files and folders
 
@@ -142,5 +142,5 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwODM1OTIxNjBdfQ==
+eyJoaXN0b3J5IjpbLTE1OTAyOTkxMjhdfQ==
 -->
