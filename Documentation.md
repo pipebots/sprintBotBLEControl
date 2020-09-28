@@ -4,11 +4,13 @@
 	- My first attempt at documenting the mechanical, electrical and software aspects of Sprintbot, from a Theme 3 perspective.
 
 
-# Nomenclature
+## Nomenclature
 The robot developed in Sprint 2 of the Pipebots project may be refered to as _SprintBot_ or colloquially _BigBallBot_ 
 >Note: Some members call it _Sprintbot-2_ which maybe confusing as this was the first robot developed in a sprint, but was undertaken in the second sprint event of the project. 
 
-## Create files and folders
+# Hardware
+# Software
+## Ar
 
 The file explorer is accessible using the button in left corner of the navigation bar. You can create a new file by clicking the **New file** button in the file explorer. You can also create folders by clicking the **New folder** button.
 
@@ -143,5 +145,5 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwOTM3MjA3MDhdfQ==
+eyJoaXN0b3J5IjpbODQyMTczMDY2XX0=
 -->
