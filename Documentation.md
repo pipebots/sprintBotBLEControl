@@ -32,7 +32,9 @@ During the initial meeting a conceptual design was agreed upon. The robot was to
 Designing, manufacturing, procuring and assembling the components required for a mobile robot designed to go into a real outdoor environment is a very difficult task in the time constrains of a sprint. 
 To achieve it we first decided upon the components that must be bought externally (motors, motor drivers gears etc.) before finialising our mechanical design while these were on order. Procuring specialist components in a short timeframe is a challenge that shoud not be overlooked in future sprints and it must be accepted that the costs will rise due delivery costs and the potential for design changes to make parts obsolete. 
 For the most part this was avoided, but it was decided to 3D print the gears rather than use the machined ones that were ordered as this gave a much greater flexibility in design and considerablly reduced the weight. 
-This allowed the large ring gears to have a larger hole in the centre, giving more space for other components and the outersurface was keyed to allow the tyre to grip when overmoulded. The bevel drive gears now have much larger teeth giving grea
+This allowed the large ring gears to have a larger hole in the centre, giving more space for other components and the outersurface was keyed to allow the tyre to grip when overmoulded. The bevel drive gears now have much larger teeth giving greater robustness and shaft hole is easily varied and D shaped as required. 
+
+3D printing was used to manufacture the whole mechanical structure of the robot as it has the
 
 # Software
 ## Robot Firmware
@@ -69,6 +71,6 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTM1NTY3NDE2MywtMjEyOTEyNTcwNCwxMT
-k5NjMwNTM1LDEzNjA2MDY0XX0=
+eyJoaXN0b3J5IjpbOTA4MjQ3OTE4LC0yMTI5MTI1NzA0LDExOT
+k2MzA1MzUsMTM2MDYwNjRdfQ==
 -->
