@@ -1,7 +1,7 @@
-# Sprint 2 Documentation
+# Sprint 2 Robot Documentation
 
 - Version 0.0.1
-	* My first attempt 
+	- My first attempt at documenting the mechanical, electrical and software aspects of Sprintbot, from a Theme 3 perspective.
 
 
 # Files
@@ -143,5 +143,5 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTUzODAzMDcyXX0=
+eyJoaXN0b3J5IjpbLTEyODc3MzY4ODVdfQ==
 -->
