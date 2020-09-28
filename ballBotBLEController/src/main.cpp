@@ -6,7 +6,10 @@ __________.__             ___.     |__|  __
  |____|   |__|   __/ \___  >___  /\____/|__| /____  >
              |__|        \/    \/                 \/
 
-Robot code for NANO 33 BLE Sense to pair with Robot controller App
+Robot code for NANO 33 BLE Sense to pair with T4 Autonomous control.
+bluetooth control and sensor polling removed to hopefully remove some issues.
+
+
 * Nick Fry 2019
 * Change robotName[] below for each board
 * Temp code currently commented out as may be useful for different job later
@@ -16,14 +19,9 @@ Robot code for NANO 33 BLE Sense to pair with Robot controller App
 */
 
 #include <Arduino.h>
-#include <ArduinoBLE.h>
 #include <PID_v1.h>
 #include <ArduinoJson.h>
 #include <Adafruit_NeoPixel.h>
-#include <Arduino_LSM9DS1.h> //IMU
-#include <MadgwickAHRS.h> //for filtering & fusing IMU data
-#include <Arduino_LPS22HB.h> //pressure sensor
-#include <Arduino_HTS221.h> //temp and humidity sensors
 
 void readButtons();
 void readJoystick();
@@ -37,13 +35,10 @@ void sendJSON();
 void listenJSON();
 void rampMotor1();
 void rampMotor2();
-void limitSpeed();
 void loadingChase(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip);
 void loadingChaseDoubleRing(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip, Adafruit_NeoPixel strip2);
 void ringColour(char colour, Adafruit_NeoPixel strip1, Adafruit_NeoPixel strip2);
 void doNeoRings();
-void readIMU();
-
 
 // Motor driver inputs
 #define ML_DIR 8
@@ -79,29 +74,10 @@ volatile int encoder1Ticks, encoder2Ticks, wheel1Pos, wheel2Pos, wheel1Revs, whe
 *  156.25*8= 1250 counts per rev of wheel */
 int countPerRev = 1250;
 
-//IMU variables
-Madgwick filter;
-int time1 = 50; //IMU read delay
-float ax, ay, az, gx, gy, gz, roll, pitch, yaw = 0;
-
-
 char robotName[] = "BigBallBot"; //Device Name - will appear as BLE descripton when connecting
-
-BLEService inputService("19B10000-E8F2-537E-4F6C-D104768A1214"); // BLE Service for all inputs from app
-BLEService outputService("1809"); //BLE Temperature service
-
-// BLE LED Switch Characteristic - custom 128-bit UUID, read and writable by central
-BLEByteCharacteristic buttonCharacteristic("19B10001-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
-BLEByteCharacteristic joystickXCharacteristic("19B10002-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
-BLEByteCharacteristic joystickYCharacteristic("19B10234-E8F2-537E-4F6C-D104768A1214", BLERead | BLEWrite);
-BLEFloatCharacteristic speedCharacteristic("19B10234-E8F2-537E-4F6C-D104768A1333", BLERead | BLEWrite);
-BLEFloatCharacteristic tempChar("2A1C", BLERead | BLEIndicate); //
-BLEDescriptor tempCharDescript("2901", "Temperature");
 
 const int ledPin = LED_BUILTIN; // pin to use for the LED
 byte tempArray[] = {};
-float temp = 0.0;
-float humidity = 0.0;
 bool gesture = 0;
 long previousMillis,  prevMillis1, prevMillis2, prevMillis3 = 0;
 int encoder1Prev, encoder2Prev = 0;
@@ -172,60 +148,6 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(4), doEncoder2, RISING);
   //(Due to gear ratio we dont need to track every pulse so just using interrupt on one channel Rising.)
 
-  // begin initialization
-  if (!BLE.begin()) {
-    Serial.println("starting BLE failed!");
-    while (1);
-  }
-
-  // set advertised local name and service UUID:
-  BLE.setLocalName(robotName);
-  BLE.setAdvertisedService(inputService);
-  BLE.setAdvertisedService(outputService);
-
-  // add the characteristic to the service
-  inputService.addCharacteristic(buttonCharacteristic);
-  inputService.addCharacteristic(joystickXCharacteristic);
-  inputService.addCharacteristic(joystickYCharacteristic);
-  inputService.addCharacteristic(speedCharacteristic);
-  outputService.addCharacteristic(tempChar);
-  tempChar.addDescriptor(tempCharDescript);
-
-  // add service
-  BLE.addService(inputService);
-  BLE.addService(outputService);
-
-  // set the initial value for the characeristic:
-  buttonCharacteristic.writeValue(0);
-  joystickXCharacteristic.writeValue(127);
-  joystickYCharacteristic.writeValue(127);
-  speedCharacteristic.writeValue(0.6); //make match app slider default value
-  tempChar.writeValue(0);
-
-  // start advertising
-  BLE.advertise();
-
-  Serial.println("BLE LED Peripheral");
-
-  Serial.println(ramp_inc);
-  Serial.println(ramp_delay);
-
-//setup IMU --------------------------------------------------
-   if (!IMU.begin()) {
-     Serial.println("Failed to initialize IMU!");
-   }
-   filter.begin(1000/time1); //sample rate in Hz
-
-//setup pressure sensor
-   if (!BARO.begin()) {
-     Serial.println("Failed to initialize pressure sensor!");
-   }
-
-//setup temp and humidity sensor
-  if (!HTS.begin()) {
-    Serial.println("Failed to initialize humidity temperature sensor!");
-  }
-
 //NEopixel startup
 strip1.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
 strip1.show();            // Turn OFF all pixels ASAP
@@ -239,26 +161,17 @@ loadingChaseDoubleRing(10, strip1.Color(0, 0, 100, 0), 24, strip1, strip2);
 //loadingChase(10, strip1.Color(0, 0, 100, 0), 24, strip1);
 strip1.fill(ringCol);
 //strip2.fill(ringCol);
+
+//turn on LEDs
+digitalWrite(ledPin, HIGH);
+ringCol = strip1.gamma32(strip1.Color(0, 255, 0, 0));
+
 }
 
 
 
 void loop() {
-  // listen for BLE peripherals to connect:
-  BLEDevice central = BLE.central();
 
-  // if a central is connected to peripheral:
-  if (central) {
-    Serial.print("Connected to central: ");
-    // print the central's MAC address:
-    Serial.println(central.address());
-
-    //turn on LEDs
-    digitalWrite(ledPin, HIGH);
-    ringCol = strip1.gamma32(strip1.Color(0, 255, 0, 0));
-
-    // while the central is still connected to peripheral:
-    while (central.connected()) {
 
     long currentMillis = millis();
       // if 20ms have passed, check the speed
@@ -274,44 +187,19 @@ void loop() {
       }
       currentMillis = millis();
       if (currentMillis - prevMillis3 >= 1000){ //send JSON every X ms here (100ms causes problems, 500ms is fine)
-        readIMU();
         sendJSON();
         prevMillis3 = currentMillis;
       }
 
       listenJSON();
       readButtons();
-      readJoystick();
       calcPID();
-      limitSpeed();
       doNeoRings();
     }
 
-    // when the central disconnects:
-    Serial.print(F("Disconnected from central: "));
-    Serial.println(central.address());
-    driveMotor(ML_PWM, ML_DIR, 0); //stop robot if bluetooth disconnects
-    driveMotor(MR_PWM, MR_DIR, 0);
-    pid_ramp_1 = 0;
-    pid_ramp_2 = 0;
-    ramp_flag_1 = false;
-    ramp_flag_2 = false;
-  }
-}
-
 void readButtons(){
-  //most of these buttons no longer exist in app
   // if the remote device wrote to the characteristic,
-      Serial.print("Auto mode: ");
-      Serial.println(auto_mode);
-      if (auto_mode == true){ //if auto turned on in app use values from listenJSON
-        y = auto_case;
-        Serial.println("AUTO true");
-      }
-      if (buttonCharacteristic.written()) { //app buttons take priority
-        y = buttonCharacteristic.value();
-      }
-        switch (y) {
+      switch (auto_case) {
           case 0:
             //Serial.println("LED off");
             ringCol = strip1.gamma32(strip1.Color(0, 0, 0, 0));
@@ -409,16 +297,18 @@ void readButtons(){
             auto_mode = true; //flip bool
             break;
           case 12:
+            //same as STOP (6) case currently
             //Serial.println("E-STOP");
             dotCol = strip1.gamma32(strip1.Color(255, 0, 0, 0));
             ringCol = strip1.gamma32(strip1.Color(0, 0, 0, 0));
-            ramp_flag_1 = false;
-            ramp_flag_2 = false;
-            BLE.disconnect(); //this also turns off motors
-            //WARNING - Robot needs hard resetting to recover from e-stop
+            pid_ramp_1 = 0;
+            pid_ramp_2 = 0;
+            ramp_flag_1 = true;
+            ramp_flag_2 = true;
             break;
           case 13:
-              //Serial.println("MAnual Control");
+              //not used in this case
+              //Serial.println("Manual Control");
               dotCol = strip1.gamma32(strip1.Color(100, 100, 200, 0));
               auto_mode = false; //flip bool
               break;
@@ -430,93 +320,6 @@ void readButtons(){
         }
 }
 
-void readJoystick(){
-    uint8_t xjoy, yjoy;
-
-    if (joystickXCharacteristic.written() || joystickYCharacteristic.written()) {
-      xjoy = joystickXCharacteristic.value();
-      yjoy = joystickYCharacteristic.value();
-      int8_t xmap = map(xjoy, 0, 254, -128, 127); //convert to range joyDiffDrive is expecting
-      int8_t ymap = map(yjoy, 0, 254, 127, -128);
-      joyDiffDrive(xmap*speedLimit,ymap*speedLimit);
-
-/*    // debug
-      Serial.print("x: ");
-      Serial.print(xjoy);
-      Serial.print(" y: ");
-      Serial.print(yjoy);
-      Serial.print(" xmap: ");
-      Serial.println(xmap);
-      Serial.print(" ymap: ");
-      Serial.println(ymap);
-*/
-    }
-}
-
-void joyDiffDrive(int nJoyX, int nJoyY){
-  // Based upon:
-  // Differential Steering Joystick Algorithm
-  // ========================================
-  //   by Calvin Hass
-  //   https://www.impulseadventure.com/elec/robot-differential-steering.html
-  //
-  // Converts a single dual-axis joystick into a differential
-  // drive motor control, with support for both drive, turn
-  // and pivot operations.
-  //
-
-  // INPUTS
-  //int     nJoyX;              // Joystick X input                     (-128..+127)
-  //int     nJoyY;              // Joystick Y input                     (-128..+127)
-
-  // OUTPUTS
-  int     nMotMixL;           // Motor (left)  mixed output           (-128..+127)
-  int     nMotMixR;           // Motor (right) mixed output           (-128..+127)
-
-  // CONFIG
-  // - fPivYLimt  : The threshold at which the pivot action starts
-  //                This threshold is measured in units on the Y-axis
-  //                away from the X-axis (Y=0). A greater value will assign
-  //                more of the joystick's range to pivot actions.
-  //                Allowable range: (0..+127)
-  float fPivYLimit = 32.0;
-
-  // TEMP VARIABLES
-  float   nMotPremixL;    // Motor (left)  premixed output        (-128..+127)
-  float   nMotPremixR;    // Motor (right) premixed output        (-128..+127)
-  int     nPivSpeed;      // Pivot Speed                          (-128..+127)
-  float   fPivScale;      // Balance scale b/w drive and pivot    (   0..1   )
-
-
-  // Calculate Drive Turn output due to Joystick X input
-  if (nJoyY >= 0) {
-    // Forward
-    nMotPremixL = (nJoyX>=0)? 127.0 : (127.0 + nJoyX);
-    nMotPremixR = (nJoyX>=0)? (127.0 - nJoyX) : 127.0;
-  } else {
-    // Reverse
-    nMotPremixL = (nJoyX>=0)? (127.0 - nJoyX) : 127.0;
-    nMotPremixR = (nJoyX>=0)? 127.0 : (127.0 + nJoyX);
-  }
-
-  // Scale Drive output due to Joystick Y input (throttle)
-  nMotPremixL = nMotPremixL * nJoyY/128.0;
-  nMotPremixR = nMotPremixR * nJoyY/128.0;
-
-  // Now calculate pivot amount
-  // - Strength of pivot (nPivSpeed) based on Joystick X input
-  // - Blending of pivot vs drive (fPivScale) based on Joystick Y input
-  nPivSpeed = nJoyX;
-  fPivScale = (abs(nJoyY)>fPivYLimit)? 0.0 : (1.0 - abs(nJoyY)/fPivYLimit);
-
-  // Calculate final mix of Drive and Pivot
-  nMotMixL = (1.0-fPivScale)*nMotPremixL + fPivScale*( nPivSpeed);
-  nMotMixR = (1.0-fPivScale)*nMotPremixR + fPivScale*(-nPivSpeed);
-
-  // Convert to Motor PWM range
-  PID_SET_1 =  nMotMixL*2; //*2 to convert from -127..+127 to -254..+254
-  PID_SET_2 =  nMotMixR*2; //change PID setpoint
-}
 
 void driveMotor(int pwmPin, int dirPin, int spd){ //input speed -255 to +255, 0 is stop
   // Make sure the speed is within the limit.
@@ -613,32 +416,22 @@ void calcSpeed(){
 
 void sendJSON(){
   //Using JSON Doc format
-  const size_t capacity = JSON_ARRAY_SIZE(3) + JSON_OBJECT_SIZE(11);
+  const size_t capacity = JSON_OBJECT_SIZE(6)+40;
   StaticJsonDocument<capacity> doc;
-
-  JsonArray imu = doc.createNestedArray("imu");
-  imu.add(roll);
-  imu.add(pitch);
-  imu.add(yaw);
 
   doc["wheel1Pos"] = wheel1Pos;
   doc["wheel1Revs"] = wheel1Revs;
   doc["wheel2Pos"] = wheel2Pos;
   doc["wheel2Revs"] = wheel2Revs;
-  doc["pressure_kPa"] = BARO.readPressure(); //read pressure sensor
-  doc["temp_oC"] = HTS.readTemperature(); //read temp sensor in degrees celcius
-  doc["humidity_percent"] = HTS.readHumidity(); //humidity in %
-  doc["mv_case"] = auto_case;
+  doc["auto_case"] = auto_case;
   doc["spd_limit"] = speedLimit;
-  doc["auto_mode"] = auto_mode;
-
   serializeJson(doc, Serial);
   Serial.println("");
 }
 
 void listenJSON(){
   if(Serial.available()){
-    const size_t capacity = JSON_OBJECT_SIZE(3)+40;
+    const size_t capacity = JSON_OBJECT_SIZE(2)+40;
     StaticJsonDocument<capacity> readJson;
     // Deserialize the JSON document
     DeserializationError error = deserializeJson(readJson, Serial);
@@ -647,13 +440,19 @@ void listenJSON(){
     if (error) {
       Serial.print(F("deserializeJson() failed: "));
       Serial.println(error.c_str());
-      return;
+      //return;
     }
-    //    deserializeJson(readJson,Serial);
+    else{
+      if(readJson.containsKey("auto_case")){
+        auto_case = readJson["auto_case"];
+      }
+      if(readJson.containsKey("spd_limit")){
+      speedLimit = readJson["spd_limit"];
+      //Serial.println("updated values");
+      }
+    }
 
-    auto_case = readJson["mv_case"];
-    speedLimit = readJson["spd_limit"];
-    auto_mode = readJson["auto_mode"];
+    //    deserializeJson(readJson,Serial);
     //serializeJson(readJson, Serial);
     //Serial.println("");
   }
@@ -695,11 +494,6 @@ void rampMotor2(){ //use timer in loop to call
         ramp_flag_2 = false;
       }
     }
-  }
-}
-void limitSpeed(){
-  if (speedCharacteristic.written()) {
-    speedLimit = speedCharacteristic.value();
   }
 }
 void loadingChase(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip) {
@@ -838,20 +632,4 @@ void doNeoRings(){
   strip1.show();
 //  strip2.show();
 
-}
-void readIMU(){
-  long currentMillis3 = millis();
-  if (currentMillis3 - prevMillis3 >= time1) {
-       prevMillis3 = currentMillis3;
-       if (IMU.accelerationAvailable()) { //are these ifs required?
-        IMU.readAcceleration(ax, ay, az); //output in g
-      }
-       if (IMU.gyroscopeAvailable()) {
-       IMU.readGyroscope(gx, gy, gz); //output in degrees per second
-      }
-      filter.updateIMU(gx, gy, gz, ax,ay, az);
-      roll = filter.getRoll();
-      pitch = filter.getPitch();
-      yaw = filter.getYaw();
-  }
 }
