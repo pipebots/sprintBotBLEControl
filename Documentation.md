@@ -1,5 +1,5 @@
 # Sprint 2 Robot Documentation
-
+This is a mix between a report on Sprint 2 and a document detailing how 
 - Version 0.0.1
 	- My [NF] first attempt at documenting the mechanical, electrical and software aspects of Sprintbot, from a Theme 3 perspective. 
 
@@ -11,8 +11,6 @@ The briefing document is [here](https://drive.google.com/drive/folders/1twYxoXcR
 ## Nomenclature
 The robot developed in Sprint 2 of the Pipebots project may be refered to as _SprintBot_ or colloquially _BigBallBot_ 
 >Note: Some members call it _Sprintbot-2_ which maybe confusing as this was the first robot developed in a sprint, but was undertaken in the second sprint event of the project. 
-
-
 
 # Software
 
@@ -53,6 +51,6 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTc1ODgxMDkwNSwtMjEyOTEyNTcwNCwxMT
-k5NjMwNTM1LDEzNjA2MDY0XX0=
+eyJoaXN0b3J5IjpbNzUzODQ2MTUyLC0yMTI5MTI1NzA0LDExOT
+k2MzA1MzUsMTM2MDYwNjRdfQ==
 -->
