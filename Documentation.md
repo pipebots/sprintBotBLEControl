@@ -30,7 +30,7 @@ During the initial meeting a conceptual design was agreed upon. The robot was to
 *Final Robot*
 
 Designing, manufacturing, procuring and assembling the components required for a mobile robot designed to go into a real outdoor environment is a very difficult task in the time constrains of a sprint. 
-To achieve it we 
+To achieve it we first decided upon the components that must be bought externally (motors, motor drivers gears etc.) before finialising our mechanical design. This 
 # Software
 ## Robot Firmware
 ## Android App
@@ -66,6 +66,6 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMzEzMDI0NTg2LC0yMTI5MTI1NzA0LDExOT
-k2MzA1MzUsMTM2MDYwNjRdfQ==
+eyJoaXN0b3J5IjpbLTE4MTI1NDU4MzMsLTIxMjkxMjU3MDQsMT
+E5OTYzMDUzNSwxMzYwNjA2NF19
 -->
