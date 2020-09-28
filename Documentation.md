@@ -4,7 +4,8 @@
 	- My first attempt at documenting the mechanical, electrical and software aspects of Sprintbot, from a Theme 3 perspective.
 
 ## Sprint 2
-
+- Add Sprint 2 briefing document here
+Sprint 2 was a 3 week long hardware focused sprint starting XX and 
 ## Nomenclature
 The robot developed in Sprint 2 of the Pipebots project may be refered to as _SprintBot_ or colloquially _BigBallBot_ 
 >Note: Some members call it _Sprintbot-2_ which maybe confusing as this was the first robot developed in a sprint, but was undertaken in the second sprint event of the project. 
@@ -50,5 +51,5 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjA2MjM5NjQxMl19
+eyJoaXN0b3J5IjpbMTM2MDYwNjRdfQ==
 -->
