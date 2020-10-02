@@ -84,7 +84,7 @@ int encoder1Prev, encoder2Prev = 0;
 int auto_case, y = 6; //defualt is stop case
 bool auto_mode = false;
 long timeoutMillis = 0;
-int timeoutTime = 0;
+int timeoutTime = 1000;
 bool timeoutFlag = false;
 
 //params for ramping motor speed
@@ -189,7 +189,7 @@ void loop() {
         prevMillis2 = currentMillis;
       }
       currentMillis = millis();
-      if (currentMillis - prevMillis3 >= 50){ //send JSON every X ms here
+      if (currentMillis - prevMillis3 >= 20){ //send JSON every X ms here
         sendJSON();
         prevMillis3 = currentMillis;
         doNeoRings();
