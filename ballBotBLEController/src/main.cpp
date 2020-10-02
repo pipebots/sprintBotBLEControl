@@ -189,7 +189,11 @@ void loop() {
         prevMillis2 = currentMillis;
       }
       currentMillis = millis();
+<<<<<<< HEAD
       if (currentMillis - prevMillis3 >= 20){ //send JSON every X ms here
+=======
+      if (currentMillis - prevMillis3 >= 10){ //send JSON every X ms here
+>>>>>>> e1236efb0345e94e937f34445a2d5373fd6aebb5
         sendJSON();
         prevMillis3 = currentMillis;
         doNeoRings();
