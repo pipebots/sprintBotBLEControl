@@ -116,7 +116,7 @@ PID motorPID1(&PID_IN_1, &PID_OUT_1, &PID_SET_1, kp, ki, kd, DIRECT);
 PID motorPID2(&PID_IN_2, &PID_OUT_2, &PID_SET_2, kp, ki, kd, DIRECT);
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
 //  while (!Serial); //This stops the program running until the serial monitor is opened!
 
   //set PID ranges to -255 to 255
@@ -189,9 +189,10 @@ void loop() {
         prevMillis2 = currentMillis;
       }
       currentMillis = millis();
-      if (currentMillis - prevMillis3 >= 1000){ //send JSON every X ms here (100ms causes problems, 500ms is fine)
+      if (currentMillis - prevMillis3 >= 50){ //send JSON every X ms here
         sendJSON();
         prevMillis3 = currentMillis;
+        doNeoRings();
       }
       currentMillis = millis();
       if (timeoutFlag == true && (currentMillis - timeoutMillis >= timeoutTime)){
@@ -202,7 +203,7 @@ void loop() {
       listenJSON();
       readButtons();
       calcPID();
-      doNeoRings();
+
     }
 
 void readButtons(){
