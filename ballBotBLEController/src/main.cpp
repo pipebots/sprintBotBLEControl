@@ -171,8 +171,6 @@ ringCol = strip1.gamma32(strip1.Color(0, 255, 0, 0));
 
 }
 
-
-
 void loop() {
 
 
@@ -192,18 +190,16 @@ void loop() {
       if (currentMillis - prevMillis3 >= 200){ //send JSON every X ms here
         sendJSON();
         prevMillis3 = currentMillis;
-        doNeoRings();
+        //doNeoRings();
       }
       currentMillis = millis();
       if (timeoutFlag == true && (currentMillis - timeoutMillis >= timeoutTime)){
         auto_case = 6; //if timout reached then stop
         timeoutFlag = false;
       }
-
       listenJSON();
       readButtons();
       calcPID();
-
     }
 
 void readButtons(){
@@ -440,7 +436,7 @@ void sendJSON(){
 
 void listenJSON(){
   if(Serial.available()){
-    const size_t capacity = JSON_OBJECT_SIZE(3)+40;
+    const size_t capacity = JSON_OBJECT_SIZE(3)+80;
     StaticJsonDocument<capacity> readJson;
     // Deserialize the JSON document
     DeserializationError error = deserializeJson(readJson, Serial);
@@ -451,7 +447,7 @@ void listenJSON(){
       Serial.println(error.c_str());
       //return;
     }
-    else{
+    //else{
       if(readJson.containsKey("auto_case")){
         auto_case = readJson["auto_case"];
       }
@@ -465,7 +461,7 @@ void listenJSON(){
       timeoutFlag = true;
       }
 
-    }
+  //  }
 
     //    deserializeJson(readJson,Serial);
     //serializeJson(readJson, Serial);
@@ -481,12 +477,14 @@ void rampMotor1(){ //use timer in loop to call
     else if(pid_ramp_1 > PID_SET_1){ //if desired setpoint is higher than current one
       PID_SET_1 = PID_SET_1 + ramp_inc; //increment value, change ratio of the and delay before calling function to change ramp
       if(PID_SET_1 >= pid_ramp_1){ //ramped up to desired setpoint so stop
+        PID_SET_1 = pid_ramp_1;
         ramp_flag_1 = false;
       }
     }
     else if (pid_ramp_1 < PID_SET_1){
       PID_SET_1 = PID_SET_1 - ramp_inc;
       if(PID_SET_1 <= pid_ramp_1){ //ramped down to desired setpoint so stop
+        PID_SET_1 = pid_ramp_1; //make sure not -itve
         ramp_flag_1 = false;
       }
     }
@@ -500,12 +498,14 @@ void rampMotor2(){ //use timer in loop to call
     else if(pid_ramp_2 > PID_SET_2){ //if desired setpoint is higher than current one
       PID_SET_2 = PID_SET_2 + ramp_inc; //increment value, change ratio of the and delay before calling function to change ramp
       if(PID_SET_2 >= pid_ramp_2){ //ramped up to desired setpoint so stop
+        PID_SET_2 = pid_ramp_2;
         ramp_flag_2 = false;
       }
     }
     else if (pid_ramp_2 < PID_SET_2){
       PID_SET_2 = PID_SET_2 - ramp_inc;
       if(PID_SET_2 <= pid_ramp_2){ //ramped down to desired setpoint so stop
+        PID_SET_2 = pid_ramp_2;
         ramp_flag_2 = false;
       }
     }
