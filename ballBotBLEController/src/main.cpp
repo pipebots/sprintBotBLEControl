@@ -119,6 +119,9 @@ void setup() {
   Serial.begin(115200);
 //  while (!Serial); //This stops the program running until the serial monitor is opened!
 
+// set timeout to 10 seconds
+Serial.setTimeout(10000);
+
   //set PID ranges to -255 to 255
   motorPID1.SetOutputLimits(-255,255);
   motorPID2.SetOutputLimits(-255,255);
@@ -186,12 +189,13 @@ void loop() {
         rampMotor2();
         prevMillis2 = currentMillis;
       }
-      currentMillis = millis();
+/*      currentMillis = millis();
       if (currentMillis - prevMillis3 >= 200){ //send JSON every X ms here
         sendJSON();
         prevMillis3 = currentMillis;
         //doNeoRings();
       }
+*/
       currentMillis = millis();
       if (timeoutFlag == true && (currentMillis - timeoutMillis >= timeoutTime)){
         auto_case = 6; //if timout reached then stop
