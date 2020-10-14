@@ -1,21 +1,22 @@
+
 /*                                  __
-__________.__             ___.     |__|  __
-\______   \__|_____   ____\_ |__   _||__/  |_  ______
- |     ___/  \____ \_/ __ \| __ \ /  _ \   __\/  ___/
- |    |   |  |  |_> >  ___/| \_\ (  O_O )  |  \___ \
- |____|   |__|   __/ \___  >___  /\____/|__| /____  >
+  __________.__             ___.     |__|  __
+  \______   \__|_____   ____\_ |__   _||__/  |_  ______
+  |     ___/  \____ \_/ __ \| __ \ /  _ \   __\/  ___/
+  |    |   |  |  |_> >  ___/| \_\ (  O_O )  |  \___ \
+  |____|   |__|   __/ \___  >___  /\____/|__| /____  >
              |__|        \/    \/                 \/
 
-Robot code for NANO 33 BLE Sense to pair with T4 Autonomous control.
-bluetooth control and sensor polling removed to hopefully remove some issues.
+  Robot code for NANO 33 BLE Sense to pair with T4 Autonomous control.
+  bluetooth control and sensor polling removed to hopefully remove some issues.
 
 
-* Nick Fry 2019
-* Change robotName[] below for each board
-* Temp code currently commented out as may be useful for different job later
-* This version is to use the Joystick app so allows for speed control
-*
-* (Encoder 2 is rght hand side)
+  Nick Fry 2019
+  Change robotName[] below for each board
+  Temp code currently commented out as may be useful for different job later
+  This version is to use the Joystick app so allows for speed control
+
+  (Encoder 2 is rght hand side)
 */
 
 #include <Arduino.h>
@@ -31,8 +32,8 @@ void calcPID();
 void doEncoder1();
 void doEncoder2();
 void calcSpeed();
-void sendJSON();
-void listenJSON();
+void sendCOM();
+void readCOM();
 void rampMotor1();
 void rampMotor2();
 void loadingChase(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip);
@@ -69,9 +70,9 @@ uint32_t dotCol = strip1.Color(0, 0, 255, 0);
 volatile int encoder1Ticks, encoder2Ticks, wheel1Pos, wheel2Pos, wheel1Revs, wheel2Revs = 0;
 
 /* Pololu 3499 has 20 counts per rev when counting both edges of both channels
-*  So just counting one edge of one channel, I have 5 counts per rev, and gear ratio of 31.25 = 156.25 counts per rev of gearbox output shaft.
-*  Spur gear to ring gear ratio is: Spur gear PCD=15mm, PCD internal ring =120mm 120/15=8
-*  156.25*8= 1250 counts per rev of wheel */
+   So just counting one edge of one channel, I have 5 counts per rev, and gear ratio of 31.25 = 156.25 counts per rev of gearbox output shaft.
+   Spur gear to ring gear ratio is: Spur gear PCD=15mm, PCD internal ring =120mm 120/15=8
+   156.25*8= 1250 counts per rev of wheel */
 int countPerRev = 1250;
 
 char robotName[] = "BigBallBot"; //Device Name - will appear as BLE descripton when connecting
@@ -81,10 +82,12 @@ byte tempArray[] = {};
 bool gesture = 0;
 long previousMillis,  prevMillis1, prevMillis2, prevMillis3 = 0;
 int encoder1Prev, encoder2Prev = 0;
-int auto_case, y = 6; //defualt is stop case
+int auto_case = 6;
+float Autocase = 6;
+int y = 6; //default is stop case
 bool auto_mode = false;
 long timeoutMillis = 0;
-int timeoutTime = 1000;
+int timeoutTime = 1500;
 bool timeoutFlag = false;
 
 //params for ramping motor speed
@@ -93,7 +96,7 @@ int pid_ramp_1, pid_ramp_2 = 0;
 int ramp_inc = 5;
 int ramp_delay = 20;
 float speedLimit = 0.6;
-
+String command;
 //setup PID controllers
 double PID_SET_1, PID_SET_2, PID_IN_1, PID_IN_2, PID_OUT_1, PID_OUT_2 = 0;
 /*More agressive tuning */
@@ -102,29 +105,26 @@ float ki = 9.477300047940169;
 float kd = 0.00841618143827802;
 
 /*Slower accel
-float kp = 0.12751539947693455;
-float ki = 3.025745585973288;
-float kd = 0.0026869703089283047; */
+  float kp = 0.12751539947693455;
+  float ki = 3.025745585973288;
+  float kd = 0.0026869703089283047; */
 
 
 /* small overshoot
-float kp = 0.5735857456094395;
-float ki = 13.610313303915005;
-float kd = 0.012086445044277552;*/
+  float kp = 0.5735857456094395;
+  float ki = 13.610313303915005;
+  float kd = 0.012086445044277552;*/
 
 PID motorPID1(&PID_IN_1, &PID_OUT_1, &PID_SET_1, kp, ki, kd, DIRECT);
 PID motorPID2(&PID_IN_2, &PID_OUT_2, &PID_SET_2, kp, ki, kd, DIRECT);
 
 void setup() {
-  Serial.begin(115200);
-//  while (!Serial); //This stops the program running until the serial monitor is opened!
-
-// set timeout to 10 seconds
-Serial.setTimeout(10000);
+  Serial.begin(9600);
+  //  while (!Serial); //This stops the program running until the serial monitor is opened!
 
   //set PID ranges to -255 to 255
-  motorPID1.SetOutputLimits(-255,255);
-  motorPID2.SetOutputLimits(-255,255);
+  motorPID1.SetOutputLimits(-255, 255);
+  motorPID2.SetOutputLimits(-255, 255);
   motorPID1.SetSampleTime(20); //defualt is 200ms
   motorPID2.SetSampleTime(20);
   //turn on PIDs
@@ -154,183 +154,181 @@ Serial.setTimeout(10000);
   attachInterrupt(digitalPinToInterrupt(4), doEncoder2, RISING);
   //(Due to gear ratio we dont need to track every pulse so just using interrupt on one channel Rising.)
 
-//NEopixel startup
-strip1.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
-strip1.show();            // Turn OFF all pixels ASAP
-strip1.setBrightness(BRIGHTNESS);
-strip2.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
-strip2.show();            // Turn OFF all pixels ASAP
-strip2.setBrightness(BRIGHTNESS);
-//removing strip2 from there and changing the function to loadingChase causes the robot to go crazy?!
-//Also adding more function to use strip2 later in the code has the same effect.
-loadingChaseDoubleRing(10, strip1.Color(0, 0, 100, 0), 24, strip1, strip2);
-//loadingChase(10, strip1.Color(0, 0, 100, 0), 24, strip1);
-strip1.fill(ringCol);
-//strip2.fill(ringCol);
+  //NEopixel startup
+  strip1.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip1.show();            // Turn OFF all pixels ASAP
+  strip1.setBrightness(BRIGHTNESS);
+  strip2.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
+  strip2.show();            // Turn OFF all pixels ASAP
+  strip2.setBrightness(BRIGHTNESS);
+  //removing strip2 from there and changing the function to loadingChase causes the robot to go crazy?!
+  //Also adding more function to use strip2 later in the code has the same effect.
+  loadingChaseDoubleRing(10, strip1.Color(0, 0, 100, 0), 24, strip1, strip2);
+  //loadingChase(10, strip1.Color(0, 0, 100, 0), 24, strip1);
+  strip1.fill(ringCol);
+  //strip2.fill(ringCol);
 
-//turn on LEDs
-digitalWrite(ledPin, HIGH);
-ringCol = strip1.gamma32(strip1.Color(0, 255, 0, 0));
+  //turn on LEDs
+  digitalWrite(ledPin, HIGH);
+  ringCol = strip1.gamma32(strip1.Color(0, 255, 0, 0));
 
 }
 
 void loop() {
 
+  long currentMillis = millis();
+  // if 20ms have passed, check the speed
+  if (currentMillis - previousMillis >= 20) {
+    previousMillis = currentMillis;
+    calcSpeed();
+  }
+  currentMillis = millis();
+  if (currentMillis - prevMillis2 >= ramp_delay) {
+    rampMotor1();
+    rampMotor2();
+    prevMillis2 = currentMillis;
+  }
+  currentMillis = millis();
+  if (currentMillis - prevMillis3 >= 400) { //send msg every X ms here
+    sendCOM();
+    prevMillis3 = currentMillis;
+    //doNeoRings();
+  }
+  currentMillis = millis();
+  if (timeoutFlag == true && (currentMillis - timeoutMillis >= timeoutTime)) {
+    auto_case = 6; //if timout reached then stop
+    timeoutFlag = false;
+  }
+  readCOM();
+  readButtons();
+  calcPID();
+}
 
-    long currentMillis = millis();
-      // if 20ms have passed, check the speed
-      if (currentMillis - previousMillis >= 20) {
-        previousMillis = currentMillis;
-        calcSpeed();
-      }
-      currentMillis = millis();
-      if (currentMillis - prevMillis2 >= ramp_delay){
-        rampMotor1();
-        rampMotor2();
-        prevMillis2 = currentMillis;
-      }
-/*      currentMillis = millis();
-      if (currentMillis - prevMillis3 >= 200){ //send JSON every X ms here
-        sendJSON();
-        prevMillis3 = currentMillis;
-        //doNeoRings();
-      }
-*/
-      currentMillis = millis();
-      if (timeoutFlag == true && (currentMillis - timeoutMillis >= timeoutTime)){
-        auto_case = 6; //if timout reached then stop
-        timeoutFlag = false;
-      }
-      listenJSON();
-      readButtons();
-      calcPID();
-    }
-
-void readButtons(){
+void readButtons() {
   // if the remote device wrote to the characteristic,
-      switch (auto_case) {
-          case 0:
-            //Serial.println("LED off");
-            ringCol = strip1.gamma32(strip1.Color(0, 0, 0, 0));
-            break;
-          case 1:
-            //Serial.println("LED on");
-            ringCol = strip1.gamma32(strip1.Color(0, 0, 0, 255));
-            break;
-          case 2:
-          //  Serial.println("FWD");
-            //greenLED();
-            dotCol = strip1.gamma32(strip1.Color(0, 255, 0, 0));
-            pid_ramp_1 = 255*speedLimit;
-            pid_ramp_2 = 255*speedLimit;
-            ramp_flag_1 = true;
-            ramp_flag_2 = true;
-            break;
-          case 3:
-            //Serial.println("Back");
-            //blueLED();
-            dotCol = strip1.gamma32(strip1.Color(0, 0, 255, 0));
-            pid_ramp_1 = -255*speedLimit;
-            pid_ramp_2 = -255*speedLimit;
-            ramp_flag_1 = true;
-            ramp_flag_2 = true;
-            break;
-          case 4:
-            //Serial.println("Left");
-            //cyanLED();
-            dotCol = strip1.gamma32(strip1.Color(0, 255, 255, 0));
-            pid_ramp_1 = 255*speedLimit;
-            pid_ramp_2 = -255*speedLimit;
-            ramp_flag_1 = true;
-            ramp_flag_2 = true;
-            break;
-          case 5:
-            //Serial.println("Right");
-            //magentaLED();
-            dotCol = strip1.gamma32(strip1.Color(255, 0, 255, 0));
-            pid_ramp_1 = -255*speedLimit;
-            pid_ramp_2 = 255*speedLimit;
-            ramp_flag_1 = true;
-            ramp_flag_2 = true;
-            break;
-          case 6:
-            //Serial.println("Stop");
-              //redLED();
-              dotCol = strip1.gamma32(strip1.Color(255, 0, 0, 0));
-              pid_ramp_1 = 0;
-              pid_ramp_2 = 0;
-              ramp_flag_1 = true;
-              ramp_flag_2 = true;
-            break;
-          case 7:
-            //Serial.println("Fwd Left");
-            //rgbLED(100,255,100);
-            dotCol = strip1.gamma32(strip1.Color(100, 255, 100, 0));
-            pid_ramp_1 = 255*speedLimit;
-            pid_ramp_2 = 0;
-            ramp_flag_1 = true;
-            ramp_flag_2 = true;
-            break;
-          case 8:
-            //Serial.println("Fwd Right");
-            //rgbLED(255,100,100);
-            dotCol = strip1.gamma32(strip1.Color(255, 100, 100, 0));
-            pid_ramp_1 = 0;
-            pid_ramp_2 = 255*speedLimit;
-            ramp_flag_1 = true;
-            ramp_flag_2 = true;
-            break;
-          case 9:
-            //Serial.println("Back Left");
-            //rgbLED(255,50,100);
-            dotCol = strip1.gamma32(strip1.Color(255, 50, 100, 0));
-            pid_ramp_1 = -255*speedLimit;
-            pid_ramp_2 = 0;
-            ramp_flag_1 = true;
-            ramp_flag_2 = true;
-            break;
-          case 10:
-            //Serial.println("Back Right");
-            //rgbLED(50,100,100);
-            dotCol = strip1.gamma32(strip1.Color(100, 255, 255, 0));
-            pid_ramp_1 = 0;
-            pid_ramp_2 = -255*speedLimit;
-            ramp_flag_1 = true;
-            ramp_flag_2 = true;
-            break;
-          case 11:
-            //Serial.println("Auto Control");
-            //yellowLED();
-            dotCol = strip1.gamma32(strip1.Color(255, 255, 0, 0));
-            //gesture = !gesture; //flip bool
-            auto_mode = true; //flip bool
-            break;
-          case 12:
-            //same as STOP (6) case currently
-            //Serial.println("E-STOP");
-            dotCol = strip1.gamma32(strip1.Color(255, 0, 0, 0));
-            ringCol = strip1.gamma32(strip1.Color(0, 0, 0, 0));
-            pid_ramp_1 = 0;
-            pid_ramp_2 = 0;
-            ramp_flag_1 = true;
-            ramp_flag_2 = true;
-            break;
-          case 13:
-              //not used in this case
-              //Serial.println("Manual Control");
-              dotCol = strip1.gamma32(strip1.Color(100, 100, 200, 0));
-              auto_mode = false; //flip bool
-              break;
-          default:
-              Serial.print(y);
-              Serial.println(" Error - no cases match");
-              // whiteLED();
-              break;
-        }
+  switch (auto_case) {
+    case 0:
+      //Serial.println("LED off");
+      ringCol = strip1.gamma32(strip1.Color(0, 0, 0, 0));
+      break;
+    case 1:
+      //Serial.println("LED on");
+      ringCol = strip1.gamma32(strip1.Color(0, 0, 0, 255));
+      break;
+    case 2:
+      //  Serial.println("FWD");
+      //greenLED();
+      dotCol = strip1.gamma32(strip1.Color(0, 255, 0, 0));
+      pid_ramp_1 = 255 * speedLimit;
+      pid_ramp_2 = 255 * speedLimit;
+      ramp_flag_1 = true;
+      ramp_flag_2 = true;
+      break;
+    case 3:
+      //Serial.println("Back");
+      //blueLED();
+      dotCol = strip1.gamma32(strip1.Color(0, 0, 255, 0));
+      pid_ramp_1 = -255 * speedLimit;
+      pid_ramp_2 = -255 * speedLimit;
+      ramp_flag_1 = true;
+      ramp_flag_2 = true;
+      break;
+    case 4:
+      //Serial.println("Left");
+      //cyanLED();
+      dotCol = strip1.gamma32(strip1.Color(0, 255, 255, 0));
+      pid_ramp_1 = 255 * speedLimit;
+      pid_ramp_2 = -255 * speedLimit;
+      ramp_flag_1 = true;
+      ramp_flag_2 = true;
+      break;
+    case 5:
+      //Serial.println("Right");
+      //magentaLED();
+      dotCol = strip1.gamma32(strip1.Color(255, 0, 255, 0));
+      pid_ramp_1 = -255 * speedLimit;
+      pid_ramp_2 = 255 * speedLimit;
+      ramp_flag_1 = true;
+      ramp_flag_2 = true;
+      break;
+    case 6:
+      //Serial.println("Stop");
+      //redLED();
+      dotCol = strip1.gamma32(strip1.Color(255, 0, 0, 0));
+      pid_ramp_1 = 0;
+      pid_ramp_2 = 0;
+      ramp_flag_1 = true;
+      ramp_flag_2 = true;
+      break;
+    case 7:
+      //Serial.println("Fwd Left");
+      //rgbLED(100,255,100);
+      dotCol = strip1.gamma32(strip1.Color(100, 255, 100, 0));
+      pid_ramp_1 = 255 * speedLimit;
+      pid_ramp_2 = 0;
+      ramp_flag_1 = true;
+      ramp_flag_2 = true;
+      break;
+    case 8:
+      //Serial.println("Fwd Right");
+      //rgbLED(255,100,100);
+      dotCol = strip1.gamma32(strip1.Color(255, 100, 100, 0));
+      pid_ramp_1 = 0;
+      pid_ramp_2 = 255 * speedLimit;
+      ramp_flag_1 = true;
+      ramp_flag_2 = true;
+      break;
+    case 9:
+      //Serial.println("Back Left");
+      //rgbLED(255,50,100);
+      dotCol = strip1.gamma32(strip1.Color(255, 50, 100, 0));
+      pid_ramp_1 = -255 * speedLimit;
+      pid_ramp_2 = 0;
+      ramp_flag_1 = true;
+      ramp_flag_2 = true;
+      break;
+    case 10:
+      //Serial.println("Back Right");
+      //rgbLED(50,100,100);
+      dotCol = strip1.gamma32(strip1.Color(100, 255, 255, 0));
+      pid_ramp_1 = 0;
+      pid_ramp_2 = -255 * speedLimit;
+      ramp_flag_1 = true;
+      ramp_flag_2 = true;
+      break;
+    case 11:
+      //Serial.println("Auto Control");
+      //yellowLED();
+      dotCol = strip1.gamma32(strip1.Color(255, 255, 0, 0));
+      //gesture = !gesture; //flip bool
+      auto_mode = true; //flip bool
+      break;
+    case 12:
+      //same as STOP (6) case currently
+      //Serial.println("E-STOP");
+      dotCol = strip1.gamma32(strip1.Color(255, 0, 0, 0));
+      ringCol = strip1.gamma32(strip1.Color(0, 0, 0, 0));
+      pid_ramp_1 = 0;
+      pid_ramp_2 = 0;
+      ramp_flag_1 = true;
+      ramp_flag_2 = true;
+      break;
+    case 13:
+      //not used in this case
+      //Serial.println("Manual Control");
+      dotCol = strip1.gamma32(strip1.Color(100, 100, 200, 0));
+      auto_mode = false; //flip bool
+      break;
+    default:
+//      Serial.print(y);
+      Serial.println(" Error - no cases match");
+//      whiteLED();
+      break;
+  }
 }
 
 
-void driveMotor(int pwmPin, int dirPin, int spd){ //input speed -255 to +255, 0 is stop
+void driveMotor(int pwmPin, int dirPin, int spd) { //input speed -255 to +255, 0 is stop
   // Make sure the speed is within the limit.
   if (spd > 255) {
     spd = 255;
@@ -338,71 +336,71 @@ void driveMotor(int pwmPin, int dirPin, int spd){ //input speed -255 to +255, 0 
     spd = -255;
   }
 
-  if (spd > -35 && spd < 35){//add deadzone to turn off motors if PID is close to 0.
+  if (spd > -35 && spd < 35) { //add deadzone to turn off motors if PID is close to 0.
     spd = 0;
   }
-  if (spd >= 0){
+  if (spd >= 0) {
     digitalWrite(dirPin, LOW);
     analogWrite(pwmPin, spd);
   }
-  else{
+  else {
     digitalWrite(dirPin, HIGH);
     analogWrite(pwmPin, -spd);
   }
 }
 
-void calcPID(){
-          //PID_SET_1 = setpoint set in read joystick or read buttons
-          //PID_IN_1 = speed for encoder counts
-          motorPID1.Compute(); //uses PID_SET_1 and PID_IN_1 to give PID_OUT_1 in -255 to 255
-          motorPID2.Compute();
-          driveMotor(ML_PWM, ML_DIR, PID_OUT_1);
-          driveMotor(MR_PWM, MR_DIR, PID_OUT_2);
-      /*  Serial.print(PID_IN_1);
-          Serial.print(" In 1 ");
-          Serial.print(PID_SET_1);
-          Serial.print(" Set 1 ");
-          Serial.print(PID_OUT_1);
-          Serial.println(" Out 1"); */
+void calcPID() {
+  //PID_SET_1 = setpoint set in read joystick or read buttons
+  //PID_IN_1 = speed for encoder counts
+  motorPID1.Compute(); //uses PID_SET_1 and PID_IN_1 to give PID_OUT_1 in -255 to 255
+  motorPID2.Compute();
+  driveMotor(ML_PWM, ML_DIR, PID_OUT_1);
+  driveMotor(MR_PWM, MR_DIR, PID_OUT_2);
+  /*  Serial.print(PID_IN_1);
+      Serial.print(" In 1 ");
+      Serial.print(PID_SET_1);
+      Serial.print(" Set 1 ");
+      Serial.print(PID_OUT_1);
+      Serial.println(" Out 1"); */
 }
 
-void doEncoder1(){
-  if(digitalRead(ENC_1_A)==digitalRead(ENC_1_B)){
+void doEncoder1() {
+  if (digitalRead(ENC_1_A) == digitalRead(ENC_1_B)) {
     wheel1Pos++;
     encoder1Ticks++;
-    if (wheel1Pos >countPerRev){
+    if (wheel1Pos > countPerRev) {
       wheel1Pos = 0;
       wheel1Revs++;
     }
   }
-  else{
+  else {
     wheel1Pos--;
     encoder1Ticks--;
-    if (wheel1Pos <-countPerRev){
+    if (wheel1Pos < -countPerRev) {
       wheel1Pos = 0;
       wheel1Revs--;
     }
   }
 }
-void doEncoder2(){
-  if(digitalRead(ENC_2_A)==digitalRead(ENC_2_B)){
+void doEncoder2() {
+  if (digitalRead(ENC_2_A) == digitalRead(ENC_2_B)) {
     wheel2Pos--; //opposite to Enc1 due to way motor is mounted
     encoder2Ticks--;
-    if (wheel2Pos <-countPerRev){
+    if (wheel2Pos < -countPerRev) {
       wheel2Pos = 0;
       wheel2Revs--;
     }
   }
-  else{
+  else {
     wheel2Pos++;
     encoder2Ticks++;
-    if (wheel2Pos >countPerRev){
+    if (wheel2Pos > countPerRev) {
       wheel2Pos = 0;
       wheel2Revs++;
     }
   }
 }
-void calcSpeed(){
+void calcSpeed() {
   //Get elapsed time
   long currentMillis = millis();
   long elapsedTime = currentMillis - prevMillis1;
@@ -415,100 +413,95 @@ void calcSpeed(){
   encoder2Prev = encoder2Ticks;
 
   //Using top speed to be 1000 counts per second i.e range of -1 to 1
-  double speed1 = (double)encoder1Change/(double)elapsedTime;
-  double speed2 = (double)encoder2Change/(double)elapsedTime;
+  double speed1 = (double)encoder1Change / (double)elapsedTime;
+  double speed2 = (double)encoder2Change / (double)elapsedTime;
   int pidIn1 = speed1 * 255; //convert to range -255 - 255
   int pidIn2 = speed2 * 255;
-  PID_IN_1 = constrain(pidIn1,-255,255);
-  PID_IN_2 = constrain(pidIn2,-255,255);
+  PID_IN_1 = constrain(pidIn1, -255, 255);
+  PID_IN_2 = constrain(pidIn2, -255, 255);
 }
 
-void sendJSON(){
+void sendCOM() {
+
   //Using JSON Doc format
-  const size_t capacity = JSON_OBJECT_SIZE(6)+40;
-  StaticJsonDocument<capacity> doc;
+  //const size_t capacity = JSON_OBJECT_SIZE(6) + 40;
+  //StaticJsonDocument<capacity> doc;
 
-  doc["wheel1Pos"] = wheel1Pos;
-  doc["wheel1Revs"] = wheel1Revs;
-  doc["wheel2Pos"] = wheel2Pos;
-  doc["wheel2Revs"] = wheel2Revs;
-  doc["auto_case"] = auto_case;
-  doc["spd_limit"] = speedLimit;
-  serializeJson(doc, Serial);
-  Serial.println("");
+  //doc["wheel1Pos"] = wheel1Pos;
+  //doc["wheel1Revs"] = wheel1Revs;
+  //doc["wheel2Pos"] = wheel2Pos;
+  //doc["wheel2Revs"] = wheel2Revs;
+  //doc["auto_case"] = auto_case;
+  //doc["spd_limit"] = speedLimit;
+  //serializeJson(doc, Serial);
+  //Serial.println("");
+//  Serial.print("Auto:");
+  Serial.print(auto_case);
+  Serial.print("spd:");
+  Serial.println(speedLimit);
 }
 
-void listenJSON(){
-  if(Serial.available()){
-    const size_t capacity = JSON_OBJECT_SIZE(3)+80;
-    StaticJsonDocument<capacity> readJson;
-    // Deserialize the JSON document
-    DeserializationError error = deserializeJson(readJson, Serial);
+void readCOM() {
 
-    // Test if parsing succeeds.
-    if (error) {
-      Serial.print(F("deserializeJson() failed: "));
-      Serial.println(error.c_str());
-      //return;
+  if (Serial.available()>0) {
+    char c = Serial.read();
+    if(c != '\n')
+    {
+      command += c;
     }
-    //else{
-      if(readJson.containsKey("auto_case")){
-        auto_case = readJson["auto_case"];
-      }
-      if(readJson.containsKey("spd_limit")){
-      speedLimit = readJson["spd_limit"];
-      //Serial.println("updated values");
-      }
-      if(readJson.containsKey("timeout")){
-      timeoutTime = readJson["timeout"];
+    else
+    {
+       //String command = Serial.readStringUntil('\n');
+      String part1 = command.substring(command.indexOf("a")+1,command.indexOf(","));
+      String part2 = command.substring(command.indexOf("s")+1,command.indexOf("\n")-1);
+
+      Autocase = part1.toFloat();
+      auto_case = (int)Autocase;
+      speedLimit = part2.toFloat();
+
       timeoutMillis = millis();
       timeoutFlag = true;
-      }
-
-  //  }
-
-    //    deserializeJson(readJson,Serial);
-    //serializeJson(readJson, Serial);
-    //Serial.println("");
+      command = "";
+    }
   }
 }
 
-void rampMotor1(){ //use timer in loop to call
-  if(ramp_flag_1 == true){
-    if(pid_ramp_1 == PID_SET_1){
+void rampMotor1() { //use timer in loop to call
+  if (ramp_flag_1 == true) {
+    if (pid_ramp_1 == PID_SET_1) {
       ramp_flag_1 = false;
     }
-    else if(pid_ramp_1 > PID_SET_1){ //if desired setpoint is higher than current one
+    else if (pid_ramp_1 > PID_SET_1) { //if desired setpoint is higher than current one
       PID_SET_1 = PID_SET_1 + ramp_inc; //increment value, change ratio of the and delay before calling function to change ramp
-      if(PID_SET_1 >= pid_ramp_1){ //ramped up to desired setpoint so stop
+      if (PID_SET_1 >= pid_ramp_1) { //ramped up to desired setpoint so stop
         PID_SET_1 = pid_ramp_1;
         ramp_flag_1 = false;
       }
     }
-    else if (pid_ramp_1 < PID_SET_1){
+    else if (pid_ramp_1 < PID_SET_1) {
       PID_SET_1 = PID_SET_1 - ramp_inc;
-      if(PID_SET_1 <= pid_ramp_1){ //ramped down to desired setpoint so stop
+      if (PID_SET_1 <= pid_ramp_1) { //ramped down to desired setpoint so stop
         PID_SET_1 = pid_ramp_1; //make sure not -itve
         ramp_flag_1 = false;
       }
     }
   }
 }
-void rampMotor2(){ //use timer in loop to call
-  if(ramp_flag_2 == true){
-    if(pid_ramp_2 == PID_SET_2){
+void rampMotor2() { //use timer in loop to call
+  if (ramp_flag_2 == true) {
+    if (pid_ramp_2 == PID_SET_2) {
       ramp_flag_2 = false;
     }
-    else if(pid_ramp_2 > PID_SET_2){ //if desired setpoint is higher than current one
+    else if (pid_ramp_2 > PID_SET_2) { //if desired setpoint is higher than current one
       PID_SET_2 = PID_SET_2 + ramp_inc; //increment value, change ratio of the and delay before calling function to change ramp
-      if(PID_SET_2 >= pid_ramp_2){ //ramped up to desired setpoint so stop
+      if (PID_SET_2 >= pid_ramp_2) { //ramped up to desired setpoint so stop
         PID_SET_2 = pid_ramp_2;
         ramp_flag_2 = false;
       }
     }
-    else if (pid_ramp_2 < PID_SET_2){
+    else if (pid_ramp_2 < PID_SET_2) {
       PID_SET_2 = PID_SET_2 - ramp_inc;
-      if(PID_SET_2 <= pid_ramp_2){ //ramped down to desired setpoint so stop
+      if (PID_SET_2 <= pid_ramp_2) { //ramped down to desired setpoint so stop
         PID_SET_2 = pid_ramp_2;
         ramp_flag_2 = false;
       }
@@ -522,13 +515,13 @@ void loadingChase(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip)
   int      loopNum       = 0;
   uint32_t lastTime      = millis();
 
-  for(;;) { // Repeat forever (or until a 'break' or 'return')
-    for(int i=0; i<strip.numPixels(); i++) {  // For each pixel in strip...
-      if(((i >= tail) && (i <= head)) ||      //  If between head & tail...
-         ((tail > head) && ((i >= tail) || (i <= head)))) {
+  for (;;) { // Repeat forever (or until a 'break' or 'return')
+    for (int i = 0; i < strip.numPixels(); i++) { // For each pixel in strip...
+      if (((i >= tail) && (i <= head)) ||     //  If between head & tail...
+          ((tail > head) && ((i >= tail) || (i <= head)))) {
         strip.setPixelColor(i, color); // Set colour
       } else {                                             // else off
-        strip.setPixelColor(i, strip.gamma32(strip.Color(0,0,0,0)));
+        strip.setPixelColor(i, strip.gamma32(strip.Color(0, 0, 0, 0)));
       }
     }
 
@@ -536,13 +529,13 @@ void loadingChase(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip)
     // There's no delay here, it just runs full-tilt until the timer and
     // counter combination below runs out.
 
-    if((millis() - lastTime) > speed) { // Time to update head/tail?
-      if(++head >= strip.numPixels()) {      // Advance head, wrap around
-        if(++loopNum >= loops) return;
+    if ((millis() - lastTime) > speed) { // Time to update head/tail?
+      if (++head >= strip.numPixels()) {     // Advance head, wrap around
+        if (++loopNum >= loops) return;
         head = 0;
         //Serial.println(loopNum);
       }
-      if(++tail >= strip.numPixels()) {      // Advance tail, wrap around
+      if (++tail >= strip.numPixels()) {     // Advance tail, wrap around
         tail = 0;
         head = ++head;
       }
@@ -557,15 +550,15 @@ void loadingChaseDoubleRing(int speed, uint32_t color, int loops, Adafruit_NeoPi
   int      loopNum       = 0;
   uint32_t lastTime      = millis();
 
-  for(;;) { // Repeat forever (or until a 'break' or 'return')
-    for(int i=0; i<strip.numPixels(); i++) {  // For each pixel in strip...
-      if(((i >= tail) && (i <= head)) ||      //  If between head & tail...
-         ((tail > head) && ((i >= tail) || (i <= head)))) {
+  for (;;) { // Repeat forever (or until a 'break' or 'return')
+    for (int i = 0; i < strip.numPixels(); i++) { // For each pixel in strip...
+      if (((i >= tail) && (i <= head)) ||     //  If between head & tail...
+          ((tail > head) && ((i >= tail) || (i <= head)))) {
         strip.setPixelColor(i, color); // Set colour
         strip2.setPixelColor(i, color); // Set colour
       } else {                                             // else off
-        strip.setPixelColor(i, strip.gamma32(strip.Color(0,0,0,0)));
-        strip2.setPixelColor(i, strip.gamma32(strip.Color(0,0,0,0)));
+        strip.setPixelColor(i, strip.gamma32(strip.Color(0, 0, 0, 0)));
+        strip2.setPixelColor(i, strip.gamma32(strip.Color(0, 0, 0, 0)));
       }
     }
 
@@ -574,13 +567,13 @@ void loadingChaseDoubleRing(int speed, uint32_t color, int loops, Adafruit_NeoPi
     // There's no delay here, it just runs full-tilt until the timer and
     // counter combination below runs out.
 
-    if((millis() - lastTime) > speed) { // Time to update head/tail?
-      if(++head >= strip.numPixels()) {      // Advance head, wrap around
-        if(++loopNum >= loops) return;
+    if ((millis() - lastTime) > speed) { // Time to update head/tail?
+      if (++head >= strip.numPixels()) {     // Advance head, wrap around
+        if (++loopNum >= loops) return;
         head = 0;
         //Serial.println(loopNum);
       }
-      if(++tail >= strip.numPixels()) {      // Advance tail, wrap around
+      if (++tail >= strip.numPixels()) {     // Advance tail, wrap around
         tail = 0;
         head = ++head;
       }
@@ -588,67 +581,69 @@ void loadingChaseDoubleRing(int speed, uint32_t color, int loops, Adafruit_NeoPi
     }
   }
 }
-void ringColour(char colour, Adafruit_NeoPixel strip1, Adafruit_NeoPixel strip2){
-  switch(colour){
+void ringColour(char colour, Adafruit_NeoPixel strip1, Adafruit_NeoPixel strip2) {
+  switch (colour) {
     case 'r': //Red
-        strip1.fill(strip1.Color(strip1.gamma8(255), 0, 0, 0));
-        strip2.fill(strip2.Color(strip2.gamma8(255), 0, 0, 0));
-        strip1.show();
-        strip2.show();
+      strip1.fill(strip1.Color(strip1.gamma8(255), 0, 0, 0));
+      strip2.fill(strip2.Color(strip2.gamma8(255), 0, 0, 0));
+      strip1.show();
+      strip2.show();
       break;
     case 'g': //Green
-        strip1.fill(strip1.Color(0, strip1.gamma8(255), 0, 0));
-        strip2.fill(strip2.Color(0, strip2.gamma8(255), 0, 0));
-        strip1.show();
-        strip2.show();
+      strip1.fill(strip1.Color(0, strip1.gamma8(255), 0, 0));
+      strip2.fill(strip2.Color(0, strip2.gamma8(255), 0, 0));
+      strip1.show();
+      strip2.show();
       break;
     case 'b': //blue
-        strip1.fill(strip1.Color(0, 0, strip1.gamma8(255), 0));
-        strip2.fill(strip2.Color(0, 0, strip2.gamma8(255), 0));
-        strip1.show();
-        strip2.show();
+      strip1.fill(strip1.Color(0, 0, strip1.gamma8(255), 0));
+      strip2.fill(strip2.Color(0, 0, strip2.gamma8(255), 0));
+      strip1.show();
+      strip2.show();
       break;
     case 'w': //White
-        strip1.fill(strip1.Color(0, 0, 0, strip1.gamma8(255)));
-        strip2.fill(strip2.Color(0, 0, 0, strip2.gamma8(255)));
-        strip1.show();
-        strip2.show();
+      strip1.fill(strip1.Color(0, 0, 0, strip1.gamma8(255)));
+      strip2.fill(strip2.Color(0, 0, 0, strip2.gamma8(255)));
+      strip1.show();
+      strip2.show();
       break;
     case 'o': //Off
-        strip1.fill(strip1.Color(0, 0, 0, 0));
-        strip2.fill(strip2.Color(0, 0, 0, 0));
-        strip1.show();
-        strip2.show();
+      strip1.fill(strip1.Color(0, 0, 0, 0));
+      strip2.fill(strip2.Color(0, 0, 0, 0));
+      strip1.show();
+      strip2.show();
       break;
     default:
-        //Error no matching case
-        strip1.fill(strip1.Color(20, 20, 20, 0));
-        strip2.fill(strip2.Color(20, 20, 20, 0));
-        strip1.show();
-        strip2.show();
+      //Error no matching case
+      strip1.fill(strip1.Color(20, 20, 20, 0));
+      strip2.fill(strip2.Color(20, 20, 20, 0));
+      strip1.show();
+      strip2.show();
       break;
   }
 }
-void doNeoRings(){
-  int ledL = encoder1Ticks/52; //which LED to turn on
+void doNeoRings() {
+  int ledL = encoder1Ticks / 52; //which LED to turn on
   ledL = ledL - (wheel1Revs * 24);
-  if (ledL <0){ ledL = 24 + ledL;}
+  if (ledL < 0) {
+    ledL = 24 + ledL;
+  }
 
-/*  int ledR = encoder2Ticks/52; //which LED to turn on
-  ledR = ledR - (wheel2Revs * 24);
-  if (ledR <0){ ledR = 24 + ledR;}
-*/
+  /*  int ledR = encoder2Ticks/52; //which LED to turn on
+    ledR = ledR - (wheel2Revs * 24);
+    if (ledR <0){ ledR = 24 + ledR;}
+  */
 
   //fill base colour
   strip1.fill(ringCol);
-//  strip2.fill(strip2.Color(0, 0, 0, 0));
+  //  strip2.fill(strip2.Color(0, 0, 0, 0));
 
   //Light LED depending on encoder position
-  strip1.setPixelColor(ledL,dotCol);
-//  strip2.setPixelColor(ledR,strip2.Color(0, 0, 0, 255) );
+  strip1.setPixelColor(ledL, dotCol);
+  //  strip2.setPixelColor(ledR,strip2.Color(0, 0, 0, 255) );
 
   //display
   strip1.show();
-//  strip2.show();
+  //  strip2.show();
 
 }
