@@ -219,8 +219,8 @@ void readButtons() {
       //  Serial.println("FWD");
       //greenLED();
       dotCol = strip1.gamma32(strip1.Color(0, 255, 0, 0));
-      pid_ramp_1 = 255 * speedLimit;
-      pid_ramp_2 = 255 * speedLimit;
+      pid_ramp_1 = -255 * speedLimit;
+      pid_ramp_2 = -255 * speedLimit;
       ramp_flag_1 = true;
       ramp_flag_2 = true;
       break;
@@ -228,8 +228,8 @@ void readButtons() {
       //Serial.println("Back");
       //blueLED();
       dotCol = strip1.gamma32(strip1.Color(0, 0, 255, 0));
-      pid_ramp_1 = -255 * speedLimit;
-      pid_ramp_2 = -255 * speedLimit;
+      pid_ramp_1 = 255 * speedLimit;
+      pid_ramp_2 = 255 * speedLimit;
       ramp_flag_1 = true;
       ramp_flag_2 = true;
       break;
@@ -237,8 +237,8 @@ void readButtons() {
       //Serial.println("Left");
       //cyanLED();
       dotCol = strip1.gamma32(strip1.Color(0, 255, 255, 0));
-      pid_ramp_1 = 255 * speedLimit;
-      pid_ramp_2 = -255 * speedLimit;
+      pid_ramp_1 = -255 * speedLimit;
+      pid_ramp_2 = 255 * speedLimit;
       ramp_flag_1 = true;
       ramp_flag_2 = true;
       break;
@@ -246,8 +246,8 @@ void readButtons() {
       //Serial.println("Right");
       //magentaLED();
       dotCol = strip1.gamma32(strip1.Color(255, 0, 255, 0));
-      pid_ramp_1 = -255 * speedLimit;
-      pid_ramp_2 = 255 * speedLimit;
+      pid_ramp_1 = 255 * speedLimit;
+      pid_ramp_2 = -255 * speedLimit;
       ramp_flag_1 = true;
       ramp_flag_2 = true;
       break;
@@ -264,7 +264,7 @@ void readButtons() {
       //Serial.println("Fwd Left");
       //rgbLED(100,255,100);
       dotCol = strip1.gamma32(strip1.Color(100, 255, 100, 0));
-      pid_ramp_1 = 255 * speedLimit;
+      pid_ramp_1 = -255 * speedLimit;
       pid_ramp_2 = 0;
       ramp_flag_1 = true;
       ramp_flag_2 = true;
@@ -274,7 +274,7 @@ void readButtons() {
       //rgbLED(255,100,100);
       dotCol = strip1.gamma32(strip1.Color(255, 100, 100, 0));
       pid_ramp_1 = 0;
-      pid_ramp_2 = 255 * speedLimit;
+      pid_ramp_2 = -255 * speedLimit;
       ramp_flag_1 = true;
       ramp_flag_2 = true;
       break;
@@ -282,7 +282,7 @@ void readButtons() {
       //Serial.println("Back Left");
       //rgbLED(255,50,100);
       dotCol = strip1.gamma32(strip1.Color(255, 50, 100, 0));
-      pid_ramp_1 = -255 * speedLimit;
+      pid_ramp_1 = 255 * speedLimit;
       pid_ramp_2 = 0;
       ramp_flag_1 = true;
       ramp_flag_2 = true;
@@ -292,7 +292,7 @@ void readButtons() {
       //rgbLED(50,100,100);
       dotCol = strip1.gamma32(strip1.Color(100, 255, 255, 0));
       pid_ramp_1 = 0;
-      pid_ramp_2 = -255 * speedLimit;
+      pid_ramp_2 = 255 * speedLimit;
       ramp_flag_1 = true;
       ramp_flag_2 = true;
       break;
@@ -366,14 +366,6 @@ void calcPID() {
 
 void doEncoder1() {
   if (digitalRead(ENC_1_A) == digitalRead(ENC_1_B)) {
-    wheel1Pos++;
-    encoder1Ticks++;
-    if (wheel1Pos > countPerRev) {
-      wheel1Pos = 0;
-      wheel1Revs++;
-    }
-  }
-  else {
     wheel1Pos--;
     encoder1Ticks--;
     if (wheel1Pos < -countPerRev) {
@@ -381,22 +373,30 @@ void doEncoder1() {
       wheel1Revs--;
     }
   }
+  else {
+    wheel1Pos++;
+    encoder1Ticks++;
+    if (wheel1Pos > countPerRev) {
+      wheel1Pos = 0;
+      wheel1Revs++;
+    }
+  }
 }
 void doEncoder2() {
   if (digitalRead(ENC_2_A) == digitalRead(ENC_2_B)) {
-    wheel2Pos--; //opposite to Enc1 due to way motor is mounted
-    encoder2Ticks--;
-    if (wheel2Pos < -countPerRev) {
-      wheel2Pos = 0;
-      wheel2Revs--;
-    }
-  }
-  else {
-    wheel2Pos++;
+    wheel2Pos++; //opposite to Enc1 due to way motor is mounted
     encoder2Ticks++;
     if (wheel2Pos > countPerRev) {
       wheel2Pos = 0;
       wheel2Revs++;
+    }
+  }
+  else {
+    wheel2Pos--;
+    encoder2Ticks--;
+    if (wheel2Pos < -countPerRev) {
+      wheel2Pos = 0;
+      wheel2Revs--;
     }
   }
 }
