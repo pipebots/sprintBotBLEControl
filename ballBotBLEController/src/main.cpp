@@ -366,14 +366,6 @@ void calcPID() {
 
 void doEncoder1() {
   if (digitalRead(ENC_1_A) == digitalRead(ENC_1_B)) {
-    wheel1Pos--;
-    encoder1Ticks--;
-    if (wheel1Pos < -countPerRev) {
-      wheel1Pos = 0;
-      wheel1Revs--;
-    }
-  }
-  else {
     wheel1Pos++;
     encoder1Ticks++;
     if (wheel1Pos > countPerRev) {
@@ -381,22 +373,30 @@ void doEncoder1() {
       wheel1Revs++;
     }
   }
+  else {
+    wheel1Pos--;
+    encoder1Ticks--;
+    if (wheel1Pos < -countPerRev) {
+      wheel1Pos = 0;
+      wheel1Revs--;
+    }
+  }
 }
 void doEncoder2() {
   if (digitalRead(ENC_2_A) == digitalRead(ENC_2_B)) {
-    wheel2Pos++; //opposite to Enc1 due to way motor is mounted
-    encoder2Ticks++;
-    if (wheel2Pos > countPerRev) {
-      wheel2Pos = 0;
-      wheel2Revs++;
-    }
-  }
-  else {
-    wheel2Pos--;
+    wheel2Pos--; //opposite to Enc1 due to way motor is mounted
     encoder2Ticks--;
     if (wheel2Pos < -countPerRev) {
       wheel2Pos = 0;
       wheel2Revs--;
+    }
+  }
+  else {
+    wheel2Pos++;
+    encoder2Ticks++;
+    if (wheel2Pos > countPerRev) {
+      wheel2Pos = 0;
+      wheel2Revs++;
     }
   }
 }
