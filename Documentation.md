@@ -33,7 +33,7 @@ Component List:
 - 2 x [Cytron MD13S Motor Drivers](https://www.cytron.io/p-13amp-6v-30v-dc-motor-driver)
 - 2 x [Pololu Encoders](https://www.pololu.com/product/3499)
 - 2 x [65mm Neopixel LED rings](https://shop.pimoroni.com/products/neopixel-ring-24-x-5050-rgbw-leds-w-integrated-drivers?variant=17450439431)
-- Battery and protection circuit
+- 2S 8A Battery and [protection circuit](https://www.amazon.co.uk/TECNOIOT-Lithium-Battery-Charger-Protection/dp/B07T3Y8BLD/ref=pd_sbs_107_3/261-3493005-3721666?_encoding=UTF8&pd_rd_i=B07T3Y8BLD&pd_rd_r=0dc0d0fd-9ead-485c-a5e4-70e66ca22b89&pd_rd_w=v4RQp&pd_rd_wg=JtENh&pf_rd_p=96cae456-8d7a-4bc1-91c7-9b20b4dfd7c9&pf_rd_r=S5YJ5PVFCHBJ3NF28B34&psc=1&refRID=S5YJ5PVFCHBJ3NF28B34)
 - [Pololu 5V, 9A Step-Down Voltage Regulator D24V90F5](https://www.active-robots.com/pololu-5v-9a-step-down-voltage-regulator-d24v90f5.html)
 
 ## Other Theme Payloads
@@ -87,7 +87,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTUxMzc4NTkxNiw5ODQ5MjI2OTMsNDY4MD
+eyJoaXN0b3J5IjpbLTczODU0MDAzMiw5ODQ5MjI2OTMsNDY4MD
 EyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIw
 LDE0NDIxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEyNTcwNCwxMT
 k5NjMwNTM1LDEzNjA2MDY0XX0=
