@@ -39,10 +39,11 @@ Component List:
 ## Other Theme Payloads
 Given the origional time scale only minimal integration was going to be possible. With the extra time, a board was created that allows all of the sensors to be easily plugged into the Pi at the same time. 
 ### T2 Sensors
-This theme has twi distinct payloads to test ultrasound and acoustic sensors.
+This theme has two distinct payloads to test ultrasound and acoustic sensors.
 1. Ultrasound
 	- Red Pitaya 
 	- 4 x Ultrasound Transducers in 12cm square
+This 
 2. Acoustic
 	- Raspberry Pi
 	- 2 x Microphones
@@ -97,9 +98,9 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTY4NDAyNzIyLDU5MjI4NjM4OCwxMzQzMD
-Y1NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQwMDMy
-LDk4NDkyMjY5Myw0NjgwMTI5MDksLTUwODM5NzY1MywtMTE1MD
-U1MzU3NSwtMjgwNzg0MjAsMTQ0MjEwMjU2LC0xMjUwNDA5NDEx
-LC0yMTI5MTI1NzA0LDExOTk2MzA1MzUsMTM2MDYwNjRdfQ==
+eyJoaXN0b3J5IjpbMTkwMDA4MTgwMCw1OTIyODYzODgsMTM0Mz
+A2NTU3MywtMTkwMTIzOTMwOCwxNzgzMTE1NDIsLTczODU0MDAz
+Miw5ODQ5MjI2OTMsNDY4MDEyOTA5LC01MDgzOTc2NTMsLTExNT
+A1NTM1NzUsLTI4MDc4NDIwLDE0NDIxMDI1NiwtMTI1MDQwOTQx
+MSwtMjEyOTEyNTcwNCwxMTk5NjMwNTM1LDEzNjA2MDY0XX0=
 -->
