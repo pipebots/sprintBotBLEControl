@@ -17,7 +17,8 @@ The robot developed in Sprint 2 of the Pipebots project is refered to as _Sprint
 >Note: Some members call it _Sprintbot-2_ which can be confusing as this was the first robot developed in a sprint, but was undertaken in the second sprint event of the project. Sprint2Bot maybe more accurate.
 
 # Electronics
-The electrnics is seperated into two distinct sections to allow for parrallel development of the mobile platform independantly from the requirements of other themes electronic and sensor packages. 
+The electrnics is seperated into two distinct sections to allow for parrallel development of the mobile platform independantly from the requirements of other themes electronic and sensor packages. The essential items remain on the robot at all times and are the minimum parts required for it to operate under manual control.
+An Arduino Nano is used to control this 
 ## T3 Essentials
 
 ## Other Theme Payloads
@@ -78,8 +79,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMzk5MTc4MjIsLTUwODM5NzY1MywtMT
-E1MDU1MzU3NSwtMjgwNzg0MjAsMTQ0MjEwMjU2LC0xMjUwNDA5
-NDExLC0yMTI5MTI1NzA0LDExOTk2MzA1MzUsMTM2MDYwNjRdfQ
-==
+eyJoaXN0b3J5IjpbNzk0Mzg3MjgwLC01MDgzOTc2NTMsLTExNT
+A1NTM1NzUsLTI4MDc4NDIwLDE0NDIxMDI1NiwtMTI1MDQwOTQx
+MSwtMjEyOTEyNTcwNCwxMTk5NjMwNTM1LDEzNjA2MDY0XX0=
 -->
