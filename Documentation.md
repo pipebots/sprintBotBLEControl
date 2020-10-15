@@ -10,13 +10,14 @@ Sprint 2 was a 4 week long (26th Feb - 24th March 2020) hardware focused sprint,
 Due to the Covid-19 pandemic the end of the sprint was postphoned until access to campuses was partically restored (October 2020).
 The briefing document is [here](https://drive.google.com/drive/folders/1twYxoXcRTZItLzTB_jrvbxy3_hq5Eg7F)
 
-The core aspects of the robot are the Electronics, Software and Hardware. The requirements for these interact with all the other contributing themes
+The core aspects of the robot are the Electronics, Software and Hardware. The requirements for these interact with all the other contributing themes.
+
 ## Nomenclature
 The robot developed in Sprint 2 of the Pipebots project is refered to as _SprintBot_ or colloquially _BallBot_ 
 >Note: Some members call it _Sprintbot-2_ which can be confusing as this was the first robot developed in a sprint, but was undertaken in the second sprint event of the project. Sprint2Bot maybe more accurate.
 
 # Electronics
-
+The electrnics is seperated into two distinct sections to allow for parrallel development of the mobile platform independantly from the requirements of other themes electronic and sensor packages. 
 ## T3 Essentials
 
 ## Other Theme Payloads
@@ -77,7 +78,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2MjU0MTM1MzEsLTUwODM5NzY1MywtMT
+eyJoaXN0b3J5IjpbLTEzMzk5MTc4MjIsLTUwODM5NzY1MywtMT
 E1MDU1MzU3NSwtMjgwNzg0MjAsMTQ0MjEwMjU2LC0xMjUwNDA5
 NDExLC0yMTI5MTI1NzA0LDExOTk2MzA1MzUsMTM2MDYwNjRdfQ
 ==
