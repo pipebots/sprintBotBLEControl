@@ -30,9 +30,9 @@ Component List:
 	-   barometric sensor
 	-   microphone
 	-   gesture, proximity, light color and light intensity sensor 
-- Cytron MD13S Motor Drivers
-- Encoders
-- LED rings
+- 2 x Cytron MD13S Motor Drivers
+- 2 x Encoders
+- 2 x [65mm Neopixel LED rings](https://shop.pimoroni.com/products/neopixel-ring-24-x-5050-rgbw-leds-w-integrated-drivers?variant=17450439431)
 - Battery and protection circuit
 - [Pololu 5V, 9A Step-Down Voltage Regulator D24V90F5](https://www.active-robots.com/pololu-5v-9a-step-down-voltage-regulator-d24v90f5.html)
 
@@ -87,7 +87,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTUzNjk1MDQxNyw5ODQ5MjI2OTMsNDY4MD
+eyJoaXN0b3J5IjpbLTkyOTQ1ODc5MCw5ODQ5MjI2OTMsNDY4MD
 EyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIw
 LDE0NDIxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEyNTcwNCwxMT
 k5NjMwNTM1LDEzNjA2MDY0XX0=
