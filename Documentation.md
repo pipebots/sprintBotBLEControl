@@ -49,7 +49,7 @@ This board is connected to a Raspberry Pi 4 via a USB serial connection. The Pi 
 - Explain drive system inc key bits to tighten and where it may fail (i.e grub screws on bevel gears)
 - Show access points and basic assembly
 - bulletpoint features
-- 
+- costs/bom
 
 ## Development
 During the initial meeting a conceptual design was agreed upon. The robot was to be ball shaped to allow it to fit into pipes and go around corners while maximising the internal space avaliable for payloads. 
@@ -73,7 +73,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjk5MjEzMzk2LC0xMTUwNTUzNTc1LC0yOD
-A3ODQyMCwxNDQyMTAyNTYsLTEyNTA0MDk0MTEsLTIxMjkxMjU3
-MDQsMTE5OTYzMDUzNSwxMzYwNjA2NF19
+eyJoaXN0b3J5IjpbLTUwODM5NzY1MywtMTE1MDU1MzU3NSwtMj
+gwNzg0MjAsMTQ0MjEwMjU2LC0xMjUwNDA5NDExLC0yMTI5MTI1
+NzA0LDExOTk2MzA1MzUsMTM2MDYwNjRdfQ==
 -->
