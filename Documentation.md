@@ -43,12 +43,13 @@ This theme has two distinct payloads to test ultrasound and acoustic sensors.
 1. Ultrasound
 	- Red Pitaya 
 	- 4 x Ultrasound Transducers in 12cm square
-This 
 2. Acoustic
 	- Raspberry Pi
 	- 2 x Microphones
 	- Amplifier
 
+### T4 Autonomous Control
+This theme wanted to mount 5 
 # Software
 T3 is not responsible for the high level control of the robot. Who is responsible for the low level control was not clear at the start of the sprint but as T3 had exsisting work that could be partly repurposed and had more direct access to the components we took it upon ourselves to create a method for manual control. This was later developed into firmware which can recieve commands from a higher level program and then move the robot.  
 
@@ -98,9 +99,10 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTkwMDA4MTgwMCw1OTIyODYzODgsMTM0Mz
-A2NTU3MywtMTkwMTIzOTMwOCwxNzgzMTE1NDIsLTczODU0MDAz
-Miw5ODQ5MjI2OTMsNDY4MDEyOTA5LC01MDgzOTc2NTMsLTExNT
-A1NTM1NzUsLTI4MDc4NDIwLDE0NDIxMDI1NiwtMTI1MDQwOTQx
-MSwtMjEyOTEyNTcwNCwxMTk5NjMwNTM1LDEzNjA2MDY0XX0=
+eyJoaXN0b3J5IjpbLTU1ODI5NzY3LDE5MDAwODE4MDAsNTkyMj
+g2Mzg4LDEzNDMwNjU1NzMsLTE5MDEyMzkzMDgsMTc4MzExNTQy
+LC03Mzg1NDAwMzIsOTg0OTIyNjkzLDQ2ODAxMjkwOSwtNTA4Mz
+k3NjUzLC0xMTUwNTUzNTc1LC0yODA3ODQyMCwxNDQyMTAyNTYs
+LTEyNTA0MDk0MTEsLTIxMjkxMjU3MDQsMTE5OTYzMDUzNSwxMz
+YwNjA2NF19
 -->
