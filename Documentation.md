@@ -15,7 +15,7 @@ The robot developed in Sprint 2 of the Pipebots project is refered to as _Sprint
 >Note: Some members call it _Sprintbot-2_ which can be confusing as this was the first robot developed in a sprint, but was undertaken in the second sprint event of the project. Sprint2Bot maybe more accurate.
 
 # Software
-T3 is not responsible for the high level control of the robot. Who is responsible for the low level control was not clear at thbut as T3 had exsisting work that could be partly repurposed and had more direct access to the components we took it upon ourselves to create a method for the however based on existing work we created an android app and firmware to allow others control of the robot. 
+T3 is not responsible for the high level control of the robot. Who is responsible for the low level control was not clear at the start of the sprint but as T3 had exsisting work that could be partly repurposed and had more direct access to the components we took it upon ourselves to create a method for manual control. This was later developed into firmware which can recieve commands from a higher level program and then move  the however based on existing work we created an android app and firmware to allow others control of the robot. 
 
 ## Robot Firmware
 Low level control is handled by an [Arduino Nano 33 Sense BLE](https://store.arduino.cc/arduino-nano-33-ble-sense). 
@@ -73,7 +73,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjA1NzQ3NDkxOSwtNTA4Mzk3NjUzLC0xMT
+eyJoaXN0b3J5IjpbMTY0NDQwMzExMiwtNTA4Mzk3NjUzLC0xMT
 UwNTUzNTc1LC0yODA3ODQyMCwxNDQyMTAyNTYsLTEyNTA0MDk0
 MTEsLTIxMjkxMjU3MDQsMTE5OTYzMDUzNSwxMzYwNjA2NF19
 -->
