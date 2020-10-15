@@ -33,6 +33,8 @@ Component List:
 - Cytron MD13S Motor Drivers
 - Encoders
 - LED rings
+- Battery and protection circuit
+- 5V Regulator
 
 ## Other Theme Payloads
 
@@ -85,8 +87,8 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3NzU1MTg2MjksNDY4MDEyOTA5LC01MD
-gzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIwLDE0NDIxMDI1
-NiwtMTI1MDQwOTQxMSwtMjEyOTEyNTcwNCwxMTk5NjMwNTM1LD
-EzNjA2MDY0XX0=
+eyJoaXN0b3J5IjpbOTg0OTIyNjkzLDQ2ODAxMjkwOSwtNTA4Mz
+k3NjUzLC0xMTUwNTUzNTc1LC0yODA3ODQyMCwxNDQyMTAyNTYs
+LTEyNTA0MDk0MTEsLTIxMjkxMjU3MDQsMTE5OTYzMDUzNSwxMz
+YwNjA2NF19
 -->
