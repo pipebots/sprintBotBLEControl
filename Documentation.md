@@ -2,9 +2,6 @@
 
 The purpose of this document is to record key information about the design of the robot, any lessons from the sprint and to help other themes use the platform for further testing once the sprint is complete. 
 
-- Version 0.0.1
-	- My [NF] first attempt at documenting the mechanical, electrical and software aspects of Sprintbot, from a Theme 3 perspective. 
-
 ## Sprint 2
 Sprint 2 was a 4 week long (26th Feb - 24th March 2020) hardware focused sprint, starting with a 2 day meeting and ending with a single day integration push, both at ICAIR. 
 Due to the Covid-19 pandemic the end of the sprint was postphoned until access to campuses was partically restored (October 2020).
@@ -87,8 +84,8 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTczODU0MDAzMiw5ODQ5MjI2OTMsNDY4MD
-EyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIw
-LDE0NDIxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEyNTcwNCwxMT
-k5NjMwNTM1LDEzNjA2MDY0XX0=
+eyJoaXN0b3J5IjpbMTc4MzExNTQyLC03Mzg1NDAwMzIsOTg0OT
+IyNjkzLDQ2ODAxMjkwOSwtNTA4Mzk3NjUzLC0xMTUwNTUzNTc1
+LC0yODA3ODQyMCwxNDQyMTAyNTYsLTEyNTA0MDk0MTEsLTIxMj
+kxMjU3MDQsMTE5OTYzMDUzNSwxMzYwNjA2NF19
 -->
