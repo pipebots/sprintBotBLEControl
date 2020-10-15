@@ -21,8 +21,16 @@ The electronics are separated into two distinct sections to allow for parallel d
 An Arduino Nano is used to control this part. By popular consensus from the other themes a Raspberry Pi 4 is used as the higher level controller as it is capable for running more complex algorythms. A 'shield' board was developed which plugs onto this and is used to connect all of the sensors to the board. The two boards communicate via a USB serial connection when required.
 
 ## T3 Essentials
-Component List:
 
+Component List:
+- [Arduino Nano 33 Sense BLE](https://store.arduino.cc/arduino-nano-33-ble-sense). 
+		This board has Bluetooth Low Energy (BLE) and a number of useful sensors onboard including;
+	-   9 axis imu
+	-   humidity, and temperature sensor
+	-   barometric sensor
+	-   microphone
+	-   gesture, proximity, light color and light intensity sensor 
+- Cytron MD motor drivers, reads the encoder values and controls the LED rings. 
 
 ## Other Theme Payloads
 
@@ -30,15 +38,8 @@ Component List:
 T3 is not responsible for the high level control of the robot. Who is responsible for the low level control was not clear at the start of the sprint but as T3 had exsisting work that could be partly repurposed and had more direct access to the components we took it upon ourselves to create a method for manual control. This was later developed into firmware which can recieve commands from a higher level program and then move the robot.  
 
 ## Robot Firmware
-Low level control is handled by an [Arduino Nano 33 Sense BLE](https://store.arduino.cc/arduino-nano-33-ble-sense). 
-This board has Bluetooth Low Energy (BLE) and a number of useful sensors onboard including;
--   9 axis imu
--   humidity, and temperature sensor
--   barometric sensor
--   microphone
--   gesture, proximity, light color and light intensity sensor 
+Low level control is handled by an 
 
-In addition this board interfaces with the motor drivers, reads the encoder values and controls the LED rings. 
 This board is connected to a Raspberry Pi 4 via a USB serial connection. The Pi will run othere themes code 
 
 
@@ -82,8 +83,8 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2MzY2MTc5NDksNDY4MDEyOTA5LC01MD
-gzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIwLDE0NDIxMDI1
-NiwtMTI1MDQwOTQxMSwtMjEyOTEyNTcwNCwxMTk5NjMwNTM1LD
-EzNjA2MDY0XX0=
+eyJoaXN0b3J5IjpbMzcxOTM3Nzc5LDQ2ODAxMjkwOSwtNTA4Mz
+k3NjUzLC0xMTUwNTUzNTc1LC0yODA3ODQyMCwxNDQyMTAyNTYs
+LTEyNTA0MDk0MTEsLTIxMjkxMjU3MDQsMTE5OTYzMDUzNSwxMz
+YwNjA2NF19
 -->
