@@ -21,7 +21,8 @@ The electronics are separated into two distinct sections to allow for parallel d
 An Arduino Nano is used to control this part. By popular consensus from the other themes a Raspberry Pi 4 is used as the higher level controller as it is capable for running more complex algorythms. A 'shield' board was developed which plugs onto this and is used to connect all of the sensors to the board. The two boards communicate via a USB serial connection when required.
 
 ## T3 Essentials
-The 
+Component List:
+
 
 ## Other Theme Payloads
 
@@ -81,8 +82,8 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTUwMzg5MjEyMSw0NjgwMTI5MDksLTUwOD
-M5NzY1MywtMTE1MDU1MzU3NSwtMjgwNzg0MjAsMTQ0MjEwMjU2
-LC0xMjUwNDA5NDExLC0yMTI5MTI1NzA0LDExOTk2MzA1MzUsMT
-M2MDYwNjRdfQ==
+eyJoaXN0b3J5IjpbLTE2MzY2MTc5NDksNDY4MDEyOTA5LC01MD
+gzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIwLDE0NDIxMDI1
+NiwtMTI1MDQwOTQxMSwtMjEyOTEyNTcwNCwxMTk5NjMwNTM1LD
+EzNjA2MDY0XX0=
 -->
