@@ -11,11 +11,11 @@ Due to the Covid-19 pandemic the end of the sprint was postphoned until access t
 The briefing document is [here](https://drive.google.com/drive/folders/1twYxoXcRTZItLzTB_jrvbxy3_hq5Eg7F)
 
 ## Nomenclature
-The robot developed in Sprint 2 of the Pipebots project may be refered to as _SprintBot_ or colloquially _BigBallBot_ 
->Note: Some members call it _Sprintbot-2_ which maybe confusing as this was the first robot developed in a sprint, but was undertaken in the second sprint event of the project. Sprint2Bot maybe more accurate?
+The robot developed in Sprint 2 of the Pipebots project is refered to as _SprintBot_ or colloquially _BallBot_ 
+>Note: Some members call it _Sprintbot-2_ which can be confusing as this was the first robot developed in a sprint, but was undertaken in the second sprint event of the project. Sprint2Bot maybe more accurate.
 
 # Software
-T3 is not responsible for the high level control of the robot, however using existing work we created an android app and firmware to allow others control of the robot. 
+T3 is not responsible for the high level control of the robot, however based on existing work we created an android app and firmware to allow others control of the robot. 
 
 ## Robot Firmware
 Low level control is handled by an [Arduino Nano 33 Sense BLE](https://store.arduino.cc/arduino-nano-33-ble-sense). 
@@ -73,7 +73,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjQyNTAxNjIxLC0yODA3ODQyMCwxNDQyMT
-AyNTYsLTEyNTA0MDk0MTEsLTIxMjkxMjU3MDQsMTE5OTYzMDUz
-NSwxMzYwNjA2NF19
+eyJoaXN0b3J5IjpbLTE4ODA2NjU0MywtMjgwNzg0MjAsMTQ0Mj
+EwMjU2LC0xMjUwNDA5NDExLC0yMTI5MTI1NzA0LDExOTk2MzA1
+MzUsMTM2MDYwNjRdfQ==
 -->
