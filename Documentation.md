@@ -12,7 +12,7 @@ The briefing document is [here](https://drive.google.com/drive/folders/1twYxoXcR
 
 ## Nomenclature
 The robot developed in Sprint 2 of the Pipebots project may be refered to as _SprintBot_ or colloquially _BigBallBot_ 
->Note: Some members call it _Sprintbot-2_ which maybe confusing as this was the first robot developed in a sprint, but was undertaken in the second sprint event of the project. 
+>Note: Some members call it _Sprintbot-2_ which maybe confusing as this was the first robot developed in a sprint, but was undertaken in the second sprint event of the project. Sprint2Bot maybe more accurate?
 
 # Software
 T3 is not responsible for the high level control of the robot, however using existing work we created an android app and firmware to allow others control of the robot. 
@@ -73,7 +73,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTI4MDc4NDIwLDE0NDIxMDI1NiwtMTI1MD
-QwOTQxMSwtMjEyOTEyNTcwNCwxMTk5NjMwNTM1LDEzNjA2MDY0
-XX0=
+eyJoaXN0b3J5IjpbMjQyNTAxNjIxLC0yODA3ODQyMCwxNDQyMT
+AyNTYsLTEyNTA0MDk0MTEsLTIxMjkxMjU3MDQsMTE5OTYzMDUz
+NSwxMzYwNjA2NF19
 -->
