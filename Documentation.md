@@ -34,7 +34,7 @@ Component List:
 - Encoders
 - LED rings
 - Battery and protection circuit
-- 5V Regulator
+- [Pololu 5V, 9A Step-Down Voltage Regulator D24V90F5](https://www.active-robots.com/pololu-5v-9a-step-down-voltage-regulator-d24v90f5.html)
 
 ## Other Theme Payloads
 
@@ -87,8 +87,8 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbOTg0OTIyNjkzLDQ2ODAxMjkwOSwtNTA4Mz
-k3NjUzLC0xMTUwNTUzNTc1LC0yODA3ODQyMCwxNDQyMTAyNTYs
-LTEyNTA0MDk0MTEsLTIxMjkxMjU3MDQsMTE5OTYzMDUzNSwxMz
-YwNjA2NF19
+eyJoaXN0b3J5IjpbLTUzNjk1MDQxNyw5ODQ5MjI2OTMsNDY4MD
+EyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIw
+LDE0NDIxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEyNTcwNCwxMT
+k5NjMwNTM1LDEzNjA2MDY0XX0=
 -->
