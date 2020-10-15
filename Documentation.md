@@ -44,12 +44,11 @@ This board is connected to a Raspberry Pi 4 via a USB serial connection. The Pi 
 
 
 ### To Do
-- Add Solidworks file
-- Add Folder of final STLs
 - Add images of first version 
 - Add technical details such as size
 - Explain drive system inc key bits to tighten and where it may fail (i.e grub screws on bevel gears)
 - Show access points and basic assembly
+- bulletpoint features
 
 ## Development
 During the initial meeting a conceptual design was agreed upon. The robot was to be ball shaped to allow it to fit into pipes and go around corners while maximising the internal space avaliable for payloads. 
@@ -73,7 +72,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4ODA2NjU0MywtMjgwNzg0MjAsMTQ0Mj
-EwMjU2LC0xMjUwNDA5NDExLC0yMTI5MTI1NzA0LDExOTk2MzA1
-MzUsMTM2MDYwNjRdfQ==
+eyJoaXN0b3J5IjpbLTExNTA1NTM1NzUsLTI4MDc4NDIwLDE0ND
+IxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEyNTcwNCwxMTk5NjMw
+NTM1LDEzNjA2MDY0XX0=
 -->
