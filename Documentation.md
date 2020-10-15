@@ -40,9 +40,13 @@ Component List:
 Given the origional time scale only minimal integration was going to be possible. With the extra time, a board was created that allows all of the sensors to be easily plugged into the Pi at the same time. 
 ### T2 Sensors
 This theme has twi distinct payloads to test ultrasound and acoustic sensors.
-1. Red Pitaya 
-	2.  4 x Ultrasound Transducers in 12cm square
-2. Raspberry Pi & 2 x Microphones & Amplifier
+1. Ultrasound
+	- Red Pitaya 
+	- 4 x Ultrasound Transducers in 12cm square
+2. Acoustic
+	- Raspberry Pi
+	- 2 x Microphones
+	- Amplifier
 
 # Software
 T3 is not responsible for the high level control of the robot. Who is responsible for the low level control was not clear at the start of the sprint but as T3 had exsisting work that could be partly repurposed and had more direct access to the components we took it upon ourselves to create a method for manual control. This was later developed into firmware which can recieve commands from a higher level program and then move the robot.  
@@ -93,9 +97,9 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1Mjg0MzkyODksNTkyMjg2Mzg4LDEzND
-MwNjU1NzMsLTE5MDEyMzkzMDgsMTc4MzExNTQyLC03Mzg1NDAw
-MzIsOTg0OTIyNjkzLDQ2ODAxMjkwOSwtNTA4Mzk3NjUzLC0xMT
-UwNTUzNTc1LC0yODA3ODQyMCwxNDQyMTAyNTYsLTEyNTA0MDk0
-MTEsLTIxMjkxMjU3MDQsMTE5OTYzMDUzNSwxMzYwNjA2NF19
+eyJoaXN0b3J5IjpbMTY4NDAyNzIyLDU5MjI4NjM4OCwxMzQzMD
+Y1NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQwMDMy
+LDk4NDkyMjY5Myw0NjgwMTI5MDksLTUwODM5NzY1MywtMTE1MD
+U1MzU3NSwtMjgwNzg0MjAsMTQ0MjEwMjU2LC0xMjUwNDA5NDEx
+LC0yMTI5MTI1NzA0LDExOTk2MzA1MzUsMTM2MDYwNjRdfQ==
 -->
