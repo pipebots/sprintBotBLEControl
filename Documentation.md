@@ -74,7 +74,8 @@ The functions are listed below:
 ### readButtons();
 This takes the number which has been transmitted via bluetooth or serial and switches the case.
 In the movement cases the ramp flag is set high and the required setpoint for the PID controller for the motors is set, with the current speed limit modifying it. 
-When the ramp flag is high, in each loop of
+When the ramp flag is high, in each loop of the code the value of the setpoint is adjusted by one step until it matches the desired setpoint. This helps the robot to accellerate smoothly reducing rocking of the body.
+
 The avaliable cases are:
 
 0. LEDs Off
@@ -165,10 +166,10 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTYxMzk2NTE2MSw1MTM5NTEyMjEsMTkwMD
-A4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMTkwMTIzOTMw
-OCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2OTMsNDY4MD
-EyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIw
-LDE0NDIxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEyNTcwNCwxMT
-k5NjMwNTM1LDEzNjA2MDY0XX0=
+eyJoaXN0b3J5IjpbMjA3OTk2MjkxLDUxMzk1MTIyMSwxOTAwMD
+gxODAwLDU5MjI4NjM4OCwxMzQzMDY1NTczLC0xOTAxMjM5MzA4
+LDE3ODMxMTU0MiwtNzM4NTQwMDMyLDk4NDkyMjY5Myw0NjgwMT
+I5MDksLTUwODM5NzY1MywtMTE1MDU1MzU3NSwtMjgwNzg0MjAs
+MTQ0MjEwMjU2LC0xMjUwNDA5NDExLC0yMTI5MTI1NzA0LDExOT
+k2MzA1MzUsMTM2MDYwNjRdfQ==
 -->
