@@ -122,9 +122,8 @@ Spur gear to ring gear ratio is: Spur gear PCD=15mm, PCD internal ring =120mm. 1
 ### calcSpeed();
 Using the change in encoder counts and the elapsed time since last call this works out the speed of each motor, for use in the PID loop.
 
-### sendJSON();
-
-void listenJSON();
+### sendJSON(); & listenJSON();
+These send and recive data formatted as a JSON document over te serial port.
 
 void rampMotor1();
 
@@ -181,7 +180,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTI1MDU2NzY0OCwtODIzMjEyMjMsLTE5OD
+eyJoaXN0b3J5IjpbLTUyNjg1MDY0OCwtODIzMjEyMjMsLTE5OD
 gxNTgxMzMsNTEzOTUxMjIxLDE5MDAwODE4MDAsNTkyMjg2Mzg4
 LDEzNDMwNjU1NzMsLTE5MDEyMzkzMDgsMTc4MzExNTQyLC03Mz
 g1NDAwMzIsOTg0OTIyNjkzLDQ2ODAxMjkwOSwtNTA4Mzk3NjUz
