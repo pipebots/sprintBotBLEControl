@@ -53,7 +53,9 @@ This theme has two distinct payloads to test ultrasound and acoustic sensors.
 This theme wanted to mount 5 x VL53L0X Time-of-Flight Distance Sensors and ran their code on the Raspberry Pi. In the origional sprint the plan seemed to have been to output directly to the motor drivers using PWM and Direction pins. Due to the extra development that T3 was able to do, including adding PID control and other aspects of the firmware, T4 were able to send commands to to the arduino using serial communication to trigger the same code that is used when pressing buttons on the app. 
 
 ### T5 Localisation
-This theme used a camera connected to the Raspberry Pi to record data. They also needed the enco
+This theme used a camera connected to the Raspberry Pi to record data. They also needed the encoder counts to be recorded, so a way of communicating this to the Pi and recording it was developed by T3. 
+A 'BrightPi' LED ring was used to provide light but it is not very bright so may need upgrading in future.
+The
 
 # Software
 T3 is not responsible for the high level control of the robot. Who is responsible for the low level control was not clear at the start of the sprint but as T3 had exsisting work that could be partly repurposed and had more direct access to the components we took it upon ourselves to create a method for manual control. This was later developed into firmware which can recieve commands from a higher level program and then move the robot.  
@@ -104,10 +106,10 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDU3MDMzODIxLDUxMzk1MTIyMSwxOTAwMD
-gxODAwLDU5MjI4NjM4OCwxMzQzMDY1NTczLC0xOTAxMjM5MzA4
-LDE3ODMxMTU0MiwtNzM4NTQwMDMyLDk4NDkyMjY5Myw0NjgwMT
-I5MDksLTUwODM5NzY1MywtMTE1MDU1MzU3NSwtMjgwNzg0MjAs
-MTQ0MjEwMjU2LC0xMjUwNDA5NDExLC0yMTI5MTI1NzA0LDExOT
-k2MzA1MzUsMTM2MDYwNjRdfQ==
+eyJoaXN0b3J5IjpbMjEwNTIzNjA4MSw1MTM5NTEyMjEsMTkwMD
+A4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMTkwMTIzOTMw
+OCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2OTMsNDY4MD
+EyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIw
+LDE0NDIxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEyNTcwNCwxMT
+k5NjMwNTM1LDEzNjA2MDY0XX0=
 -->
