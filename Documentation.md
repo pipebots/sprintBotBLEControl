@@ -67,9 +67,43 @@ These did not require payloads and were playing a more enabling than technical r
 T3 is not responsible for the high level control of the robot. Who is responsible for the low level control was not clear at the start of the sprint but as T3 had exsisting work that could be partly repurposed and had more direct access to the components we took it upon ourselves to create a method for manual control. This was later developed into firmware which can recieve commands from a higher level program and then move the robot.  
 
 ## Robot Firmware
-This 
+This is the [code](https://github.com/pipebots/sprintBotBLEControl) which runs on the Arduino. 
 
+void readButtons();
 
+void readJoystick();
+
+void driveMotor(int pwmPin, int dirPin, int spd);
+
+void joyDiffDrive(int nJoyX, int nJoyY);
+
+void calcPID();
+
+void doEncoder1();
+
+void doEncoder2();
+
+void calcSpeed();
+
+void sendJSON();
+
+void listenJSON();
+
+void rampMotor1();
+
+void rampMotor2();
+
+void limitSpeed();
+
+void loadingChase(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip);
+
+void loadingChaseDoubleRing(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip, Adafruit_NeoPixel strip2);
+
+void ringColour(char colour, Adafruit_NeoPixel strip1, Adafruit_NeoPixel strip2);
+
+void doNeoRings();
+
+void readIMU();
 
 ## Android App
 
@@ -110,10 +144,10 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjc4Nzg1MTM4LDUxMzk1MTIyMSwxOTAwMD
-gxODAwLDU5MjI4NjM4OCwxMzQzMDY1NTczLC0xOTAxMjM5MzA4
-LDE3ODMxMTU0MiwtNzM4NTQwMDMyLDk4NDkyMjY5Myw0NjgwMT
-I5MDksLTUwODM5NzY1MywtMTE1MDU1MzU3NSwtMjgwNzg0MjAs
-MTQ0MjEwMjU2LC0xMjUwNDA5NDExLC0yMTI5MTI1NzA0LDExOT
-k2MzA1MzUsMTM2MDYwNjRdfQ==
+eyJoaXN0b3J5IjpbMTc1NTQ4NjU4Miw1MTM5NTEyMjEsMTkwMD
+A4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMTkwMTIzOTMw
+OCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2OTMsNDY4MD
+EyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIw
+LDE0NDIxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEyNTcwNCwxMT
+k5NjMwNTM1LDEzNjA2MDY0XX0=
 -->
