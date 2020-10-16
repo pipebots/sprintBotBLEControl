@@ -95,9 +95,10 @@ The avaliable cases are:
 13. (not currently in use: Manual control)
 
 ### readJoystick();
-This reads the BLE characteristic that relaes 
+This reads the BLE characteristic that relaes to the X & Y coordianates of the joystick in the app, maps the values the the correct range for joyDiffDrive() and modifies with the speed limit.
 
-void joyDiffDrive(int nJoyX, int nJoyY);
+### joyDiffDrive(int nJoyX, int nJoyY);
+This 
 
 void driveMotor(int pwmPin, int dirPin, int spd);
 
@@ -170,10 +171,10 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTEyNTk3ODAyMyw1MTM5NTEyMjEsMTkwMD
-A4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMTkwMTIzOTMw
-OCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2OTMsNDY4MD
-EyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIw
-LDE0NDIxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEyNTcwNCwxMT
-k5NjMwNTM1LDEzNjA2MDY0XX0=
+eyJoaXN0b3J5IjpbLTIxMzMzNTI3NTAsNTEzOTUxMjIxLDE5MD
+AwODE4MDAsNTkyMjg2Mzg4LDEzNDMwNjU1NzMsLTE5MDEyMzkz
+MDgsMTc4MzExNTQyLC03Mzg1NDAwMzIsOTg0OTIyNjkzLDQ2OD
+AxMjkwOSwtNTA4Mzk3NjUzLC0xMTUwNTUzNTc1LC0yODA3ODQy
+MCwxNDQyMTAyNTYsLTEyNTA0MDk0MTEsLTIxMjkxMjU3MDQsMT
+E5OTYzMDUzNSwxMzYwNjA2NF19
 -->
