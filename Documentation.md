@@ -138,12 +138,13 @@ In testing with T4 it was discovered that this method caused problems when commu
 Adjusts the setpoint by one step and checks if the required setpoint has been reached.
 
 ### limitSpeed();
-Reads BLE characterstic and sets variable
+Reads BLE characterstic and sets variable that is used to adjust all motions.
 
-void loadingChase(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip);
+### loadingChase(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip);
+Called on startup, controls the 'loading sequence' on the LED rings
 
-void loadingChaseDoubleRing(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip, Adafruit_NeoPixel strip2);
-
+### loadingChaseDoubleRing(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip, Adafruit_NeoPixel strip2);
+Leftover 
 void ringColour(char colour, Adafruit_NeoPixel strip1, Adafruit_NeoPixel strip2);
 
 void doNeoRings();
@@ -189,11 +190,11 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTIyNTk5MjQ3OCwtODIzMjEyMjMsLTE5OD
-gxNTgxMzMsNTEzOTUxMjIxLDE5MDAwODE4MDAsNTkyMjg2Mzg4
-LDEzNDMwNjU1NzMsLTE5MDEyMzkzMDgsMTc4MzExNTQyLC03Mz
-g1NDAwMzIsOTg0OTIyNjkzLDQ2ODAxMjkwOSwtNTA4Mzk3NjUz
-LC0xMTUwNTUzNTc1LC0yODA3ODQyMCwxNDQyMTAyNTYsLTEyNT
-A0MDk0MTEsLTIxMjkxMjU3MDQsMTE5OTYzMDUzNSwxMzYwNjA2
-NF19
+eyJoaXN0b3J5IjpbLTE4MzgyMzE3ODYsLTgyMzIxMjIzLC0xOT
+g4MTU4MTMzLDUxMzk1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4
+OCwxMzQzMDY1NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNz
+M4NTQwMDMyLDk4NDkyMjY5Myw0NjgwMTI5MDksLTUwODM5NzY1
+MywtMTE1MDU1MzU3NSwtMjgwNzg0MjAsMTQ0MjEwMjU2LC0xMj
+UwNDA5NDExLC0yMTI5MTI1NzA0LDExOTk2MzA1MzUsMTM2MDYw
+NjRdfQ==
 -->
