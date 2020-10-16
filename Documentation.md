@@ -117,7 +117,7 @@ Pololu 3499 Encoder has 20 counts per rev when counting both edges of both chann
 5 x 62.5 = 312.5 counts per revolution of gearbox output shaft.
 Spur gear to ring gear ratio is: Spur gear PCD=15mm, PCD internal ring =120mm. 120/15=8.
 312.5 x 8 = 2500 counts per revolution of the robots wheel.
-> Note: A 1:31.25 gearbox motor was also tests, in this case there are 1250 counts per revolution of the wheel
+> Note: A 1:31.25 gearbox motor was also used tests, in this case there are 1250 counts per revolution of the wheel
 
 ### calcSpeed();
 Using the change in encoder counts and the elapsed time since last call this works out the speed of each motor, for use in the PID loop.
@@ -195,8 +195,11 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
+# ICAIR Testing Report
+
+# Sprint LEssons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTMyMzgzNzAwNiwtMjEwMTA2Nzk3NywtOD
+eyJoaXN0b3J5IjpbLTkxNjc0NjkzNCwtMjEwMTA2Nzk3NywtOD
 IzMjEyMjMsLTE5ODgxNTgxMzMsNTEzOTUxMjIxLDE5MDAwODE4
 MDAsNTkyMjg2Mzg4LDEzNDMwNjU1NzMsLTE5MDEyMzkzMDgsMT
 c4MzExNTQyLC03Mzg1NDAwMzIsOTg0OTIyNjkzLDQ2ODAxMjkw
