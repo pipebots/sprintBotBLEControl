@@ -171,9 +171,6 @@ It was created using [Evothings](http://evothings.com/) which is designed to be 
 ### To Do
 - Add images of first version 
 - Add technical details such as size
-- Explain drive system inc key bits to tighten and where it may fail (i.e grub screws on bevel gears)
-- Show access points and basic assembly
-- Show battery connecting and charging
 - bulletpoint features
 - costs/bom
 
@@ -200,15 +197,23 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 
 ## Usage Instructions
 
+### To Do:
+- Explain drive system inc key bits to tighten and where it may fail (i.e grub screws on bevel gears)
+- Show access points and basic assembly
+- Show battery connecting and charging
+
+
 # ICAIR Testing Report
+## Successes
+## Impovements
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTY1ODIzNjYxNSwtOTE2NzQ2OTM0LC0yMT
-AxMDY3OTc3LC04MjMyMTIyMywtMTk4ODE1ODEzMyw1MTM5NTEy
-MjEsMTkwMDA4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMT
-kwMTIzOTMwOCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2
-OTMsNDY4MDEyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLT
-I4MDc4NDIwLDE0NDIxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEy
-NTcwNF19
+eyJoaXN0b3J5IjpbLTE4NzIzMTUxNTAsLTkxNjc0NjkzNCwtMj
+EwMTA2Nzk3NywtODIzMjEyMjMsLTE5ODgxNTgxMzMsNTEzOTUx
+MjIxLDE5MDAwODE4MDAsNTkyMjg2Mzg4LDEzNDMwNjU1NzMsLT
+E5MDEyMzkzMDgsMTc4MzExNTQyLC03Mzg1NDAwMzIsOTg0OTIy
+NjkzLDQ2ODAxMjkwOSwtNTA4Mzk3NjUzLC0xMTUwNTUzNTc1LC
+0yODA3ODQyMCwxNDQyMTAyNTYsLTEyNTA0MDk0MTEsLTIxMjkx
+MjU3MDRdfQ==
 -->
