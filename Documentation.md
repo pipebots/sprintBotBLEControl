@@ -208,19 +208,19 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 - Others able to use and drive by simply downloading the app (more covid secure than a controller ;) )
 - Attention to dissassebly and ease of access to the drive system really helpful
 - Connecting different payloads simple due to plug and socket board. 
-- Everything that needed to fit inside (but not easily see below)
+- Everything that needed to fit inside/on it (but not easily see below)
 - 
 
 ## Issues (Nays, Poops)
 - Drive System Reliability
 
 - Tyre Flexibility
-- Not much space inside due to the wires. Maybe making some longer would help as the position of the baords would be less constrained. 
+- Not much space inside due to the wires. The pi and arduino can fit together with the lid closed, the Red Pitaya would not as well, but the Pi was not needed at the same time. Maybe making some longer would help as the position of the bords would be less constrained. 
 
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4NDMyODgxNTMsLTE3ODc2NTAxMCwtOT
+eyJoaXN0b3J5IjpbLTE1MDQ5NTIyMjIsLTE3ODc2NTAxMCwtOT
 E2NzQ2OTM0LC0yMTAxMDY3OTc3LC04MjMyMTIyMywtMTk4ODE1
 ODEzMyw1MTM5NTEyMjEsMTkwMDA4MTgwMCw1OTIyODYzODgsMT
 M0MzA2NTU3MywtMTkwMTIzOTMwOCwxNzgzMTE1NDIsLTczODU0
