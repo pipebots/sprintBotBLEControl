@@ -148,8 +148,9 @@ Leftover from when the rings were independantly controlled. When trying to contr
 The two rings are now connected to the same output pin of the arduino but when trying to remoe this function from the code it would cause it to stop working. There seems to be no logical reason for this as the function is never called, but it is left in place as it seemed to fix the problem!
 
 ### ringColour(char colour, Adafruit_NeoPixel strip1, Adafruit_NeoPixel strip2);
-Sets
-void doNeoRings();
+Sets the colour for the full LED ring. Used o
+
+###  doNeoRings();
 
 void readIMU();
 
@@ -192,7 +193,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5NzQxODY4NDksLTgyMzIxMjIzLC0xOT
+eyJoaXN0b3J5IjpbLTEwMzY2MjE3MzUsLTgyMzIxMjIzLC0xOT
 g4MTU4MTMzLDUxMzk1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4
 OCwxMzQzMDY1NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNz
 M4NTQwMDMyLDk4NDkyMjY5Myw0NjgwMTI5MDksLTUwODM5NzY1
