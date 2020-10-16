@@ -151,7 +151,7 @@ The two rings are now connected to the same output pin of the arduino but when t
 Sets the colour for the full LED ring. Used on startup and connection but doNeoRings used after.
 
 ###  doNeoRings();
-A single led pixel changes colour to show which case in **readButtons()** has been activated. This pixel spins around the ring at the same speed as the wheel turns by using the e
+A single led pixel changes colour to show which case in **readButtons()** has been activated. This pixel spins around the ring at the same speed as the wheel turns by using the encoder counts to change position
 void readIMU();
 
 ## Android App
@@ -193,11 +193,11 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTU3NDQxMzY4MCwtODIzMjEyMjMsLTE5OD
-gxNTgxMzMsNTEzOTUxMjIxLDE5MDAwODE4MDAsNTkyMjg2Mzg4
-LDEzNDMwNjU1NzMsLTE5MDEyMzkzMDgsMTc4MzExNTQyLC03Mz
-g1NDAwMzIsOTg0OTIyNjkzLDQ2ODAxMjkwOSwtNTA4Mzk3NjUz
-LC0xMTUwNTUzNTc1LC0yODA3ODQyMCwxNDQyMTAyNTYsLTEyNT
-A0MDk0MTEsLTIxMjkxMjU3MDQsMTE5OTYzMDUzNSwxMzYwNjA2
-NF19
+eyJoaXN0b3J5IjpbLTIxMDEwNjc5NzcsLTgyMzIxMjIzLC0xOT
+g4MTU4MTMzLDUxMzk1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4
+OCwxMzQzMDY1NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNz
+M4NTQwMDMyLDk4NDkyMjY5Myw0NjgwMTI5MDksLTUwODM5NzY1
+MywtMTE1MDU1MzU3NSwtMjgwNzg0MjAsMTQ0MjEwMjU2LC0xMj
+UwNDA5NDExLC0yMTI5MTI1NzA0LDExOTk2MzA1MzUsMTM2MDYw
+NjRdfQ==
 -->
