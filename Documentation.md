@@ -199,6 +199,7 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 - Explain drive system inc key bits to tighten and where it may fail (i.e grub screws on bevel gears)
 - Show access points and basic assembly
 - Show battery connecting and charging
+- refer to electronics section for connecting payloads
 
 
 # ICAIR Testing Report
@@ -235,11 +236,11 @@ This was expected and is the reason T3 insisted on the largest robot possible fo
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMTkwNjIxMDEsLTE3ODc2NTAxMCwtOT
-E2NzQ2OTM0LC0yMTAxMDY3OTc3LC04MjMyMTIyMywtMTk4ODE1
-ODEzMyw1MTM5NTEyMjEsMTkwMDA4MTgwMCw1OTIyODYzODgsMT
-M0MzA2NTU3MywtMTkwMTIzOTMwOCwxNzgzMTE1NDIsLTczODU0
-MDAzMiw5ODQ5MjI2OTMsNDY4MDEyOTA5LC01MDgzOTc2NTMsLT
-ExNTA1NTM1NzUsLTI4MDc4NDIwLDE0NDIxMDI1NiwtMTI1MDQw
-OTQxMV19
+eyJoaXN0b3J5IjpbLTE1MTUyNjU2MzUsLTEzMTkwNjIxMDEsLT
+E3ODc2NTAxMCwtOTE2NzQ2OTM0LC0yMTAxMDY3OTc3LC04MjMy
+MTIyMywtMTk4ODE1ODEzMyw1MTM5NTEyMjEsMTkwMDA4MTgwMC
+w1OTIyODYzODgsMTM0MzA2NTU3MywtMTkwMTIzOTMwOCwxNzgz
+MTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2OTMsNDY4MDEyOTA5LC
+01MDgzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIwLDE0NDIx
+MDI1Nl19
 -->
