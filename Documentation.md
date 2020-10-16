@@ -126,12 +126,10 @@ Using the change in encoder counts and the elapsed time since last call this wor
 These send and recive data formatted as a JSON document over te serial port.
 Mainly used for debugging and recording sensor data for T5 and others to use offline.
 The parameters are:
-wheel1Pos & wheel2Pos- Current encoder count (0-2500)
-  wheel1Revs"] = wheel1Revs;
-  doc["wheel2Pos"] = wheel2Pos;
-  doc["wheel2Revs"] = wheel2Revs;
-  doc["pressure_kPa"] = BARO.readPressure(); //read pressure sensor
-  doc["temp_oC"] = HTS.readTemperature(); //read temp sensor in degrees celcius
+- wheel1Pos & wheel2Pos - Current encoder count (0-2500)
+- wheel1Revs & wheel2Revs - Number of full turns for each wheel. Decreases if the robot drives backwards.
+- pressure_kPa - Pressure sensor
+- temp_oC"] = HTS.readTemperature(); //read temp sensor in degrees celcius
   doc["humidity_percent"] = HTS.readHumidity(); //humidity in %
 In testing with T4 it was discovered that this method caused problems when communicating with the Raspberry Pi so a simpler format was used to decrease the amount of data being transfered. These are called **readCom() & sendCOM()**
 
@@ -189,11 +187,11 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwNDk1NTQ0NzYsLTgyMzIxMjIzLC0xOT
-g4MTU4MTMzLDUxMzk1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4
-OCwxMzQzMDY1NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNz
-M4NTQwMDMyLDk4NDkyMjY5Myw0NjgwMTI5MDksLTUwODM5NzY1
-MywtMTE1MDU1MzU3NSwtMjgwNzg0MjAsMTQ0MjEwMjU2LC0xMj
-UwNDA5NDExLC0yMTI5MTI1NzA0LDExOTk2MzA1MzUsMTM2MDYw
-NjRdfQ==
+eyJoaXN0b3J5IjpbMTg0MDEyOTEzOSwtODIzMjEyMjMsLTE5OD
+gxNTgxMzMsNTEzOTUxMjIxLDE5MDAwODE4MDAsNTkyMjg2Mzg4
+LDEzNDMwNjU1NzMsLTE5MDEyMzkzMDgsMTc4MzExNTQyLC03Mz
+g1NDAwMzIsOTg0OTIyNjkzLDQ2ODAxMjkwOSwtNTA4Mzk3NjUz
+LC0xMTUwNTUzNTc1LC0yODA3ODQyMCwxNDQyMTAyNTYsLTEyNT
+A0MDk0MTEsLTIxMjkxMjU3MDQsMTE5OTYzMDUzNSwxMzYwNjA2
+NF19
 -->
