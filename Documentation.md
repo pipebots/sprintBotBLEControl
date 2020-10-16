@@ -71,7 +71,8 @@ This is the [code](https://github.com/pipebots/sprintBotBLEControl) which runs o
 There are two main versions, the *master* branch is the standard code that allows remote bluetooth control.
 The *T4_simple_coms* branch uses serial communication as the input rather than bluetooth but is otherwise very similar. 
 The functions are listed below:
-void readButtons();
+### readButtons();
+This takes the number which has been transmitted via bluetooth or serial and switches the case
 
 void readJoystick();
 
@@ -146,10 +147,10 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTkyMzMxODU1LDUxMzk1MTIyMSwxOTAwMD
-gxODAwLDU5MjI4NjM4OCwxMzQzMDY1NTczLC0xOTAxMjM5MzA4
-LDE3ODMxMTU0MiwtNzM4NTQwMDMyLDk4NDkyMjY5Myw0NjgwMT
-I5MDksLTUwODM5NzY1MywtMTE1MDU1MzU3NSwtMjgwNzg0MjAs
-MTQ0MjEwMjU2LC0xMjUwNDA5NDExLC0yMTI5MTI1NzA0LDExOT
-k2MzA1MzUsMTM2MDYwNjRdfQ==
+eyJoaXN0b3J5IjpbLTIwNDc3NzI4NzEsNTEzOTUxMjIxLDE5MD
+AwODE4MDAsNTkyMjg2Mzg4LDEzNDMwNjU1NzMsLTE5MDEyMzkz
+MDgsMTc4MzExNTQyLC03Mzg1NDAwMzIsOTg0OTIyNjkzLDQ2OD
+AxMjkwOSwtNTA4Mzk3NjUzLC0xMTUwNTUzNTc1LC0yODA3ODQy
+MCwxNDQyMTAyNTYsLTEyNTA0MDk0MTEsLTIxMjkxMjU3MDQsMT
+E5OTYzMDUzNSwxMzYwNjA2NF19
 -->
