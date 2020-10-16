@@ -105,8 +105,9 @@ The control via the joystick is not reccomended as it needs some tuning. It seem
 Using the current speed and desired setpoint this caluculates the required output for the motors, calls driveMotor.
 
 ### driveMotor(int pwmPin, int dirPin, int spd);
-This 
-
+Outputs PWM and direction to the motor drivers. Input speed value range is -255 to +255, 0 is stop.
+The function checks 
+// Make sure the speed is within the limit.
 
 
 
@@ -175,7 +176,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTEwNjI0MzIyMyw1MTM5NTEyMjEsMTkwMD
+eyJoaXN0b3J5IjpbMTk5Njg0Mjg4Myw1MTM5NTEyMjEsMTkwMD
 A4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMTkwMTIzOTMw
 OCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2OTMsNDY4MD
 EyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIw
