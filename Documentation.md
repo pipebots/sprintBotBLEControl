@@ -204,7 +204,10 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 # ICAIR Testing Report
 ## Successes (Yays, Woops)
 - It worked!
-- Simple 
+- Simple to use and drive
+- Attention to dissassebly and ease of access to the drive system really helpful
+- Connecting different payloads simple due to plug and socket board. 
+- 
 
 ## Issues (Nays, Poops)
 - Drive System Reliability
@@ -214,11 +217,11 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTg1NDQ0MTc4NCwtMTc4NzY1MDEwLC05MT
-Y3NDY5MzQsLTIxMDEwNjc5NzcsLTgyMzIxMjIzLC0xOTg4MTU4
-MTMzLDUxMzk1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4OCwxMz
-QzMDY1NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQw
-MDMyLDk4NDkyMjY5Myw0NjgwMTI5MDksLTUwODM5NzY1MywtMT
-E1MDU1MzU3NSwtMjgwNzg0MjAsMTQ0MjEwMjU2LC0xMjUwNDA5
-NDExXX0=
+eyJoaXN0b3J5IjpbLTE4Nzg5MjkwMDQsLTE3ODc2NTAxMCwtOT
+E2NzQ2OTM0LC0yMTAxMDY3OTc3LC04MjMyMTIyMywtMTk4ODE1
+ODEzMyw1MTM5NTEyMjEsMTkwMDA4MTgwMCw1OTIyODYzODgsMT
+M0MzA2NTU3MywtMTkwMTIzOTMwOCwxNzgzMTE1NDIsLTczODU0
+MDAzMiw5ODQ5MjI2OTMsNDY4MDEyOTA5LC01MDgzOTc2NTMsLT
+ExNTA1NTM1NzUsLTI4MDc4NDIwLDE0NDIxMDI1NiwtMTI1MDQw
+OTQxMV19
 -->
