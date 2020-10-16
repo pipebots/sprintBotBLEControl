@@ -155,6 +155,8 @@ A single led pixel changes colour to show which case in **readButtons()** has be
 The rest of the ring can be set to any colour, currently the Headlights slider in the app sets this to off or full white.
 
 ### readIMU();
+Reads the accelerometer and gyroscope values then uses the MadgwickAHRS library to filter these values and get roll, pitch and yaw.
+
 
 ## Android App
 
@@ -195,11 +197,11 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzNjE0NzM3OTksLTIxMDEwNjc5NzcsLT
-gyMzIxMjIzLC0xOTg4MTU4MTMzLDUxMzk1MTIyMSwxOTAwMDgx
-ODAwLDU5MjI4NjM4OCwxMzQzMDY1NTczLC0xOTAxMjM5MzA4LD
-E3ODMxMTU0MiwtNzM4NTQwMDMyLDk4NDkyMjY5Myw0NjgwMTI5
-MDksLTUwODM5NzY1MywtMTE1MDU1MzU3NSwtMjgwNzg0MjAsMT
-Q0MjEwMjU2LC0xMjUwNDA5NDExLC0yMTI5MTI1NzA0LDExOTk2
-MzA1MzVdfQ==
+eyJoaXN0b3J5IjpbLTUyOTUyNjYyNCwtMjEwMTA2Nzk3NywtOD
+IzMjEyMjMsLTE5ODgxNTgxMzMsNTEzOTUxMjIxLDE5MDAwODE4
+MDAsNTkyMjg2Mzg4LDEzNDMwNjU1NzMsLTE5MDEyMzkzMDgsMT
+c4MzExNTQyLC03Mzg1NDAwMzIsOTg0OTIyNjkzLDQ2ODAxMjkw
+OSwtNTA4Mzk3NjUzLC0xMTUwNTUzNTc1LC0yODA3ODQyMCwxND
+QyMTAyNTYsLTEyNTA0MDk0MTEsLTIxMjkxMjU3MDQsMTE5OTYz
+MDUzNV19
 -->
