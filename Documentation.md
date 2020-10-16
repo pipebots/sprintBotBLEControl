@@ -158,8 +158,8 @@ The rest of the ring can be set to any colour, currently the Headlights slider i
 Reads the accelerometer and gyroscope values then uses the MadgwickAHRS library to filter these values and get roll, pitch and yaw.
 
 ## Android App
-This app was first created before the sprint and has been extended and edited to fit the features of this robot.
-It was created using [Evothings](http://evothings.com/) which is designed to be a quick way of making an app by writing HTML and Javascript in the same way as a website is created. This allows development via a viewer app which essentially is a web browers with some additional packages. The advnatage of this is that everytime the code it edite it can instantly update on the phone allowing very quick development. The code can then be complied into a native android app and installed directly. 
+[This app](https://github.com/nfry321/PipebotsApp) was first created before the sprint and has been extended and edited to fit the features of this robot.
+It was created using [Evothings](http://evothings.com/) which is designed to be a quick way of making an app by writing HTML and Javascript in the same way as a website is created. This allows development via a viewer app which essentially is a web browers with some additional packages. The advnatage of this is that everytime the code it edite it can instantly update on the phone allowing very quick development. The code can then be complied into a native android app and installed directly. It can also be compiled for iphones but distributing apps without going through the extensive process of getting it onto the app store is difficult. It is therefore simpler to download the viewer app and direct it to a website hosting the code
 
 
 
@@ -200,11 +200,11 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 
 # Sprint LEssons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTExMTU5MDk3NDMsLTkxNjc0NjkzNCwtMj
-EwMTA2Nzk3NywtODIzMjEyMjMsLTE5ODgxNTgxMzMsNTEzOTUx
-MjIxLDE5MDAwODE4MDAsNTkyMjg2Mzg4LDEzNDMwNjU1NzMsLT
-E5MDEyMzkzMDgsMTc4MzExNTQyLC03Mzg1NDAwMzIsOTg0OTIy
-NjkzLDQ2ODAxMjkwOSwtNTA4Mzk3NjUzLC0xMTUwNTUzNTc1LC
-0yODA3ODQyMCwxNDQyMTAyNTYsLTEyNTA0MDk0MTEsLTIxMjkx
-MjU3MDRdfQ==
+eyJoaXN0b3J5IjpbMTcxODI3ODcyOCwtOTE2NzQ2OTM0LC0yMT
+AxMDY3OTc3LC04MjMyMTIyMywtMTk4ODE1ODEzMyw1MTM5NTEy
+MjEsMTkwMDA4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMT
+kwMTIzOTMwOCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2
+OTMsNDY4MDEyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLT
+I4MDc4NDIwLDE0NDIxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEy
+NTcwNF19
 -->
