@@ -158,7 +158,7 @@ The rest of the ring can be set to any colour, currently the Headlights slider i
 Reads the accelerometer and gyroscope values then uses the MadgwickAHRS library to filter these values and get roll, pitch and yaw.
 
 ## Android App
-
+This app was first created
 
 
 
@@ -199,11 +199,11 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 
 # Sprint LEssons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTkxNjc0NjkzNCwtMjEwMTA2Nzk3NywtOD
-IzMjEyMjMsLTE5ODgxNTgxMzMsNTEzOTUxMjIxLDE5MDAwODE4
-MDAsNTkyMjg2Mzg4LDEzNDMwNjU1NzMsLTE5MDEyMzkzMDgsMT
-c4MzExNTQyLC03Mzg1NDAwMzIsOTg0OTIyNjkzLDQ2ODAxMjkw
-OSwtNTA4Mzk3NjUzLC0xMTUwNTUzNTc1LC0yODA3ODQyMCwxND
-QyMTAyNTYsLTEyNTA0MDk0MTEsLTIxMjkxMjU3MDQsMTE5OTYz
-MDUzNV19
+eyJoaXN0b3J5IjpbLTEwNTcyODQ3NTgsLTkxNjc0NjkzNCwtMj
+EwMTA2Nzk3NywtODIzMjEyMjMsLTE5ODgxNTgxMzMsNTEzOTUx
+MjIxLDE5MDAwODE4MDAsNTkyMjg2Mzg4LDEzNDMwNjU1NzMsLT
+E5MDEyMzkzMDgsMTc4MzExNTQyLC03Mzg1NDAwMzIsOTg0OTIy
+NjkzLDQ2ODAxMjkwOSwtNTA4Mzk3NjUzLC0xMTUwNTUzNTc1LC
+0yODA3ODQyMCwxNDQyMTAyNTYsLTEyNTA0MDk0MTEsLTIxMjkx
+MjU3MDRdfQ==
 -->
