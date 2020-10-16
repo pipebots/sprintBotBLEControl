@@ -204,16 +204,18 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 
 
 # ICAIR Testing Report
-## Successes
-## Impovements
+## Successes (Yays)
+
+## Issues 
+
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4NzIzMTUxNTAsLTkxNjc0NjkzNCwtMj
-EwMTA2Nzk3NywtODIzMjEyMjMsLTE5ODgxNTgxMzMsNTEzOTUx
-MjIxLDE5MDAwODE4MDAsNTkyMjg2Mzg4LDEzNDMwNjU1NzMsLT
-E5MDEyMzkzMDgsMTc4MzExNTQyLC03Mzg1NDAwMzIsOTg0OTIy
-NjkzLDQ2ODAxMjkwOSwtNTA4Mzk3NjUzLC0xMTUwNTUzNTc1LC
-0yODA3ODQyMCwxNDQyMTAyNTYsLTEyNTA0MDk0MTEsLTIxMjkx
-MjU3MDRdfQ==
+eyJoaXN0b3J5IjpbNjgxMzQ2NzI2LC05MTY3NDY5MzQsLTIxMD
+EwNjc5NzcsLTgyMzIxMjIzLC0xOTg4MTU4MTMzLDUxMzk1MTIy
+MSwxOTAwMDgxODAwLDU5MjI4NjM4OCwxMzQzMDY1NTczLC0xOT
+AxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQwMDMyLDk4NDkyMjY5
+Myw0NjgwMTI5MDksLTUwODM5NzY1MywtMTE1MDU1MzU3NSwtMj
+gwNzg0MjAsMTQ0MjEwMjU2LC0xMjUwNDA5NDExLC0yMTI5MTI1
+NzA0XX0=
 -->
