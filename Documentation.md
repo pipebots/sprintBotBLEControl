@@ -213,7 +213,7 @@ Parts could be replaced in the field with basic tools due to simple access and t
 - 
 
 ## Issues (Nays, Poops)
-All in all the test was veru sucessful and most of the issues were due to limitations of the shape or size of the robot or due to a lack of time due to te sprint format. The only two hardware failings when testing at ICAIR were due to
+All in all the test was veru sucessful and most of the issues were due to limitations of the shape or size of the robot or due to a lack of time due to te sprint format. The only two hardware failings which required fixes in the field when testing at ICAIR were a motor burning out (see Tyre Flexibility) and a gear slipping on a shaft (see Drive System Reliability). The components were simple to swap out and replace with spares.
 
 ### Drive System Reliability
 
@@ -234,11 +234,11 @@ This was expected and is the reason T3 insisted on the largest robot possible fo
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTgyMDc5MDM2LC0xNzg3NjUwMTAsLTkxNj
-c0NjkzNCwtMjEwMTA2Nzk3NywtODIzMjEyMjMsLTE5ODgxNTgx
-MzMsNTEzOTUxMjIxLDE5MDAwODE4MDAsNTkyMjg2Mzg4LDEzND
-MwNjU1NzMsLTE5MDEyMzkzMDgsMTc4MzExNTQyLC03Mzg1NDAw
-MzIsOTg0OTIyNjkzLDQ2ODAxMjkwOSwtNTA4Mzk3NjUzLC0xMT
-UwNTUzNTc1LC0yODA3ODQyMCwxNDQyMTAyNTYsLTEyNTA0MDk0
-MTFdfQ==
+eyJoaXN0b3J5IjpbMTU1MTU0MDYwNywtMTc4NzY1MDEwLC05MT
+Y3NDY5MzQsLTIxMDEwNjc5NzcsLTgyMzIxMjIzLC0xOTg4MTU4
+MTMzLDUxMzk1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4OCwxMz
+QzMDY1NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQw
+MDMyLDk4NDkyMjY5Myw0NjgwMTI5MDksLTUwODM5NzY1MywtMT
+E1MDU1MzU3NSwtMjgwNzg0MjAsMTQ0MjEwMjU2LC0xMjUwNDA5
+NDExXX0=
 -->
