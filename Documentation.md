@@ -205,6 +205,7 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 ## Successes (Yays, Woops)
 - It worked!
 - Simple to use and drive
+- Others able to use and drive by simply downloading the app (more covid secure than a controller ;) )
 - Attention to dissassebly and ease of access to the drive system really helpful
 - Connecting different payloads simple due to plug and socket board. 
 - 
@@ -213,15 +214,16 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 - Drive System Reliability
 
 - Tyre Flexibility
+- Not much space inside due to the wires
 
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4Nzg5MjkwMDQsLTE3ODc2NTAxMCwtOT
-E2NzQ2OTM0LC0yMTAxMDY3OTc3LC04MjMyMTIyMywtMTk4ODE1
-ODEzMyw1MTM5NTEyMjEsMTkwMDA4MTgwMCw1OTIyODYzODgsMT
-M0MzA2NTU3MywtMTkwMTIzOTMwOCwxNzgzMTE1NDIsLTczODU0
-MDAzMiw5ODQ5MjI2OTMsNDY4MDEyOTA5LC01MDgzOTc2NTMsLT
-ExNTA1NTM1NzUsLTI4MDc4NDIwLDE0NDIxMDI1NiwtMTI1MDQw
-OTQxMV19
+eyJoaXN0b3J5IjpbMTQyMjcyNzY5NywtMTc4NzY1MDEwLC05MT
+Y3NDY5MzQsLTIxMDEwNjc5NzcsLTgyMzIxMjIzLC0xOTg4MTU4
+MTMzLDUxMzk1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4OCwxMz
+QzMDY1NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQw
+MDMyLDk4NDkyMjY5Myw0NjgwMTI5MDksLTUwODM5NzY1MywtMT
+E1MDU1MzU3NSwtMjgwNzg0MjAsMTQ0MjEwMjU2LC0xMjUwNDA5
+NDExXX0=
 -->
