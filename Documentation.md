@@ -73,7 +73,8 @@ The *T4_simple_coms* branch uses serial communication as the input rather than b
 The functions are listed below:
 ### readButtons();
 This takes the number which has been transmitted via bluetooth or serial and switches the case.
-In the movement cases the ramp flag is
+In the movement cases the ramp flag is set high and the required setpoint for the PID controller for the motors is set, with the current speed limit modifying it. 
+When the ramp flag is high, in each loop of
 The avaliable cases are:
 
 0. LEDs Off
@@ -164,7 +165,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjA5NjQwMzgxMiw1MTM5NTEyMjEsMTkwMD
+eyJoaXN0b3J5IjpbMTYxMzk2NTE2MSw1MTM5NTEyMjEsMTkwMD
 A4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMTkwMTIzOTMw
 OCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2OTMsNDY4MD
 EyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIw
