@@ -77,7 +77,8 @@ volatile int encoder1Ticks, encoder2Ticks, wheel1Pos, wheel2Pos, wheel1Revs, whe
 *  So just counting one edge of one channel, I have 5 counts per rev, and gear ratio of 31.25 = 156.25 counts per rev of gearbox output shaft.
 *  Spur gear to ring gear ratio is: Spur gear PCD=15mm, PCD internal ring =120mm 120/15=8
 *  156.25*8= 1250 counts per rev of wheel */
-int countPerRev = 1250;
+/* 12/10/2020 swapped to 61.5:1 ratio motors so double encoder counts to 2500 */
+int countPerRev = 2500;
 
 //IMU variables
 Madgwick filter;
@@ -796,7 +797,8 @@ void ringColour(char colour, Adafruit_NeoPixel strip1, Adafruit_NeoPixel strip2)
   }
 }
 void doNeoRings(){
-  int ledL = encoder1Ticks/52; //which LED to turn on
+  int ledRatio = countPerRev/LED_Count
+  int ledL = encoder1Ticks/ledRatio; //which LED to turn on
   ledL = ledL - (wheel1Revs * 24);
   if (ledL <0){ ledL = 24 + ledL;}
 
