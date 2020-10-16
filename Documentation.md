@@ -129,14 +129,16 @@ The parameters are:
 - wheel1Pos & wheel2Pos - Current encoder count (0-2500)
 - wheel1Revs & wheel2Revs - Number of full turns for each wheel. Decreases if the robot drives backwards.
 - pressure_kPa - Pressure sensor
-- temp_oC"] = HTS.readTemperature(); //read temp sensor in degrees celcius
-  doc["humidity_percent"] = HTS.readHumidity(); //humidity in %
-In testing with T4 it was discovered that this method caused problems when communicating with the Raspberry Pi so a simpler format was used to decrease the amount of data being transfered. These are called **readCom() & sendCOM()**
+- temp_oC - read temp sensor in degrees celcius
+- humidity_percent - Humidity in %
+
+In testing with T4 it was discovered that this method caused problems when communicating with the Raspberry Pi so a simpler format was used to decrease the amount of data being transfered. These are called **readCom() & sendCOM()** in the T4_simple_coms branch. 
 
 ### rampMotor1(); &  rampMotor2();
+Adjusts the setpoint by one step and checks if the required setpoint has been reached.
 
-
-void limitSpeed();
+### limitSpeed();
+Reads BLE characterstic and sets variable
 
 void loadingChase(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip);
 
@@ -187,7 +189,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTg0MDEyOTEzOSwtODIzMjEyMjMsLTE5OD
+eyJoaXN0b3J5IjpbMTIyNTk5MjQ3OCwtODIzMjEyMjMsLTE5OD
 gxNTgxMzMsNTEzOTUxMjIxLDE5MDAwODE4MDAsNTkyMjg2Mzg4
 LDEzNDMwNjU1NzMsLTE5MDEyMzkzMDgsMTc4MzExNTQyLC03Mz
 g1NDAwMzIsOTg0OTIyNjkzLDQ2ODAxMjkwOSwtNTA4Mzk3NjUz
