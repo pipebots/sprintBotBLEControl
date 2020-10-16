@@ -207,6 +207,7 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 - Simple to use and drive
 - Others able to use and drive by simply downloading the app (more covid secure than a controller ;) )
 - Attention to dissassebly and ease of access to the drive system really helpful
+Parts could be replaced in the field with basic tools due to simple access and the use of detachable sockets for major electronic components. 
 - Connecting different payloads simple due to plug and socket board. 
 - Everything that needed to fit inside/on it (but not easily see below)
 - 
@@ -217,14 +218,15 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 ### Possible to tip robot
 
 ### Tyre Flexibility
-The robot was outfitted with larger tyres than the origional design giving a 360 degree bumer and helping it climb up obsticles. Due to the limitation covid placed upon the manufacturing the 3D printed hub size was no increased and softer silicone was used to case the tyres. This combination means that if the robot tips onto its side it is possible for the tyre to bend underneath the robot enough that it jams against the body and stops the wheel spinning. In an in pipe test this culd not be seen and
+The robot was outfitted with larger tyres than the origional design giving a 360 degree bumer and helping it climb up obsticles. Due to the limitation covid placed upon the manufacturing the 3D printed hub size was no increased and softer silicone was used to case the tyres. This combination means that if the robot tips onto its side it is possible for the tyre to bend underneath the robot enough that it jams against the body and stops the wheel spinning. In an in pipe test this culd not be seen and commands were still sent to the motor causing it to overheat and become damaged. 
+
 ### Not much space inside due to the wires. 
 The pi and arduino can fit together with the lid closed, the Red Pitaya would not as well, but the Pi was not needed at the same time. Maybe making some of the wires longer would help as the position of the boards would be less constrained. 
 
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk0NDQ3NDQ3MywtMTc4NzY1MDEwLC05MT
+eyJoaXN0b3J5IjpbMTk4NDY5Nzk4MywtMTc4NzY1MDEwLC05MT
 Y3NDY5MzQsLTIxMDEwNjc5NzcsLTgyMzIxMjIzLC0xOTg4MTU4
 MTMzLDUxMzk1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4OCwxMz
 QzMDY1NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQw
