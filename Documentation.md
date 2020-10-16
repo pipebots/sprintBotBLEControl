@@ -173,6 +173,7 @@ It was created using [Evothings](http://evothings.com/) which is designed to be 
 - Add technical details such as size
 - Explain drive system inc key bits to tighten and where it may fail (i.e grub screws on bevel gears)
 - Show access points and basic assembly
+- Show battery connecting and charging
 - bulletpoint features
 - costs/bom
 
@@ -197,11 +198,13 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
+## Usage Instructions
+
 # ICAIR Testing Report
 
-# Sprint LEssons Learnt 
+# Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTQyMjkzMTc4MiwtOTE2NzQ2OTM0LC0yMT
+eyJoaXN0b3J5IjpbMTY1ODIzNjYxNSwtOTE2NzQ2OTM0LC0yMT
 AxMDY3OTc3LC04MjMyMTIyMywtMTk4ODE1ODEzMyw1MTM5NTEy
 MjEsMTkwMDA4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMT
 kwMTIzOTMwOCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2
