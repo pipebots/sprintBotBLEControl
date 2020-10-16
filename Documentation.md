@@ -99,7 +99,7 @@ This reads the BLE characteristic that relaes to the X & Y coordianates of the j
 
 ### joyDiffDrive(int nJoyX, int nJoyY);
 Converts a single dual-axis joystick into a differential drive motor control, with support for both drive, turn and pivot operations. Code by [Calvin Hass](https://www.impulseadventure.com/elec/robot-differential-steering.html).
-The control via the joystick is not rec
+The control via the joystick is not reccomended as it needs some tuning. It seems that a large number of responses are generated when moving the stick so if it is moved quickly a queue of them can form and the response of the robot laggs as it goes through them all. The sensitvi
 
 // 
 
@@ -181,7 +181,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTI3MzU4NzA3LDUxMzk1MTIyMSwxOTAwMD
+eyJoaXN0b3J5IjpbMjM3MzkzNDMwLDUxMzk1MTIyMSwxOTAwMD
 gxODAwLDU5MjI4NjM4OCwxMzQzMDY1NTczLC0xOTAxMjM5MzA4
 LDE3ODMxMTU0MiwtNzM4NTQwMDMyLDk4NDkyMjY5Myw0NjgwMT
 I5MDksLTUwODM5NzY1MywtMTE1MDU1MzU3NSwtMjgwNzg0MjAs
