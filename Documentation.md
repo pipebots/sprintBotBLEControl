@@ -159,9 +159,10 @@ Reads the accelerometer and gyroscope values then uses the MadgwickAHRS library 
 
 ## Android App
 [This app](https://github.com/nfry321/PipebotsApp) was first created before the sprint and has been extended and edited to fit the features of this robot.
-It was created using [Evothings](http://evothings.com/) which is designed to be a quick way of making an app by writing HTML and Javascript in the same way as a website is created. This allows development via a viewer app which essentially is a web browers with some additional packages. The advnatage of this is that everytime the code it edite it can instantly update on the phone allowing very quick development. The code can then be complied into a native android app and installed directly. It can also be compiled for iphones but distributing apps without going through the extensive process of getting it onto the app store is difficult. It is therefore simpler to download the viewer app and direct it to a website hosting the code
+It was created using [Evothings](http://evothings.com/) which is designed to be a quick way of making an app by writing HTML and Javascript in the same way as a website is created. This allows development via a viewer app which essentially is a web browers with some additional packages. The advnatage of this is that everytime the code it edite it can instantly update on the phone allowing very quick development. The code can then be complied into a native android app and installed directly. It can also be compiled for iphones but distributing apps without going through the extensive process of getting it onto the app store is difficult. It is therefore simpler to download the viewer app and direct it to a website hosting the code. Instructions have been written 
+> Note: Since initially developing this app Evothings studio has been retired so this should not be used for developing future items.
 
-
+*add screenshots here*
 
 # Hardware
 >This part is not currently intended to be a complete reference but maybe added to in the future
@@ -200,7 +201,7 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 
 # Sprint LEssons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTcxODI3ODcyOCwtOTE2NzQ2OTM0LC0yMT
+eyJoaXN0b3J5IjpbMjA2NjgzODE1OCwtOTE2NzQ2OTM0LC0yMT
 AxMDY3OTc3LC04MjMyMTIyMywtMTk4ODE1ODEzMyw1MTM5NTEy
 MjEsMTkwMDA4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMT
 kwMTIzOTMwOCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2
