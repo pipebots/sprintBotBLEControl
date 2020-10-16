@@ -165,8 +165,6 @@ It was created using [Evothings](http://evothings.com/) which is designed to be 
 *TO DO: add screenshots here*
 
 # Hardware
->This part is not currently intended to be a complete reference but maybe added to in the future
-
 
 ### To Do
 - Add images of first version 
@@ -204,18 +202,18 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 
 
 # ICAIR Testing Report
-## Successes (Yays)
+## Successes (Yays, Woops)
 
-## Issues 
+## Issues (Nays, Poops)
 
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjgxMzQ2NzI2LC05MTY3NDY5MzQsLTIxMD
-EwNjc5NzcsLTgyMzIxMjIzLC0xOTg4MTU4MTMzLDUxMzk1MTIy
-MSwxOTAwMDgxODAwLDU5MjI4NjM4OCwxMzQzMDY1NTczLC0xOT
-AxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQwMDMyLDk4NDkyMjY5
-Myw0NjgwMTI5MDksLTUwODM5NzY1MywtMTE1MDU1MzU3NSwtMj
-gwNzg0MjAsMTQ0MjEwMjU2LC0xMjUwNDA5NDExLC0yMTI5MTI1
-NzA0XX0=
+eyJoaXN0b3J5IjpbLTE3ODc2NTAxMCwtOTE2NzQ2OTM0LC0yMT
+AxMDY3OTc3LC04MjMyMTIyMywtMTk4ODE1ODEzMyw1MTM5NTEy
+MjEsMTkwMDA4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMT
+kwMTIzOTMwOCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2
+OTMsNDY4MDEyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLT
+I4MDc4NDIwLDE0NDIxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEy
+NTcwNF19
 -->
