@@ -115,10 +115,12 @@ These are triggered using interupts so a pulse is not missed. These count the en
 #### Encoder Counts
 Pololu 3499 Encoder has 20 counts per rev when counting both edges of both channels. We are just counting one edge of one channel as the high gear ratio gives us plenty of counts this way, so 5 counts per revolution. The gear ratio of the motor is 1:62.5. 
 5 x 62.5 = 312.5 counts per revolution of gearbox output shaft.
-Spur gear to ring gear ratio is: Spur gear PCD=15mm, PCD internal ring =120mm 120/15=8
+Spur gear to ring gear ratio is: Spur gear PCD=15mm, PCD internal ring =120mm. 120/15=8.
 312.5 x 8 = 2500 counts per revolution of the robots wheel.
 > Note: A 1:31.25 gearbox motor was also tests, in this case there are 1250 counts per revolution of the wheel
-void calcSpeed();
+
+### calcSpeed();
+
 
 ### sendJSON();
 
@@ -179,10 +181,10 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTExMDkyNjA0NTAsLTE5ODgxNTgxMzMsNT
-EzOTUxMjIxLDE5MDAwODE4MDAsNTkyMjg2Mzg4LDEzNDMwNjU1
-NzMsLTE5MDEyMzkzMDgsMTc4MzExNTQyLC03Mzg1NDAwMzIsOT
-g0OTIyNjkzLDQ2ODAxMjkwOSwtNTA4Mzk3NjUzLC0xMTUwNTUz
-NTc1LC0yODA3ODQyMCwxNDQyMTAyNTYsLTEyNTA0MDk0MTEsLT
-IxMjkxMjU3MDQsMTE5OTYzMDUzNSwxMzYwNjA2NF19
+eyJoaXN0b3J5IjpbLTgyMzIxMjIzLC0xOTg4MTU4MTMzLDUxMz
+k1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4OCwxMzQzMDY1NTcz
+LC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQwMDMyLDk4ND
+kyMjY5Myw0NjgwMTI5MDksLTUwODM5NzY1MywtMTE1MDU1MzU3
+NSwtMjgwNzg0MjAsMTQ0MjEwMjU2LC0xMjUwNDA5NDExLC0yMT
+I5MTI1NzA0LDExOTk2MzA1MzUsMTM2MDYwNjRdfQ==
 -->
