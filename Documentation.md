@@ -204,7 +204,7 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 
 # ICAIR Testing Report
 
-On 12th & 14th October 2020 .....we did....
+On 12th & 14th October 2020 .....we did.... *to do*
 
 ## Successes (Yays, Woops)
 - It worked!
@@ -239,11 +239,11 @@ This was expected and is the reason T3 insisted on the largest robot possible fo
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTQ5NjUyMDY0MSwtMTUxNTI2NTYzNSwtMT
-MxOTA2MjEwMSwtMTc4NzY1MDEwLC05MTY3NDY5MzQsLTIxMDEw
-Njc5NzcsLTgyMzIxMjIzLC0xOTg4MTU4MTMzLDUxMzk1MTIyMS
-wxOTAwMDgxODAwLDU5MjI4NjM4OCwxMzQzMDY1NTczLC0xOTAx
-MjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQwMDMyLDk4NDkyMjY5My
-w0NjgwMTI5MDksLTUwODM5NzY1MywtMTE1MDU1MzU3NSwtMjgw
-Nzg0MjBdfQ==
+eyJoaXN0b3J5IjpbOTAwMDU2NjEzLC0xNTE1MjY1NjM1LC0xMz
+E5MDYyMTAxLC0xNzg3NjUwMTAsLTkxNjc0NjkzNCwtMjEwMTA2
+Nzk3NywtODIzMjEyMjMsLTE5ODgxNTgxMzMsNTEzOTUxMjIxLD
+E5MDAwODE4MDAsNTkyMjg2Mzg4LDEzNDMwNjU1NzMsLTE5MDEy
+MzkzMDgsMTc4MzExNTQyLC03Mzg1NDAwMzIsOTg0OTIyNjkzLD
+Q2ODAxMjkwOSwtNTA4Mzk3NjUzLC0xMTUwNTUzNTc1LC0yODA3
+ODQyMF19
 -->
