@@ -226,6 +226,7 @@ If the robot is driven up the side of the pipe, especially when going round a be
 The robot was outfitted with larger tyres than the origional design giving a 360 degree bumer and helping it climb up obsticles. Due to the limitation covid placed upon the manufacturing the 3D printed hub size was no increased and softer silicone was used to case the tyres. This combination means that if the robot tips onto its side it is possible for the tyre to bend underneath the robot enough that it jams against the body and stops the wheel spinning. In an in pipe test this culd not be seen and commands were still sent to the motor causing it to overheat and become damaged. 
 It is expected that by simply increasing the diameter of the hub and reducing the tickness of the tyre this will no longer be possible. 
 
+*Still from video showing this here *
 
 ### Not much space inside due to the wires. 
 This was expected and is the reason T3 insisted on the largest robot possible for the sprint. The ball shape and designing the battery and drive systems to be in the sides of the robot heled with this issue. The pi and arduino can fit together with the lid closed, the Red Pitaya would not as well, but the Pi was not needed at the same time. It is possible that making some of the wires longer would help as the position of the boards would be less constrained. 
@@ -233,7 +234,7 @@ This was expected and is the reason T3 insisted on the largest robot possible fo
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTM4NzM2MjAzOSwtMTc4NzY1MDEwLC05MT
+eyJoaXN0b3J5IjpbMTQ1MDQ3MjU1MywtMTc4NzY1MDEwLC05MT
 Y3NDY5MzQsLTIxMDEwNjc5NzcsLTgyMzIxMjIzLC0xOTg4MTU4
 MTMzLDUxMzk1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4OCwxMz
 QzMDY1NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQw
