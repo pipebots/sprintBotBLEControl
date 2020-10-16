@@ -68,9 +68,10 @@ T3 is not responsible for the high level control of the robot. Who is responsibl
 
 ## Robot Firmware
 This is the [code](https://github.com/pipebots/sprintBotBLEControl) which runs on the Arduino. 
-There are two main versions, the *master* branch is the standard code that allows remote bluetooth control.
+There are two main versions, the *master* branch is the standard code that allows remote Bluetooth (BLE) control.
 The *T4_simple_coms* branch uses serial communication as the input rather than bluetooth but is otherwise very similar. 
 The functions are listed below:
+
 ### readButtons();
 This takes the number which has been transmitted via bluetooth or serial and switches the case.
 In the movement cases the ramp flag is set high and the required setpoint for the PID controller for the motors is set, with the current speed limit modifying it. 
@@ -89,15 +90,18 @@ The avaliable cases are:
 8. Forward Right (Wider turn, one motor off, the other forwards)
 9. Back Left (Wider turn, one motor off, the other backwards)
 10. Back Right (Wider turn, one motor off, the other backwards)
-11. (not currently in use: autonomous control)
+11. (not currently in use: Autonomous control)
 12. Emergency Stop (Disconnects Bluetooth and stops robot, requires hardware reset on robot so use carefully!)
-13. (not currently in use: manual control)
+13. (not currently in use: Manual control)
 
-void readJoystick();
+### readJoystick();
+This reads the BLE characteristic that relaes 
+
+void joyDiffDrive(int nJoyX, int nJoyY);
 
 void driveMotor(int pwmPin, int dirPin, int spd);
 
-void joyDiffDrive(int nJoyX, int nJoyY);
+
 
 void calcPID();
 
@@ -166,10 +170,10 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjA3OTk2MjkxLDUxMzk1MTIyMSwxOTAwMD
-gxODAwLDU5MjI4NjM4OCwxMzQzMDY1NTczLC0xOTAxMjM5MzA4
-LDE3ODMxMTU0MiwtNzM4NTQwMDMyLDk4NDkyMjY5Myw0NjgwMT
-I5MDksLTUwODM5NzY1MywtMTE1MDU1MzU3NSwtMjgwNzg0MjAs
-MTQ0MjEwMjU2LC0xMjUwNDA5NDExLC0yMTI5MTI1NzA0LDExOT
-k2MzA1MzUsMTM2MDYwNjRdfQ==
+eyJoaXN0b3J5IjpbMTEyNTk3ODAyMyw1MTM5NTEyMjEsMTkwMD
+A4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMTkwMTIzOTMw
+OCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2OTMsNDY4MD
+EyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIw
+LDE0NDIxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEyNTcwNCwxMT
+k5NjMwNTM1LDEzNjA2MDY0XX0=
 -->
