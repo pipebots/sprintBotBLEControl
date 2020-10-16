@@ -72,7 +72,24 @@ There are two main versions, the *master* branch is the standard code that allow
 The *T4_simple_coms* branch uses serial communication as the input rather than bluetooth but is otherwise very similar. 
 The functions are listed below:
 ### readButtons();
-This takes the number which has been transmitted via bluetooth or serial and switches the case
+This takes the number which has been transmitted via bluetooth or serial and switches the case.
+In the movement cases the ramp flag is
+The avaliable cases are:
+
+0. LEDs Off
+1. LEDs On
+2. Forward
+3. Backwards
+4. Left (turn on the spot one motor forward, the other reverse)
+5. Right (turn on the spot one motor forward, the other reverse)
+6. Stop
+7. Forward Left (Wider turn, one motor off, the other forwards)
+8. Forward Right (Wider turn, one motor off, the other forwards)
+9. Back Left (Wider turn, one motor off, the other backwards)
+10. Back Right (Wider turn, one motor off, the other backwards)
+11. (not currently in use: autonomous control)
+12. Emergency Stop (Disconnects Bluetooth and stops robot, requires hardware reset on robot so use carefully!)
+13. (not currently in use: manual control)
 
 void readJoystick();
 
@@ -147,10 +164,10 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwNDc3NzI4NzEsNTEzOTUxMjIxLDE5MD
-AwODE4MDAsNTkyMjg2Mzg4LDEzNDMwNjU1NzMsLTE5MDEyMzkz
-MDgsMTc4MzExNTQyLC03Mzg1NDAwMzIsOTg0OTIyNjkzLDQ2OD
-AxMjkwOSwtNTA4Mzk3NjUzLC0xMTUwNTUzNTc1LC0yODA3ODQy
-MCwxNDQyMTAyNTYsLTEyNTA0MDk0MTEsLTIxMjkxMjU3MDQsMT
-E5OTYzMDUzNSwxMzYwNjA2NF19
+eyJoaXN0b3J5IjpbMjA5NjQwMzgxMiw1MTM5NTEyMjEsMTkwMD
+A4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMTkwMTIzOTMw
+OCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2OTMsNDY4MD
+EyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIw
+LDE0NDIxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEyNTcwNCwxMT
+k5NjMwNTM1LDEzNjA2MDY0XX0=
 -->
