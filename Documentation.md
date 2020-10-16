@@ -159,7 +159,7 @@ Reads the accelerometer and gyroscope values then uses the MadgwickAHRS library 
 
 ## Android App
 This app was first created before the sprint and has been extended and edited to fit the features of this robot.
-It was created using [Evothings](http://evothings.com/) which is desi
+It was created using [Evothings](http://evothings.com/) which is designed to be a quick way of making an app by writing HTML and Javascript in the same way as a website is created. This allows development via a viewer app which essentially is a web browers with some additional packages
 
 
 
@@ -200,11 +200,11 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 
 # Sprint LEssons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTMzOTQ1NTI4OCwtOTE2NzQ2OTM0LC0yMT
-AxMDY3OTc3LC04MjMyMTIyMywtMTk4ODE1ODEzMyw1MTM5NTEy
-MjEsMTkwMDA4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMT
-kwMTIzOTMwOCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2
-OTMsNDY4MDEyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLT
-I4MDc4NDIwLDE0NDIxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEy
-NTcwNF19
+eyJoaXN0b3J5IjpbNTE3MzM3MTc2LC05MTY3NDY5MzQsLTIxMD
+EwNjc5NzcsLTgyMzIxMjIzLC0xOTg4MTU4MTMzLDUxMzk1MTIy
+MSwxOTAwMDgxODAwLDU5MjI4NjM4OCwxMzQzMDY1NTczLC0xOT
+AxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQwMDMyLDk4NDkyMjY5
+Myw0NjgwMTI5MDksLTUwODM5NzY1MywtMTE1MDU1MzU3NSwtMj
+gwNzg0MjAsMTQ0MjEwMjU2LC0xMjUwNDA5NDExLC0yMTI5MTI1
+NzA0XX0=
 -->
