@@ -124,7 +124,8 @@ Using the change in encoder counts and the elapsed time since last call this wor
 
 ### sendJSON(); & listenJSON();
 These send and recive data formatted as a JSON document over te serial port.
-Mainly used for debugging. In testing with
+Mainly used for debugging. In testing with T4 it was discovered that this method caused problems when communicating with the Raspberry Pi so a simpler format was used to decrease the ammount of data being transfered. 
+
 void rampMotor1();
 
 void rampMotor2();
@@ -180,7 +181,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTMxOTMyOTA0NywtODIzMjEyMjMsLTE5OD
+eyJoaXN0b3J5IjpbLTQzMjA1MDY0NywtODIzMjEyMjMsLTE5OD
 gxNTgxMzMsNTEzOTUxMjIxLDE5MDAwODE4MDAsNTkyMjg2Mzg4
 LDEzNDMwNjU1NzMsLTE5MDEyMzkzMDgsMTc4MzExNTQyLC03Mz
 g1NDAwMzIsOTg0OTIyNjkzLDQ2ODAxMjkwOSwtNTA4Mzk3NjUz
