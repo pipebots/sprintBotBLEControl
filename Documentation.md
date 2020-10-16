@@ -58,7 +58,9 @@ A 'BrightPi' LED ring was used to provide light but it is not very bright so may
 The algrythmic contribution of this theme was run ofline once the data had been collected. 
 
 ### T6 Communication
-This theme was due to include a LoPy 4 board which has
+This theme was due to include a LoPy 4 board for testing communications, but due to a number of reasons the final test was swapped to be above ground and therefore not a useful environment for gathering data for T6. 
+
+###
 
 # Software
 T3 is not responsible for the high level control of the robot. Who is responsible for the low level control was not clear at the start of the sprint but as T3 had exsisting work that could be partly repurposed and had more direct access to the components we took it upon ourselves to create a method for manual control. This was later developed into firmware which can recieve commands from a higher level program and then move the robot.  
@@ -109,10 +111,10 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEyNjk4MDI3NDAsNTEzOTUxMjIxLDE5MD
-AwODE4MDAsNTkyMjg2Mzg4LDEzNDMwNjU1NzMsLTE5MDEyMzkz
-MDgsMTc4MzExNTQyLC03Mzg1NDAwMzIsOTg0OTIyNjkzLDQ2OD
-AxMjkwOSwtNTA4Mzk3NjUzLC0xMTUwNTUzNTc1LC0yODA3ODQy
-MCwxNDQyMTAyNTYsLTEyNTA0MDk0MTEsLTIxMjkxMjU3MDQsMT
-E5OTYzMDUzNSwxMzYwNjA2NF19
+eyJoaXN0b3J5IjpbLTIxNDM0ODY3NSw1MTM5NTEyMjEsMTkwMD
+A4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMTkwMTIzOTMw
+OCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2OTMsNDY4MD
+EyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIw
+LDE0NDIxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEyNTcwNCwxMT
+k5NjMwNTM1LDEzNjA2MDY0XX0=
 -->
