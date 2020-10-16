@@ -101,11 +101,14 @@ This reads the BLE characteristic that relaes to the X & Y coordianates of the j
 Converts a single dual-axis joystick into a differential drive motor control, with support for both drive, turn and pivot operations. Code by [Calvin Hass](https://www.impulseadventure.com/elec/robot-differential-steering.html).
 The control via the joystick is not reccomended as it needs some tuning. It seems that a large number of responses are generated when moving the stick so if it is moved quickly a queue of them can form and the response of the robot laggs as it goes through them all. The sensitvity to motion is one parameter that was tuned to reduce this, but there is a tradeoff with responsiveness to user input. The other possible fix would be to use lossy communication where just the latest command is retained, so that the robot only reponds to the position of the control stick at the time it is executing the command. Time limitations and the limited advantage over the button control meant this has not been explored further. 
 
+### calcPID();
+Using the current speed and desired setpoint this caluculates the required output for the motors, calls driveMotor.
+
 ### driveMotor(int pwmPin, int dirPin, int spd);
 This 
 
 
-void calcPID();
+
 
 void doEncoder1();
 
@@ -172,7 +175,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTA1ODkxODE2Nyw1MTM5NTEyMjEsMTkwMD
+eyJoaXN0b3J5IjpbMTEwNjI0MzIyMyw1MTM5NTEyMjEsMTkwMD
 A4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMTkwMTIzOTMw
 OCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2OTMsNDY4MD
 EyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIw
