@@ -144,7 +144,7 @@ Reads BLE characterstic and sets variable that is used to adjust all motions.
 Called on startup, controls the 'loading sequence' on the LED rings
 
 ### loadingChaseDoubleRing(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip, Adafruit_NeoPixel strip2);
-Leftover 
+Leftover from when the rings were independantly controlled. When trying to control two neopixel rings it caused issues with the rest of the code. It is hypothesied that this is because the library for these (surprisingly complex to run) LED rings uses timers and interr
 void ringColour(char colour, Adafruit_NeoPixel strip1, Adafruit_NeoPixel strip2);
 
 void doNeoRings();
@@ -190,11 +190,11 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE4MzgyMzE3ODYsLTgyMzIxMjIzLC0xOT
-g4MTU4MTMzLDUxMzk1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4
-OCwxMzQzMDY1NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNz
-M4NTQwMDMyLDk4NDkyMjY5Myw0NjgwMTI5MDksLTUwODM5NzY1
-MywtMTE1MDU1MzU3NSwtMjgwNzg0MjAsMTQ0MjEwMjU2LC0xMj
-UwNDA5NDExLC0yMTI5MTI1NzA0LDExOTk2MzA1MzUsMTM2MDYw
-NjRdfQ==
+eyJoaXN0b3J5IjpbODUxMTE5ODI5LC04MjMyMTIyMywtMTk4OD
+E1ODEzMyw1MTM5NTEyMjEsMTkwMDA4MTgwMCw1OTIyODYzODgs
+MTM0MzA2NTU3MywtMTkwMTIzOTMwOCwxNzgzMTE1NDIsLTczOD
+U0MDAzMiw5ODQ5MjI2OTMsNDY4MDEyOTA5LC01MDgzOTc2NTMs
+LTExNTA1NTM1NzUsLTI4MDc4NDIwLDE0NDIxMDI1NiwtMTI1MD
+QwOTQxMSwtMjEyOTEyNTcwNCwxMTk5NjMwNTM1LDEzNjA2MDY0
+XX0=
 -->
