@@ -216,7 +216,7 @@ Parts could be replaced in the field with basic tools due to simple access and t
 ### Drive System Reliability
 
 ### Possible to tip robot
-If the robot is driven up the side of the pipe, especially when going round a bend or entering a pipe up a step, it is possible for the robot to tip onto its side and not be able to recover itself. This is a limitation of a design that is also designed to be a ball shape and be able to turn around inside a pipe. In the future a wider
+If the robot is driven up the side of the pipe, especially when going round a bend or entering a pipe up a step, it is possible for the robot to tip onto its side and not be able to recover itself. This is a limitation of a design that is also designed to be a ball shape and be able to turn around inside a pipe. If the tyres matched the size of the body more closely it is possible that the robot would no be able to rest on its side to the same extent but the ground clearance would then be a problem.
 ### Tyre Flexibility
 The robot was outfitted with larger tyres than the origional design giving a 360 degree bumer and helping it climb up obsticles. Due to the limitation covid placed upon the manufacturing the 3D printed hub size was no increased and softer silicone was used to case the tyres. This combination means that if the robot tips onto its side it is possible for the tyre to bend underneath the robot enough that it jams against the body and stops the wheel spinning. In an in pipe test this culd not be seen and commands were still sent to the motor causing it to overheat and become damaged. 
 It is expected that by simply increasing the diameter of the hub and reducing the tickness of the tyre this will no longer be possible. 
@@ -227,11 +227,11 @@ The pi and arduino can fit together with the lid closed, the Red Pitaya would no
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTYyNjQyMTQ2NCwtMTc4NzY1MDEwLC05MT
-Y3NDY5MzQsLTIxMDEwNjc5NzcsLTgyMzIxMjIzLC0xOTg4MTU4
-MTMzLDUxMzk1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4OCwxMz
-QzMDY1NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQw
-MDMyLDk4NDkyMjY5Myw0NjgwMTI5MDksLTUwODM5NzY1MywtMT
-E1MDU1MzU3NSwtMjgwNzg0MjAsMTQ0MjEwMjU2LC0xMjUwNDA5
-NDExXX0=
+eyJoaXN0b3J5IjpbNDM3MTU1NzYwLC0xNzg3NjUwMTAsLTkxNj
+c0NjkzNCwtMjEwMTA2Nzk3NywtODIzMjEyMjMsLTE5ODgxNTgx
+MzMsNTEzOTUxMjIxLDE5MDAwODE4MDAsNTkyMjg2Mzg4LDEzND
+MwNjU1NzMsLTE5MDEyMzkzMDgsMTc4MzExNTQyLC03Mzg1NDAw
+MzIsOTg0OTIyNjkzLDQ2ODAxMjkwOSwtNTA4Mzk3NjUzLC0xMT
+UwNTUzNTc1LC0yODA3ODQyMCwxNDQyMTAyNTYsLTEyNTA0MDk0
+MTFdfQ==
 -->
