@@ -7,7 +7,7 @@ Sprint 2 was a 4 week long (26th Feb - 24th March 2020) hardware focused sprint,
 Due to the Covid-19 pandemic the end of the sprint was postphoned until access to campuses was partically restored (October 2020).
 The briefing document is [here](https://drive.google.com/drive/folders/1twYxoXcRTZItLzTB_jrvbxy3_hq5Eg7F)
 
-The core aspects of the robot are the Electronics, Software and Hardware. The requirements for these interact with all the other contributing themes.
+The core aspects of the robot are the Electronics, Software and Hardware. The requirements for these interact with all the other contributing themes and w
 
 ## Nomenclature
 The robot developed in Sprint 2 of the Pipebots project is refered to as _SprintBot_ or colloquially _BallBot_ 
@@ -239,11 +239,11 @@ This was expected and is the reason T3 insisted on the largest robot possible fo
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbOTAwMDU2NjEzLC0xNTE1MjY1NjM1LC0xMz
-E5MDYyMTAxLC0xNzg3NjUwMTAsLTkxNjc0NjkzNCwtMjEwMTA2
-Nzk3NywtODIzMjEyMjMsLTE5ODgxNTgxMzMsNTEzOTUxMjIxLD
-E5MDAwODE4MDAsNTkyMjg2Mzg4LDEzNDMwNjU1NzMsLTE5MDEy
-MzkzMDgsMTc4MzExNTQyLC03Mzg1NDAwMzIsOTg0OTIyNjkzLD
-Q2ODAxMjkwOSwtNTA4Mzk3NjUzLC0xMTUwNTUzNTc1LC0yODA3
-ODQyMF19
+eyJoaXN0b3J5IjpbNjE3NDgwOTE5LDkwMDA1NjYxMywtMTUxNT
+I2NTYzNSwtMTMxOTA2MjEwMSwtMTc4NzY1MDEwLC05MTY3NDY5
+MzQsLTIxMDEwNjc5NzcsLTgyMzIxMjIzLC0xOTg4MTU4MTMzLD
+UxMzk1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4OCwxMzQzMDY1
+NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQwMDMyLD
+k4NDkyMjY5Myw0NjgwMTI5MDksLTUwODM5NzY1MywtMTE1MDU1
+MzU3NV19
 -->
