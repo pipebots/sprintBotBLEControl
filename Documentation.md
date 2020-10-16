@@ -213,10 +213,12 @@ Parts could be replaced in the field with basic tools due to simple access and t
 - 
 
 ## Issues (Nays, Poops)
+All in all the test was veru sucessful and most of the issues were due to limitations of the shape or size of the robot or due to a lack of time due to te sprint format. 
+
 ### Drive System Reliability
 
 ### Possible to tip robot
-If the robot is driven up the side of the pipe, especially when going round a bend or entering a pipe up a step, it is possible for the robot to tip onto its side and not be able to recover itself. This is a limitation of a design that is also designed to be a ball shape and be able to turn around inside a pipe. If the tyres matched the size of the body more closely it is possible that the robot would no be able to rest on its side to the same extent but the ground clearance would then be a problem. In a smaller pipe this would not happen when driving forwards as the side would touch the pipe before reaching a point of instability. owever the robot can turn in
+If the robot is driven up the side of the pipe, especially when going round a bend or entering a pipe up a step, it is possible for the robot to tip onto its side and not be able to recover itself. This is a limitation of a design that is also designed to be a ball shape and be able to turn around inside a pipe. If the tyres matched the size of the body more closely it is possible that the robot would no be able to rest on its side to the same extent but the ground clearance would then be a problem. In a smaller pipe this would not happen when driving forwards as the side would touch the pipe before reaching a point of instability. owever the robot can turn in the pipe so it is still possible to drive it at an angle up the wall of the pipe. 
 
 *picture of the 250mm pipe here*
 
@@ -224,17 +226,18 @@ If the robot is driven up the side of the pipe, especially when going round a be
 The robot was outfitted with larger tyres than the origional design giving a 360 degree bumer and helping it climb up obsticles. Due to the limitation covid placed upon the manufacturing the 3D printed hub size was no increased and softer silicone was used to case the tyres. This combination means that if the robot tips onto its side it is possible for the tyre to bend underneath the robot enough that it jams against the body and stops the wheel spinning. In an in pipe test this culd not be seen and commands were still sent to the motor causing it to overheat and become damaged. 
 It is expected that by simply increasing the diameter of the hub and reducing the tickness of the tyre this will no longer be possible. 
 
+
 ### Not much space inside due to the wires. 
 This was expected and is the reason T3 insisted on the largest robot possible for the sprint. The ball shape and designing the battery and drive systems to be in the sides of the robot heled with this issue. The pi and arduino can fit together with the lid closed, the Red Pitaya would not as well, but the Pi was not needed at the same time. It is possible that making some of the wires longer would help as the position of the boards would be less constrained. 
 
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1Mjk2MTE2MzgsLTE3ODc2NTAxMCwtOT
-E2NzQ2OTM0LC0yMTAxMDY3OTc3LC04MjMyMTIyMywtMTk4ODE1
-ODEzMyw1MTM5NTEyMjEsMTkwMDA4MTgwMCw1OTIyODYzODgsMT
-M0MzA2NTU3MywtMTkwMTIzOTMwOCwxNzgzMTE1NDIsLTczODU0
-MDAzMiw5ODQ5MjI2OTMsNDY4MDEyOTA5LC01MDgzOTc2NTMsLT
-ExNTA1NTM1NzUsLTI4MDc4NDIwLDE0NDIxMDI1NiwtMTI1MDQw
-OTQxMV19
+eyJoaXN0b3J5IjpbMTM4NzM2MjAzOSwtMTc4NzY1MDEwLC05MT
+Y3NDY5MzQsLTIxMDEwNjc5NzcsLTgyMzIxMjIzLC0xOTg4MTU4
+MTMzLDUxMzk1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4OCwxMz
+QzMDY1NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQw
+MDMyLDk4NDkyMjY5Myw0NjgwMTI5MDksLTUwODM5NzY1MywtMT
+E1MDU1MzU3NSwtMjgwNzg0MjAsMTQ0MjEwMjU2LC0xMjUwNDA5
+NDExXX0=
 -->
