@@ -157,7 +157,6 @@ The rest of the ring can be set to any colour, currently the Headlights slider i
 ### readIMU();
 Reads the accelerometer and gyroscope values then uses the MadgwickAHRS library to filter these values and get roll, pitch and yaw.
 
-
 ## Android App
 
 
@@ -197,7 +196,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTUyOTUyNjYyNCwtMjEwMTA2Nzk3NywtOD
+eyJoaXN0b3J5IjpbLTMyMzgzNzAwNiwtMjEwMTA2Nzk3NywtOD
 IzMjEyMjMsLTE5ODgxNTgxMzMsNTEzOTUxMjIxLDE5MDAwODE4
 MDAsNTkyMjg2Mzg4LDEzNDMwNjU1NzMsLTE5MDEyMzkzMDgsMT
 c4MzExNTQyLC03Mzg1NDAwMzIsOTg0OTIyNjkzLDQ2ODAxMjkw
