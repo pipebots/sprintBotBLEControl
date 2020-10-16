@@ -215,18 +215,18 @@ The robot was designed such that parts are side-invariant, i.e. they can be used
 ### Drive System Reliability
 
 ### Tyre Flexibility
-The robot was outfitted with larger t
+The robot was outfitted with larger tyres than the origional design giving a 360 degree bumer and helping it climb up obsticles. Due to the limitation covid placed upon the manufacturing the 3D printed hub size was no increased and softer silicone was used to case the tyres. This combination means that if th
 ### Not much space inside due to the wires. 
 The pi and arduino can fit together with the lid closed, the Red Pitaya would not as well, but the Pi was not needed at the same time. Maybe making some of the wires longer would help as the position of the boards would be less constrained. 
 
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTI1MTk0ODMwMiwtMTc4NzY1MDEwLC05MT
-Y3NDY5MzQsLTIxMDEwNjc5NzcsLTgyMzIxMjIzLC0xOTg4MTU4
-MTMzLDUxMzk1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4OCwxMz
-QzMDY1NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQw
-MDMyLDk4NDkyMjY5Myw0NjgwMTI5MDksLTUwODM5NzY1MywtMT
-E1MDU1MzU3NSwtMjgwNzg0MjAsMTQ0MjEwMjU2LC0xMjUwNDA5
-NDExXX0=
+eyJoaXN0b3J5IjpbLTE0ODA5MTM1MTYsLTE3ODc2NTAxMCwtOT
+E2NzQ2OTM0LC0yMTAxMDY3OTc3LC04MjMyMTIyMywtMTk4ODE1
+ODEzMyw1MTM5NTEyMjEsMTkwMDA4MTgwMCw1OTIyODYzODgsMT
+M0MzA2NTU3MywtMTkwMTIzOTMwOCwxNzgzMTE1NDIsLTczODU0
+MDAzMiw5ODQ5MjI2OTMsNDY4MDEyOTA5LC01MDgzOTc2NTMsLT
+ExNTA1NTM1NzUsLTI4MDc4NDIwLDE0NDIxMDI1NiwtMTI1MDQw
+OTQxMV19
 -->
