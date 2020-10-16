@@ -113,11 +113,13 @@ There is also a deadzone which turns the motors off if the required speed is clo
 These are triggered using interupts so a pulse is not missed. These count the encoder counts and adjust the wheel position and total full revolution counters. 
 
 #### Encoder Counts
-Pololu 3499 Encider has 20 counts per rev when counting both edges of both channels. We are just counting one edge of one channel, so 5 counts per revolution. The gear ratio of the motor is 62.5. 5 * 62.5 = 
-
+Pololu 3499 Encider has 20 counts per rev when counting both edges of both channels. We are just counting one edge of one channel, so 5 counts per revolution. The gear ratio of the motor is 62.5. 
+5 x 62.5 = 312.5 counts per revolution of gearbox output shaft.
+Spur gear to ring gear ratio is: Spur gear PCD=15mm, PCD internal ring =120mm 120/15=8
+312.5 * 8 = 
  31.25 = 156.25 counts per rev of gearbox output shaft.
 
-* Spur gear to ring gear ratio is: Spur gear PCD=15mm, PCD internal ring =120mm 120/15=8
+* 
 
 * 156.25*8= 1250 counts per rev of wheel */
 
@@ -183,7 +185,7 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDU0NDg0Njc0LC0xOTg4MTU4MTMzLDUxMz
+eyJoaXN0b3J5IjpbNzE3OTI3MTQzLC0xOTg4MTU4MTMzLDUxMz
 k1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4OCwxMzQzMDY1NTcz
 LC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQwMDMyLDk4ND
 kyMjY5Myw0NjgwMTI5MDksLTUwODM5NzY1MywtMTE1MDU1MzU3
