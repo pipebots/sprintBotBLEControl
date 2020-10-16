@@ -109,9 +109,8 @@ Outputs PWM and direction to the motor drivers. Input speed value range is -255 
 The function checks the speed is within the limits and converts it to a PWM and direction command.
 There is also a deadzone which turns the motors off if the required speed is close to 0 as this causes the motors to whine and heat up without being enough to start the robot moving.
 
-### doEncoder1(); 
-
-void doEncoder2();
+### doEncoder1(); & doEncoder2();
+These are triggered using interupts so a pulse is not missed. These count the encoder counts and adjust the wheel position and total full revolution counters. 
 
 void calcSpeed();
 
@@ -174,10 +173,10 @@ This allowed the large ring gears to have a larger hole in the centre, giving mo
 The robot was designed such that parts are side-invariant, i.e. they can be used on either side of the robot. This was decided to reduce complexity and repetitive design and means that a smaller number of spare parts need to be on hand. The robot only uses 4 major parts per side, allowing simple assembly. 
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTUwMzgzNjc4Myw1MTM5NTEyMjEsMTkwMD
-A4MTgwMCw1OTIyODYzODgsMTM0MzA2NTU3MywtMTkwMTIzOTMw
-OCwxNzgzMTE1NDIsLTczODU0MDAzMiw5ODQ5MjI2OTMsNDY4MD
-EyOTA5LC01MDgzOTc2NTMsLTExNTA1NTM1NzUsLTI4MDc4NDIw
-LDE0NDIxMDI1NiwtMTI1MDQwOTQxMSwtMjEyOTEyNTcwNCwxMT
-k5NjMwNTM1LDEzNjA2MDY0XX0=
+eyJoaXN0b3J5IjpbLTE3MTEyODIwMjMsNTEzOTUxMjIxLDE5MD
+AwODE4MDAsNTkyMjg2Mzg4LDEzNDMwNjU1NzMsLTE5MDEyMzkz
+MDgsMTc4MzExNTQyLC03Mzg1NDAwMzIsOTg0OTIyNjkzLDQ2OD
+AxMjkwOSwtNTA4Mzk3NjUzLC0xMTUwNTUzNTc1LC0yODA3ODQy
+MCwxNDQyMTAyNTYsLTEyNTA0MDk0MTEsLTIxMjkxMjU3MDQsMT
+E5OTYzMDUzNSwxMzYwNjA2NF19
 -->
