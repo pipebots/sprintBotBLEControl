@@ -216,7 +216,7 @@ Parts could be replaced in the field with basic tools due to simple access and t
 All in all the test was veru sucessful and most of the issues were due to limitations of the shape or size of the robot or due to a lack of time due to te sprint format. The only two hardware failings which required fixes in the field when testing at ICAIR were a motor burning out (see Tyre Flexibility) and a gear slipping on a shaft (see Drive System Reliability). The components were simple to swap out and replace with spares.
 
 ### Drive System Reliability
-Due to the limited manufacturing time shafts could not be machined properly with flats or keyways to grip the drive gears. The gears are also 3D printed. A flat had been filed onto the shafts and a grub screw is used to t
+Due to the limited manufacturing time shafts could not be machined properly with flats or keyways to grip the drive gears. The gears are also 3D printed. A flat had been filed onto the shafts and a grub screw is used to keep the gears in place. This works but is not the ideal solution. In testing one of the bevel gears span on the shaft and it could be seen that it had cracked slightly around the grub screw causing it to come loose. A 
 ### Possible to tip robot
 If the robot is driven up the side of the pipe, especially when going round a bend or entering a pipe up a step, it is possible for the robot to tip onto its side and not be able to recover itself. This is a limitation of a design that is also designed to be a ball shape and be able to turn around inside a pipe. If the tyres matched the size of the body more closely it is possible that the robot would no be able to rest on its side to the same extent but the ground clearance would then be a problem. In a smaller pipe this would not happen when driving forwards as the side would touch the pipe before reaching a point of instability. owever the robot can turn in the pipe so it is still possible to drive it at an angle up the wall of the pipe. 
 
@@ -234,7 +234,7 @@ This was expected and is the reason T3 insisted on the largest robot possible fo
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTAwODA1NzA1OCwtMTc4NzY1MDEwLC05MT
+eyJoaXN0b3J5IjpbMTIwMjQyNDk2MCwtMTc4NzY1MDEwLC05MT
 Y3NDY5MzQsLTIxMDEwNjc5NzcsLTgyMzIxMjIzLC0xOTg4MTU4
 MTMzLDUxMzk1MTIyMSwxOTAwMDgxODAwLDU5MjI4NjM4OCwxMz
 QzMDY1NTczLC0xOTAxMjM5MzA4LDE3ODMxMTU0MiwtNzM4NTQw
