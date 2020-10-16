@@ -216,7 +216,7 @@ Parts could be replaced in the field with basic tools due to simple access and t
 ### Drive System Reliability
 
 ### Possible to tip robot
-If the robot is driven up the side of the pipe, especially when going round a bend or entering a pipe up a step, it is possible for the robot to tip onto its side and not be able to recover itself. This is a limitation of a design that is also designed to be a ball shape and be able to turn around inside a pipe. If the tyres matched the size of the body more closely it is possible that the robot would no be able to rest on its side to the same extent but the ground clearance would then be a problem. In a smaller pipe this aso may not happen.
+If the robot is driven up the side of the pipe, especially when going round a bend or entering a pipe up a step, it is possible for the robot to tip onto its side and not be able to recover itself. This is a limitation of a design that is also designed to be a ball shape and be able to turn around inside a pipe. If the tyres matched the size of the body more closely it is possible that the robot would no be able to rest on its side to the same extent but the ground clearance would then be a problem. In a smaller pipe this would not happen when driving forwards as the side would touch the pipe before reaching a point of instability. owever the robot can turn in
 
 *picture of the 250mm pipe here*
 
@@ -225,12 +225,12 @@ The robot was outfitted with larger tyres than the origional design giving a 360
 It is expected that by simply increasing the diameter of the hub and reducing the tickness of the tyre this will no longer be possible. 
 
 ### Not much space inside due to the wires. 
-This was expected and is the reason T3 insisted on the largest robot possible for the sprint. The ball shape and designing the batteryThe pi and arduino can fit together with the lid closed, the Red Pitaya would not as well, but the Pi was not needed at the same time. It is possible that making some of the wires longer would help as the position of the boards would be less constrained. 
+This was expected and is the reason T3 insisted on the largest robot possible for the sprint. The ball shape and designing the battery and drive systems to be in the sides of the robot heled with this issue. The pi and arduino can fit together with the lid closed, the Red Pitaya would not as well, but the Pi was not needed at the same time. It is possible that making some of the wires longer would help as the position of the boards would be less constrained. 
 
 
 # Sprint Lessons Learnt 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0MTY4MzQyMzgsLTE3ODc2NTAxMCwtOT
+eyJoaXN0b3J5IjpbLTE1Mjk2MTE2MzgsLTE3ODc2NTAxMCwtOT
 E2NzQ2OTM0LC0yMTAxMDY3OTc3LC04MjMyMTIyMywtMTk4ODE1
 ODEzMyw1MTM5NTEyMjEsMTkwMDA4MTgwMCw1OTIyODYzODgsMT
 M0MzA2NTU3MywtMTkwMTIzOTMwOCwxNzgzMTE1NDIsLTczODU0
