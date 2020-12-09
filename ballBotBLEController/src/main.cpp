@@ -5,7 +5,7 @@
 *  |    |   |  |  |_> >  ___/| \_\ (  O_O )  |  \___ \
 *  |____|   |__|   __/ \___  >___  /\____/|__| /____  >
 *              |__|        \/    \/                 \/
-*              
+*
 * Robot code for NANO 33 BLE Sense to pair with Robot controller App
 * Nick Fry 2019
 * Change robotName[] below for each board
@@ -20,6 +20,10 @@
 #include <PID_v1.h>
 #include <ArduinoJson.h>
 #include <Adafruit_NeoPixel.h>
+#include <Arduino_LSM9DS1.h> //IMU
+#include <MadgwickAHRS.h> //for filtering & fusing IMU data
+#include <Arduino_LPS22HB.h> //pressure sensor
+#include <Arduino_HTS221.h> //temp and humidity sensors
 
 void readButtons();
 void readJoystick();
@@ -38,6 +42,8 @@ void loadingChase(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip)
 void loadingChaseDoubleRing(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip, Adafruit_NeoPixel strip2);
 void ringColour(char colour, Adafruit_NeoPixel strip1, Adafruit_NeoPixel strip2);
 void doNeoRings();
+void readIMU();
+
 
 // Motor driver inputs
 #define ML_DIR 8
@@ -71,7 +77,14 @@ volatile int encoder1Ticks, encoder2Ticks, wheel1Pos, wheel2Pos, wheel1Revs, whe
 *  So just counting one edge of one channel, I have 5 counts per rev, and gear ratio of 31.25 = 156.25 counts per rev of gearbox output shaft.
 *  Spur gear to ring gear ratio is: Spur gear PCD=15mm, PCD internal ring =120mm 120/15=8
 *  156.25*8= 1250 counts per rev of wheel */
-int countPerRev = 1250;
+/* 12/10/2020 swapped to 61.5:1 ratio motors so double encoder counts to 2500 */
+int countPerRev = 2500;
+
+//IMU variables
+Madgwick filter;
+int time1 = 50; //IMU read delay
+float ax, ay, az, gx, gy, gz, roll, pitch, yaw = 0;
+
 
 char robotName[] = "BigBallBot"; //Device Name - will appear as BLE descripton when connecting
 
@@ -91,7 +104,7 @@ byte tempArray[] = {};
 float temp = 0.0;
 float humidity = 0.0;
 bool gesture = 0;
-long previousMillis,  prevMillis1, prevMillis2 = 0;
+long previousMillis,  prevMillis1, prevMillis2, prevMillis3 = 0;
 int encoder1Prev, encoder2Prev = 0;
 
 //params for ramping motor speed
@@ -196,7 +209,23 @@ void setup() {
   Serial.println(ramp_inc);
   Serial.println(ramp_delay);
 
-  //NEopixel startup
+//setup IMU --------------------------------------------------
+   if (!IMU.begin()) {
+     Serial.println("Failed to initialize IMU!");
+   }
+   filter.begin(1000/time1); //sample rate in Hz
+
+//setup pressure sensor
+   if (!BARO.begin()) {
+     Serial.println("Failed to initialize pressure sensor!");
+   }
+
+//setup temp and humidity sensor
+  if (!HTS.begin()) {
+    Serial.println("Failed to initialize humidity temperature sensor!");
+  }
+
+//NEopixel startup
 strip1.begin();           // INITIALIZE NeoPixel strip object (REQUIRED)
 strip1.show();            // Turn OFF all pixels ASAP
 strip1.setBrightness(BRIGHTNESS);
@@ -231,7 +260,7 @@ void loop() {
     while (central.connected()) {
 
     long currentMillis = millis();
-      // if 10ms have passed, check the speed
+      // if 20ms have passed, check the speed
       if (currentMillis - previousMillis >= 20) {
         previousMillis = currentMillis;
         calcSpeed();
@@ -242,10 +271,16 @@ void loop() {
         rampMotor2();
         prevMillis2 = currentMillis;
       }
+      currentMillis = millis();
+      if (currentMillis - prevMillis3 >= 1000){ //send JSON every X ms here (100ms causes problems, 500ms is fine)
+        readIMU();
+        sendJSON();
+        prevMillis3 = currentMillis;
+      }
+
       readButtons();
       readJoystick();
       calcPID();
-      //sendJSON();
       listenJSON();
       limitSpeed();
       doNeoRings();
@@ -282,8 +317,8 @@ void readButtons(){
           //  Serial.println("FWD");
             //greenLED();
             dotCol = strip1.gamma32(strip1.Color(0, 255, 0, 0));
-            pid_ramp_1 = 255*speedLimit;
-            pid_ramp_2 = 255*speedLimit;
+            pid_ramp_1 = -255*speedLimit;
+            pid_ramp_2 = -255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
@@ -291,8 +326,8 @@ void readButtons(){
             //Serial.println("Back");
             //blueLED();
             dotCol = strip1.gamma32(strip1.Color(0, 0, 255, 0));
-            pid_ramp_1 = -255*speedLimit;
-            pid_ramp_2 = -255*speedLimit;
+            pid_ramp_1 = 255*speedLimit;
+            pid_ramp_2 = 255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
@@ -300,8 +335,8 @@ void readButtons(){
             //Serial.println("Left");
             //cyanLED();
             dotCol = strip1.gamma32(strip1.Color(0, 255, 255, 0));
-            pid_ramp_1 = 255*speedLimit;
-            pid_ramp_2 = -255*speedLimit;
+            pid_ramp_1 = -255*speedLimit;
+            pid_ramp_2 = 255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
@@ -309,8 +344,8 @@ void readButtons(){
             //Serial.println("Right");
             //magentaLED();
             dotCol = strip1.gamma32(strip1.Color(255, 0, 255, 0));
-            pid_ramp_1 = -255*speedLimit;
-            pid_ramp_2 = 255*speedLimit;
+            pid_ramp_1 = 255*speedLimit;
+            pid_ramp_2 = -255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
@@ -327,7 +362,7 @@ void readButtons(){
             //Serial.println("Fwd Left");
             //rgbLED(100,255,100);
             dotCol = strip1.gamma32(strip1.Color(100, 255, 100, 0));
-            pid_ramp_1 = 255*speedLimit;
+            pid_ramp_1 = -255*speedLimit;
             pid_ramp_2 = 0;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
@@ -337,7 +372,7 @@ void readButtons(){
             //rgbLED(255,100,100);
             dotCol = strip1.gamma32(strip1.Color(255, 100, 100, 0));
             pid_ramp_1 = 0;
-            pid_ramp_2 = 255*speedLimit;
+            pid_ramp_2 = -255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
@@ -345,7 +380,7 @@ void readButtons(){
             //Serial.println("Back Left");
             //rgbLED(255,50,100);
             dotCol = strip1.gamma32(strip1.Color(255, 50, 100, 0));
-            pid_ramp_1 = -255*speedLimit;
+            pid_ramp_1 = 255*speedLimit;
             pid_ramp_2 = 0;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
@@ -355,7 +390,7 @@ void readButtons(){
             //rgbLED(50,100,100);
             dotCol = strip1.gamma32(strip1.Color(100, 255, 255, 0));
             pid_ramp_1 = 0;
-            pid_ramp_2 = -255*speedLimit;
+            pid_ramp_2 = 255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
@@ -565,20 +600,25 @@ void calcSpeed(){
 }
 
 void sendJSON(){
-//Using JSON Doc format
-const size_t capacity = JSON_OBJECT_SIZE(2);
-StaticJsonDocument<capacity> doc;
+  //Using JSON Doc format
+  const size_t capacity = JSON_ARRAY_SIZE(3) + JSON_OBJECT_SIZE(8);
+  StaticJsonDocument<capacity> doc;
 
-/*doc["p"] = kp;
-doc["i"] = ki;
-doc["d"] = kd;
-*/
-doc["inc"] = ramp_inc;
-doc["delay"] = ramp_delay;
+  JsonArray imu = doc.createNestedArray("imu");
+  imu.add(roll);
+  imu.add(pitch);
+  imu.add(yaw);
 
-serializeJson(doc, Serial);
-Serial.println("");
+  doc["wheel1Pos"] = wheel1Pos;
+  doc["wheel1Revs"] = wheel1Revs;
+  doc["wheel2Pos"] = wheel2Pos;
+  doc["wheel2Revs"] = wheel2Revs;
+  doc["pressure_kPa"] = BARO.readPressure(); //read pressure sensor
+  doc["temp_oC"] = HTS.readTemperature(); //read temp sensor in degrees celcius
+  doc["humidity_percent"] = HTS.readHumidity(); //humidity in %
 
+  serializeJson(doc, Serial);
+  Serial.println("");
 }
 
 void listenJSON(){
@@ -667,7 +707,7 @@ void loadingChase(int speed, uint32_t color, int loops, Adafruit_NeoPixel strip)
       if(++head >= strip.numPixels()) {      // Advance head, wrap around
         if(++loopNum >= loops) return;
         head = 0;
-        Serial.println(loopNum);
+        //Serial.println(loopNum);
       }
       if(++tail >= strip.numPixels()) {      // Advance tail, wrap around
         tail = 0;
@@ -705,7 +745,7 @@ void loadingChaseDoubleRing(int speed, uint32_t color, int loops, Adafruit_NeoPi
       if(++head >= strip.numPixels()) {      // Advance head, wrap around
         if(++loopNum >= loops) return;
         head = 0;
-        Serial.println(loopNum);
+        //Serial.println(loopNum);
       }
       if(++tail >= strip.numPixels()) {      // Advance tail, wrap around
         tail = 0;
@@ -757,7 +797,8 @@ void ringColour(char colour, Adafruit_NeoPixel strip1, Adafruit_NeoPixel strip2)
   }
 }
 void doNeoRings(){
-  int ledL = encoder1Ticks/52; //which LED to turn on
+  int ledRatio = countPerRev/LED_Count
+  int ledL = encoder1Ticks/ledRatio; //which LED to turn on
   ledL = ledL - (wheel1Revs * 24);
   if (ledL <0){ ledL = 24 + ledL;}
 
@@ -778,4 +819,20 @@ void doNeoRings(){
   strip1.show();
 //  strip2.show();
 
+}
+void readIMU(){
+  long currentMillis3 = millis();
+  if (currentMillis3 - prevMillis3 >= time1) {
+       prevMillis3 = currentMillis3;
+       if (IMU.accelerationAvailable()) { //are these ifs required?
+        IMU.readAcceleration(ax, ay, az); //output in g
+      }
+       if (IMU.gyroscopeAvailable()) {
+       IMU.readGyroscope(gx, gy, gz); //output in degrees per second
+      }
+      filter.updateIMU(gx, gy, gz, ax,ay, az);
+      roll = filter.getRoll();
+      pitch = filter.getPitch();
+      yaw = filter.getYaw();
+  }
 }
