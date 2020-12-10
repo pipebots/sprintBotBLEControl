@@ -797,7 +797,7 @@ void ringColour(char colour, Adafruit_NeoPixel strip1, Adafruit_NeoPixel strip2)
   }
 }
 void doNeoRings(){
-  int ledRatio = countPerRev/LED_Count
+  int ledRatio = countPerRev/LED_COUNT;
   int ledL = encoder1Ticks/ledRatio; //which LED to turn on
   ledL = ledL - (wheel1Revs * 24);
   if (ledL <0){ ledL = 24 + ledL;}
