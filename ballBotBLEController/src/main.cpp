@@ -86,7 +86,7 @@ int time1 = 50; //IMU read delay
 float ax, ay, az, gx, gy, gz, roll, pitch, yaw = 0;
 
 
-char robotName[] = "BigBallBot"; //Device Name - will appear as BLE descripton when connecting
+char robotName[] = "Darth Sprintious"; //Device Name - will appear as BLE descripton when connecting
 
 BLEService inputService("19B10000-E8F2-537E-4F6C-D104768A1214"); // BLE Service for all inputs from app
 BLEService outputService("1809"); //BLE Temperature service
@@ -234,7 +234,7 @@ strip2.show();            // Turn OFF all pixels ASAP
 strip2.setBrightness(BRIGHTNESS);
 //removing strip2 from there and changing the function to loadingChase causes the robot to go crazy?!
 //Also adding more function to use strip2 later in the code has the same effect.
-loadingChaseDoubleRing(10, strip1.Color(0, 0, 100, 0), 24, strip1, strip2);
+loadingChaseDoubleRing(10, strip1.Color(100, 0, 0, 0), 24, strip1, strip2);
 //loadingChase(10, strip1.Color(0, 0, 100, 0), 24, strip1);
 strip1.fill(ringCol);
 //strip2.fill(ringCol);
@@ -317,8 +317,8 @@ void readButtons(){
           //  Serial.println("FWD");
             //greenLED();
             dotCol = strip1.gamma32(strip1.Color(0, 255, 0, 0));
-            pid_ramp_1 = -255*speedLimit;
-            pid_ramp_2 = -255*speedLimit;
+            pid_ramp_1 = 255*speedLimit;
+            pid_ramp_2 = 255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
@@ -326,8 +326,8 @@ void readButtons(){
             //Serial.println("Back");
             //blueLED();
             dotCol = strip1.gamma32(strip1.Color(0, 0, 255, 0));
-            pid_ramp_1 = 255*speedLimit;
-            pid_ramp_2 = 255*speedLimit;
+            pid_ramp_1 = -255*speedLimit;
+            pid_ramp_2 = -255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
@@ -362,8 +362,8 @@ void readButtons(){
             //Serial.println("Fwd Left");
             //rgbLED(100,255,100);
             dotCol = strip1.gamma32(strip1.Color(100, 255, 100, 0));
-            pid_ramp_1 = -255*speedLimit;
-            pid_ramp_2 = 0;
+            pid_ramp_1 = 0;
+            pid_ramp_2 = 255*speedLimit;;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
@@ -371,8 +371,8 @@ void readButtons(){
             //Serial.println("Fwd Right");
             //rgbLED(255,100,100);
             dotCol = strip1.gamma32(strip1.Color(255, 100, 100, 0));
-            pid_ramp_1 = 0;
-            pid_ramp_2 = -255*speedLimit;
+            pid_ramp_1 = 255*speedLimit;;
+            pid_ramp_2 = 0;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
@@ -380,8 +380,8 @@ void readButtons(){
             //Serial.println("Back Left");
             //rgbLED(255,50,100);
             dotCol = strip1.gamma32(strip1.Color(255, 50, 100, 0));
-            pid_ramp_1 = 255*speedLimit;
-            pid_ramp_2 = 0;
+            pid_ramp_1 = 0;
+            pid_ramp_2 = -255*speedLimit;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
@@ -389,8 +389,8 @@ void readButtons(){
             //Serial.println("Back Right");
             //rgbLED(50,100,100);
             dotCol = strip1.gamma32(strip1.Color(100, 255, 255, 0));
-            pid_ramp_1 = 0;
-            pid_ramp_2 = 255*speedLimit;
+            pid_ramp_1 = -255*speedLimit;;
+            pid_ramp_2 = 0;
             ramp_flag_1 = true;
             ramp_flag_2 = true;
             break;
